@@ -1,71 +1,104 @@
 {
   "$schema": "../schema/evaluation-report.schema.json",
-  "schema_version": "0.1.0",
-  "report_id": "REPORT-UNSET",
-  "generated_at_utc": "2026-06-18T00:00:00Z",
+  "schema_version": "0.2.0",
+  "report_id": "REPORT-TEMPLATE",
+  "generated_at_utc": "2026-06-19T00:00:00Z",
   "project": {
-    "project_id": "unset-project",
-    "name": "Unset Project",
-    "version_ids": [
-      "VER-UNSET"
+    "project_id": "replace-me",
+    "name": "Replace Me",
+    "description": "Report template; replace with the evaluated Project."
+  },
+  "versions": [
+    {
+      "version_id": "VER-BASELINE",
+      "label": "baseline",
+      "role": "baseline_candidate"
+    }
+  ],
+  "inputs": [],
+  "semantic_frame": {
+    "user_request": {
+      "summary": "I cannot confirm this.",
+      "evidence_status": "unconfirmed",
+      "confidence": "low",
+      "support_refs": []
+    },
+    "intent": {
+      "summary": "I cannot confirm this.",
+      "evidence_status": "unconfirmed",
+      "confidence": "low",
+      "support_refs": []
+    },
+    "goal": {
+      "summary": "I cannot confirm this.",
+      "evidence_status": "unconfirmed",
+      "confidence": "low",
+      "support_refs": []
+    },
+    "objectives": [],
+    "ados_profile_expectations": [],
+    "glossary_terms_used": [
+      {
+        "term_id": "TERM-USER-REQUEST",
+        "evaluation_purpose": "Establish the source request boundary."
+      },
+      {
+        "term_id": "TERM-INTENT",
+        "evaluation_purpose": "Establish the normalized evaluation purpose."
+      },
+      {
+        "term_id": "TERM-GOAL",
+        "evaluation_purpose": "Establish the target end state."
+      },
+      {
+        "term_id": "TERM-QUALITY-DRIFT",
+        "evaluation_purpose": "Classify quality-relevant divergence."
+      }
     ]
   },
-  "source_set_ref": "examples/input-template.json",
-  "claim_ledger_ref": null,
-  "evidence_ledger_ref": null,
-  "evaluation_scope": {
-    "version_ids": [
-      "VER-UNSET"
-    ],
-    "input_types": [
-      "build_package",
-      "agent_work",
-      "build_result"
-    ],
-    "excluded_items": []
-  },
-  "source_normalization": [],
-  "archetype_selection": {
-    "primary_profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT",
-    "confidence": 0.0,
-    "rationale": "Archetype selection has not been performed.",
-    "evidence_refs": [],
+  "selected_archetype": {
+    "id": "ARCH-OTHER",
+    "confidence": "low",
+    "rationale": "The Archetype has not been evaluated.",
     "alternatives": []
   },
-  "evidence_assessment": {
-    "coverage": 0.0,
-    "independence": 0.0,
-    "decisive_gaps": [
-      "Source evidence has not been assessed."
-    ],
-    "assessment": "insufficient"
+  "selected_domain": {
+    "id": "DOMAIN-OTHER",
+    "confidence": "low",
+    "rationale": "The Domain has not been evaluated.",
+    "alternatives": []
   },
   "stage_evaluations": [],
-  "common_axis_evaluations": [],
-  "comparisons": [],
+  "drift_comparisons": [],
   "problem_matches": [],
   "baseline_recommendation": {
     "selected_version_id": null,
-    "confidence": 0.0,
-    "rationale": "No baseline has been evaluated.",
-    "donor_components": [],
+    "confidence": "low",
+    "rationale": "No comparative evaluation has been completed.",
     "rejected_alternatives": []
   },
-  "final_verdict": {
-    "overall": "NOT_EVALUATED",
-    "ranking": [
-      {
-        "version_id": "VER-UNSET",
-        "rank": 1,
-        "score": null
-      }
-    ],
-    "decisive_reasons": [],
-    "priority_actions": [
-      "Populate the source set and execute the skill."
-    ],
+  "corrective_prompt": {
+    "text": "",
+    "based_on_problem_ids": [],
+    "goal_and_scope_protection": "Preserve the confirmed User Request, Intent, Goal, and Objectives.",
+    "expected_result": "A focused correction based on confirmed findings."
+  },
+  "uncertainties": [
+    "This is a template, not a completed evaluation."
+  ],
+  "final_assessment": {
+    "value": "insufficient_evidence",
+    "rationale": "No Project evidence has been evaluated.",
+    "coordinate_summary": {
+      "improved": [],
+      "degraded": [],
+      "unchanged": [],
+      "unconfirmed": [
+        "COORD-GOAL-ALIGNMENT"
+      ]
+    },
     "limitations": [
-      "No evaluation has been performed."
+      "Template only."
     ]
   }
 }

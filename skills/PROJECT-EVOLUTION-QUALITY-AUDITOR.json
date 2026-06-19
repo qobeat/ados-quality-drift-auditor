@@ -1,183 +1,265 @@
 {
   "$schema": "../schema/skill.schema.json",
+  "schema_version": "0.2.0",
   "skill_id": "SKILL-PROJECT-EVOLUTION-QUALITY-AUDITOR",
-  "version": "0.1.0",
-  "name": "Project Evolution Quality and Drift Auditor",
-  "goal": "Provide a deterministic, evidence-traceable, archetype-aware skill for evaluating build controls, building-agent execution, and produced project versions across time, so quality drift, false-PASS risk, regression, and the best improvement baseline can be identified.",
-  "supported_input_types": [
-    "build_package",
-    "agent_work",
-    "build_result"
+  "name": "Project Evolution Quality Auditor",
+  "version": "0.2.0",
+  "goal": "Provide a glossary-centered, ADOS-specific quality-drift auditor that guides an agent to evaluate how a Project evolves from User Request, Intent, Goal, Objectives, Archetype, Domain, and ADOS Profile through Build Package, Building Agent Work, and Build Result, without imposing an execution-governance process.",
+  "objectives": [
+    "Make GLOSSARY.md the primary semantic and retrieval authority for every evaluation.",
+    "Define the core ADOS project, package, work, geometry, artifact, archetype, domain, evidence, and drift concepts needed by the auditor.",
+    "Evaluate build-package, building-agent-work, and build-result inputs for one or many versions of the same Project.",
+    "Select one project Archetype and one Domain from governed banks and use them to focus evaluation questions, metrics, and drift risks.",
+    "Represent project quality through Goal-Attractor Geometry coordinates and Metrics used as interpretive guardrails rather than execution gates.",
+    "Identify quality drift, drift consequence, drift risk, and reusable problem patterns across stages and versions.",
+    "Produce structured JSON reports that cite the glossary concepts used and distinguish confirmed, partial, contradicted, and unconfirmed conclusions.",
+    "Generate focused corrective prompt text while preserving the governing User Request, Intent, Goal, and Objectives.",
+    "Remain non-invasive: do not require the evaluated Project or evaluating agent to use ADOS ledgers, Atomic Work, package validators, or a prescribed workflow.",
+    "Adapt relevant ADOS Glossary v1.3 and ADOS Profile v1.23 doctrine while generalizing app-specific concepts to project-level concepts."
   ],
+  "semantic_authority": "GLOSSARY.md",
   "authority_load_order": [
     "PACKAGE.json",
     "MANIFEST.md",
     "GLOSSARY.md",
     "PDD.md",
-    "adr/index.json",
+    "adr/index.json and accepted ADR records",
+    "doc/",
     "profiles/archetype-bank.json",
+    "profiles/domain-bank.json",
     "metrics/metric-bank.json",
     "metrics/report-policy.json",
     "problems/problem-bank.json",
-    "schema/schema-index.json"
+    "schema/schema-index.json",
+    "user-supplied source set"
   ],
-  "procedure": [
+  "supported_input_types": [
     {
-      "step_id": "STEP-00",
-      "name": "Normalize source set",
-      "purpose": "Assign stable IDs to projects, versions, and artifacts without inferring missing stages.",
-      "required_outputs": [
-        "source normalization table",
-        "version lineage",
-        "availability gaps"
+      "input_type": "build_package",
+      "glossary_term_id": "TERM-BUILD-PACKAGE",
+      "examples": [
+        "prompt",
+        "PDD",
+        "Requirements",
+        "schemas",
+        "baseline package",
+        "control materials"
+      ],
+      "evaluation_focus": [
+        "Goal and Objective preservation",
+        "scope clarity",
+        "Archetype and Domain clarity",
+        "ADOS Profile meaning",
+        "drift safeguards"
       ]
     },
     {
+      "input_type": "agent_work",
+      "glossary_term_id": "TERM-BUILDING-AGENT-WORK",
+      "examples": [
+        "agent response",
+        "activity or thinking summary",
+        "commands",
+        "changes",
+        "tests",
+        "QA Evidence",
+        "Execution Trace"
+      ],
+      "evaluation_focus": [
+        "fidelity to Build Package",
+        "material decisions",
+        "unsupported Claims",
+        "visible deviations",
+        "verification relevance"
+      ]
+    },
+    {
+      "input_type": "build_result",
+      "glossary_term_id": "TERM-BUILD-RESULT",
+      "examples": [
+        "Package",
+        "source tree",
+        "report set",
+        "application",
+        "runtime",
+        "profile",
+        "prompt artifact"
+      ],
+      "evaluation_focus": [
+        "Goal and Objective fit",
+        "Archetype and Domain fitness",
+        "semantic integrity",
+        "result quality",
+        "baseline regression"
+      ]
+    }
+  ],
+  "rag_retrieval_policy": {
+    "first_retrieval": [
+      "TERM-USER-REQUEST",
+      "TERM-INTENT",
+      "TERM-GOAL",
+      "TERM-OBJECTIVE",
+      "TERM-PROJECT",
+      "TERM-PACKAGE",
+      "TERM-ARCHETYPE",
+      "TERM-DOMAIN",
+      "TERM-ADOS-PROFILE",
+      "TERM-BUILD-PACKAGE",
+      "TERM-BUILDING-AGENT-WORK",
+      "TERM-BUILD-RESULT",
+      "TERM-QUALITY-DRIFT",
+      "TERM-DRIFT-CONSEQUENCE",
+      "TERM-DRIFT-RISK"
+    ],
+    "contextual_retrieval": [
+      "Retrieve work, instruction, requirement, evidence, geometry, artifact, Archetype, Domain, or Problem Pattern terms only when relevant to supplied sources or findings.",
+      "Retrieve related terms and drift checks from each selected glossary record.",
+      "Record term IDs used in the evaluation report.",
+      "Do not use a source definition in place of the active v0.2 glossary definition."
+    ],
+    "retrieval_output": {
+      "required_fields": [
+        "term_id",
+        "evaluation_purpose"
+      ],
+      "optional_fields": [
+        "source_locator",
+        "interpretation_note"
+      ]
+    }
+  },
+  "method": [
+    {
       "step_id": "STEP-01",
-      "name": "Determine domain and archetype",
-      "purpose": "Select one primary profile from the governed archetype bank using purpose, artifact type, risks, and evidence needs.",
-      "required_outputs": [
-        "primary archetype",
-        "confidence",
-        "selection rationale",
-        "alternatives"
+      "name": "Normalize Project and versions",
+      "instruction": "Identify one Project, version order, available input types, source identities, and missing stages without inventing absent material.",
+      "output": [
+        "project",
+        "versions",
+        "inputs",
+        "uncertainties"
       ]
     },
     {
       "step_id": "STEP-02",
-      "name": "Inventory evidence",
-      "purpose": "Classify evidence as observed, derived, inference, judgment, or unconfirmed and assess independence and coverage.",
-      "required_outputs": [
-        "evidence ledger",
-        "coverage ratio",
-        "decisive gaps"
+      "name": "Establish semantic frame",
+      "instruction": "Retrieve glossary terms and summarize supported User Request, Intent, Goal, Objectives, Package meaning, and claimed ADOS Profile expectations.",
+      "output": [
+        "semantic_frame",
+        "glossary_terms_used"
       ]
     },
     {
       "step_id": "STEP-03",
-      "name": "Extract atomic claims",
-      "purpose": "Decompose every controlling or evaluative source into independently testable propositions with stable IDs.",
-      "required_outputs": [
-        "atomic claim ledger",
-        "claim dependencies",
-        "source summaries"
+      "name": "Select Archetype",
+      "instruction": "Choose one primary Archetype from the Archetype Bank based on Project purpose and primary Delivery. Record confidence, alternatives, and exclusions.",
+      "output": [
+        "selected_archetype"
       ]
     },
     {
       "step_id": "STEP-04",
-      "name": "Weight and score claims",
-      "purpose": "Prioritize claims by goal impact, decision leverage, dependency centrality, scope breadth, and verification burden, then score operational quality.",
-      "required_outputs": [
-        "normalized claim weights",
-        "claim scores",
-        "semantic statuses"
+      "name": "Select Domain",
+      "instruction": "Choose one primary Domain from the Domain Bank based on subject ontology, constraints, and evidence expectations. Keep Domain separate from Archetype.",
+      "output": [
+        "selected_domain"
       ]
     },
     {
       "step_id": "STEP-05",
-      "name": "Evaluate build package",
-      "purpose": "Assess the quality of prompts, controls, baseline selection, verification design, evidence contract, and acceptance logic.",
-      "required_outputs": [
-        "build-package metric score",
-        "hard-gate results",
-        "control defects"
+      "name": "Build Goal-Attractor frame",
+      "instruction": "Select applicable Coordinates and Metrics from the Metric Bank using Goal, Objectives, Archetype, Domain, Profile expectations, and available inputs.",
+      "output": [
+        "active_coordinates",
+        "active_metrics"
       ]
     },
     {
       "step_id": "STEP-06",
-      "name": "Evaluate agent work",
-      "purpose": "Assess authority loading, planning, scope fidelity, traceability, evidence, testing, replay, corrections, and verdict discipline.",
-      "required_outputs": [
-        "agent-work metric score",
-        "execution-to-control deviations",
-        "evidence defects"
+      "name": "Evaluate stages",
+      "instruction": "Evaluate each available Build Package, Building Agent Work, and Build Result independently. Report score only when useful and supported; always report confidence, evidence status, and rationale.",
+      "output": [
+        "stage_evaluations"
       ]
     },
     {
       "step_id": "STEP-07",
-      "name": "Evaluate build result",
-      "purpose": "Assess delivered goal coverage, function, contracts, semantics, integrity, evidence, replayability, resilience, regression, and packaging.",
-      "required_outputs": [
-        "build-result metric score",
-        "artifact defects",
-        "mutation or resilience results"
+      "name": "Compare stages and versions",
+      "instruction": "Trace build_package→agent_work, agent_work→build_result, build_package→build_result, and result→result changes where the relevant stages exist.",
+      "output": [
+        "drift_comparisons"
       ]
     },
     {
       "step_id": "STEP-08",
-      "name": "Score common axes",
-      "purpose": "Place all supplied sources in the same nine-axis comparison frame so stage-specific scores do not hide overall weaknesses.",
-      "required_outputs": [
-        "nine-axis scores",
-        "whole-document scores"
+      "name": "Match Problem Patterns",
+      "instruction": "Match only patterns supported by observed signals after applying exclusions and Archetype/Domain context.",
+      "output": [
+        "problem_matches"
       ]
     },
     {
       "step_id": "STEP-09",
-      "name": "Trace evolution and drift",
-      "purpose": "Compare baseline, build controls, agent behavior, result, and later versions by claims, metrics, hard gates, and drift dimensions.",
-      "required_outputs": [
-        "stage comparisons",
-        "version comparisons",
-        "drift consequences",
-        "drift risks"
+      "name": "Determine consequence and risk",
+      "instruction": "Separate observed Drift Consequence from inferred Drift Risk. State uncertainty explicitly.",
+      "output": [
+        "drift_findings"
       ]
     },
     {
       "step_id": "STEP-10",
-      "name": "Match problem patterns",
-      "purpose": "Use observed signals and evidence to match reusable failure patterns and retrieve corrections and preventive controls.",
-      "required_outputs": [
-        "problem matches",
-        "risk levels",
-        "corrective actions"
+      "name": "Select Baseline Version",
+      "instruction": "Select the version with the strongest confirmed fitness for the next improvement Goal. Explain rejected alternatives; do not default to latest.",
+      "output": [
+        "baseline_recommendation"
       ]
     },
     {
       "step_id": "STEP-11",
-      "name": "Select baseline",
-      "purpose": "Choose the strongest verified version for the intended next change and identify only individually verified donors from other versions.",
-      "required_outputs": [
-        "baseline recommendation",
-        "donor map",
-        "rejected alternatives"
+      "name": "Create corrective prompt",
+      "instruction": "Write a focused correction mapped to confirmed problems and drift, preserve Goal and Objectives, and avoid unrelated execution governance.",
+      "output": [
+        "corrective_prompt"
       ]
     },
     {
       "step_id": "STEP-12",
-      "name": "Derive verdict and emit reports",
-      "purpose": "Apply evidence thresholds and hard gates, derive verdicts, and write schema-conformant JSON outputs.",
-      "required_outputs": [
-        "claim ledger JSON",
-        "evidence ledger JSON",
-        "evaluation report JSON"
+      "name": "Write report",
+      "instruction": "Create JSON conforming to evaluation-report.schema.json and report the evolution assessment as improvement, mixed, degradation, unchanged, or insufficient_evidence.",
+      "output": [
+        "evaluation_report"
       ]
     }
   ],
-  "constraints": [
-    "Use only provided material; do not use external research as hidden authority.",
-    "Preserve stable source, claim, evidence, version, and comparison identifiers through the final report.",
-    "Do not score a source before its claims are extracted and weighted.",
-    "Do not interpret absence as failure when the item is not applicable or was not supplied.",
-    "Use the exact phrase 'I cannot confirm this.' for unsupported decisive propositions.",
-    "Separate observation, calculation, inference, judgment, and unconfirmed statements.",
-    "Do not derive package-level PASS from a bounded proof fixture.",
-    "Do not accept a builder-owned validator as the sole oracle for a high-risk release claim.",
-    "Do not select the latest version as baseline without cross-version quality evidence.",
-    "Do not let structure or polish outweigh core idea, contract strength, or evidence."
+  "guardrails": [
+    "Do not require a PDD, Work Plan, Atomic Work, Evidence Ledger, Execution Trace, package validator, or any other ADOS execution surface unless a governing source makes it applicable.",
+    "Do not claim access to hidden chain-of-thought.",
+    "Do not infer missing Project stages.",
+    "Do not treat a self-reported PASS as an evaluator conclusion.",
+    "Do not use one fixture, file count, schema count, test count, or total score as a substitute for Project quality.",
+    "Do not redefine glossary terms in the report.",
+    "Do not classify Archetype from Domain or Domain from Archetype.",
+    "Do not select the latest version as Baseline without evidence.",
+    "Use 'I cannot confirm this.' for decisive unsupported propositions.",
+    "Metrics are interpretive guardrails; this skill does not issue a package release PASS/FAIL."
   ],
-  "references": {
-    "archetype_bank": "profiles/archetype-bank.json",
-    "metric_bank": "metrics/metric-bank.json",
-    "problem_bank": "problems/problem-bank.json",
-    "report_policy": "metrics/report-policy.json",
-    "source_schema": "schema/source-set.schema.json",
-    "claim_schema": "schema/claim-ledger.schema.json",
-    "report_schema": "schema/evaluation-report.schema.json"
-  },
-  "output_files": {
-    "claim_ledger": "out/<report-id>-claim-ledger.json",
-    "evidence_ledger": "out/<report-id>-evidence-ledger.json",
-    "evaluation_report": "out/<report-id>-evaluation-report.json"
-  }
+  "required_report_sections": [
+    "project",
+    "versions",
+    "inputs",
+    "semantic_frame",
+    "glossary_terms_used",
+    "selected_archetype",
+    "selected_domain",
+    "stage_evaluations",
+    "drift_comparisons",
+    "drift_findings",
+    "problem_matches",
+    "baseline_recommendation",
+    "corrective_prompt",
+    "uncertainties",
+    "final_assessment"
+  ],
+  "output_schema": "schema/evaluation-report.schema.json"
 }

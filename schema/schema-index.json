@@ -1,76 +1,70 @@
 {
-  "schema_version": "0.1.0",
-  "package_name": "ados-quality-drift-auditor",
+  "schema_version": "0.2.0",
   "schemas": [
     {
       "schema_id": "SCHEMA-ADR-INDEX",
       "path": "schema/adr-index.schema.json",
-      "sha256": "af14f82e7723a28acd9e45bf6e82be280168e128c1ae3d90822dbb0ffd0392d3"
+      "sha256": "4868b65942c0e257ee6602f8e41fd29a198d40e0c6abae594006a9e0f367a326"
     },
     {
       "schema_id": "SCHEMA-ARCHETYPE-BANK",
       "path": "schema/archetype-bank.schema.json",
-      "sha256": "038ecd415dac0b62e3ec8b10e5eb450bcabd0a072ce7fed015d380b1b050454f"
+      "sha256": "10b1344dc6c37f3a4144972243719fe218e147df2ab6bb761725d774f91c5131"
     },
     {
-      "schema_id": "SCHEMA-ARCHETYPE-PROFILE",
-      "path": "schema/archetype-profile.schema.json",
-      "sha256": "a2086d6c88eb73df63543865243448aed82369f7a31807076d1859c01b4674af"
+      "schema_id": "SCHEMA-DOCUMENT-METADATA",
+      "path": "schema/document-metadata.schema.json",
+      "sha256": "2bb4ad2173f12bb91442a41482b396d2a4d40a299a8b1a0205c8768749639881"
     },
     {
-      "schema_id": "SCHEMA-CLAIM-LEDGER",
-      "path": "schema/claim-ledger.schema.json",
-      "sha256": "7f39082b88c92102ba982e2921a57ee9064eb46437a2b99828e37b6319e7efe4"
+      "schema_id": "SCHEMA-DOMAIN-BANK",
+      "path": "schema/domain-bank.schema.json",
+      "sha256": "a0afa42f4675382f5b002c0799ebee45f50e1a86935a0ea045757206ef7b596a"
     },
     {
       "schema_id": "SCHEMA-EVALUATION-REPORT",
       "path": "schema/evaluation-report.schema.json",
-      "sha256": "d4f0e462a003a3ce078598af0be4b67b1a7fa70c70fb4582cca15b78f98a98b9"
+      "sha256": "f50caeca6030b5e7d5fed8f1493320c1b9bf5e6ebe84cd70128e39bfe1fc336c"
     },
     {
-      "schema_id": "SCHEMA-EVIDENCE-LEDGER",
-      "path": "schema/evidence-ledger.schema.json",
-      "sha256": "9e0d12ff9e84e54d7dda9fffa602b7942bac1ba719450f779ba08b0b8b8896bb"
-    },
-    {
-      "schema_id": "SCHEMA-MANIFEST",
-      "path": "schema/manifest.schema.json",
-      "sha256": "4f1dfa6b52ea76918157db4ce21a9a49ab37c0cd94b4ad29576f749ee3cbaf29"
+      "schema_id": "SCHEMA-GLOSSARY-CONCEPT",
+      "path": "schema/glossary-concept.schema.json",
+      "sha256": "c2f0f05de6b8e0f1715a96ef9df3f8e592ae636f11c5ce0d67b05fc865d53899"
     },
     {
       "schema_id": "SCHEMA-METRIC-BANK",
       "path": "schema/metric-bank.schema.json",
-      "sha256": "1996e2289e6b3fa1896df1a7c2bc5a7d96e077c8588403a21a03018870f429d2"
+      "sha256": "bd0e3e03de7b993c1bbbee2d4126e810855704b4d8c46fa6df5dae4a6853cb81"
     },
     {
       "schema_id": "SCHEMA-PACKAGE",
       "path": "schema/package.schema.json",
-      "sha256": "7357aa2908cb83598da170ef66054c035637eb883f4a09e3ce12e43f502b9c95"
+      "sha256": "e1f1caec7f9691f901814e4cdef2d42e6048972d6ca457cbaa02d923d06bbc26"
     },
     {
       "schema_id": "SCHEMA-PROBLEM-BANK",
       "path": "schema/problem-bank.schema.json",
-      "sha256": "9397c6098ae0a932e3cc7da8491384d21e71f4e5af232ba6cdac559dfc55c187"
+      "sha256": "add1b44a0f1d418060620777eac1a3f1a35fb46febd3de9bc540f0e92502dc65"
     },
     {
       "schema_id": "SCHEMA-REPORT-POLICY",
       "path": "schema/report-policy.schema.json",
-      "sha256": "81b7e075f053503cd898f4ce20df61415d8b742598501b70724b0b97723b01c3"
+      "sha256": "8537f087a49032461d5d2210cfcae573500c9b1bb83837d52aea49533bdbf933"
     },
     {
       "schema_id": "SCHEMA-SCHEMA-INDEX",
       "path": "schema/schema-index.schema.json",
-      "sha256": "79b26318beb113086975358079459112a806b82fcfc0ac84b128a8550d86d3c7"
+      "sha256": "e2103b7ef0de91b0b15e74f753710cc547e215e53fc34aa036ced0fbfd115f08"
     },
     {
       "schema_id": "SCHEMA-SKILL",
       "path": "schema/skill.schema.json",
-      "sha256": "8da57efe15a8bd9210fd8de80f4d548f50b86e8281f660993c7b35f9442e4f91"
+      "sha256": "7f3176bdb2d68c5f916b5c6e27629d08f17324df94da7d7de2f09aab58b8a3fc"
     },
     {
       "schema_id": "SCHEMA-SOURCE-SET",
       "path": "schema/source-set.schema.json",
-      "sha256": "60864a3ab4f70fac0e96d42a6ca3f5d09aa2bcb305201cd1c8e7dc881ed1a10b"
+      "sha256": "32c6f08ac18158536fb698c9f2e38ba45362df98a227dcf31dd74f9824a34959"
     }
   ],
   "bindings": [
@@ -83,16 +77,16 @@
       "schema": "schema/adr-index.schema.json"
     },
     {
-      "instance": "examples/ados-glossary-evolution-input.json",
-      "schema": "schema/source-set.schema.json"
+      "instance": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.json",
+      "schema": "schema/skill.schema.json"
     },
     {
-      "instance": "examples/input-template.json",
-      "schema": "schema/source-set.schema.json"
+      "instance": "profiles/archetype-bank.json",
+      "schema": "schema/archetype-bank.schema.json"
     },
     {
-      "instance": "manifest.json",
-      "schema": "schema/manifest.schema.json"
+      "instance": "profiles/domain-bank.json",
+      "schema": "schema/domain-bank.schema.json"
     },
     {
       "instance": "metrics/metric-bank.json",
@@ -103,77 +97,20 @@
       "schema": "schema/report-policy.schema.json"
     },
     {
-      "instance": "out/example-ados-glossary-claim-ledger.json",
-      "schema": "schema/claim-ledger.schema.json"
-    },
-    {
-      "instance": "out/example-ados-glossary-evidence-ledger.json",
-      "schema": "schema/evidence-ledger.schema.json"
-    },
-    {
-      "instance": "out/example-ados-glossary-evolution-report.json",
-      "schema": "schema/evaluation-report.schema.json"
-    },
-    {
-      "instance": "out/report-template.json",
-      "schema": "schema/evaluation-report.schema.json"
-    },
-    {
       "instance": "problems/problem-bank.json",
       "schema": "schema/problem-bank.schema.json"
-    },
-    {
-      "instance": "profiles/archetype-bank.json",
-      "schema": "schema/archetype-bank.schema.json"
-    },
-    {
-      "instance": "profiles/data-pipeline-dataset.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/documentation-specification.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/general-engineered-artifact.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/infrastructure-platform.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/ml-agent-system.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/multi-artifact-profile-runtime.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/policy-control-pack.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/schema-governed-knowledge.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/software-application-service.json",
-      "schema": "schema/archetype-profile.schema.json"
-    },
-    {
-      "instance": "profiles/software-library-cli-sdk.json",
-      "schema": "schema/archetype-profile.schema.json"
     },
     {
       "instance": "schema/schema-index.json",
       "schema": "schema/schema-index.schema.json"
     },
     {
-      "instance": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.json",
-      "schema": "schema/skill.schema.json"
+      "instance": "out/report-template.json",
+      "schema": "schema/evaluation-report.schema.json"
+    },
+    {
+      "instance": "out/example-ados-glossary-drift-report.json",
+      "schema": "schema/evaluation-report.schema.json"
     }
-  ],
-  "exemptions": []
+  ]
 }

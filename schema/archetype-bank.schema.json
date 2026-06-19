@@ -1,81 +1,141 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schema/archetype-bank.schema.json",
-  "title": "Archetype Bank Schema",
+  "title": "Archetype Bank",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "$schema",
+    "schema_version",
     "bank_id",
-    "version",
     "selection_policy",
-    "profiles"
+    "archetypes"
   ],
   "properties": {
     "$schema": {
-      "type": "string"
+      "const": "../schema/archetype-bank.schema.json"
+    },
+    "schema_version": {
+      "const": "0.2.0"
     },
     "bank_id": {
-      "type": "string",
-      "pattern": "^ARCHETYPE-BANK-[A-Z0-9._-]+$"
-    },
-    "version": {
-      "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+      "const": "ARCHETYPE-BANK-QDA-V0.2"
     },
     "selection_policy": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "primary_archetype_count",
-        "method",
-        "tie_breaker"
+        "primary_count",
+        "minimum_confidence",
+        "fallback_archetype_id",
+        "rules"
       ],
       "properties": {
-        "primary_archetype_count": {
+        "primary_count": {
           "const": 1
         },
-        "method": {
+        "minimum_confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "fallback_archetype_id": {
+          "const": "ARCH-OTHER"
+        },
+        "rules": {
           "type": "array",
           "minItems": 3,
           "items": {
             "type": "string"
           }
-        },
-        "tie_breaker": {
-          "type": "string",
-          "minLength": 20
         }
       }
     },
-    "profiles": {
+    "archetypes": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 6,
+      "maxItems": 6,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "profile_id",
-          "name",
-          "path",
-          "summary"
-        ],
-        "properties": {
-          "profile_id": {
-            "type": "string",
-            "pattern": "^ARCH-[A-Z0-9-]+$"
-          },
-          "name": {
+        "$ref": "#/$defs/archetype"
+      }
+    }
+  },
+  "$defs": {
+    "archetype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "archetype_id",
+        "name",
+        "glossary_term_id",
+        "definition",
+        "selection_indicators",
+        "exclusion_indicators",
+        "priority_coordinate_ids",
+        "applicable_pillar_ids",
+        "evaluation_questions",
+        "selection_note"
+      ],
+      "properties": {
+        "archetype_id": {
+          "type": "string",
+          "pattern": "^ARCH-[A-Z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "glossary_term_id": {
+          "type": "string",
+          "pattern": "^TERM-[A-Z0-9-]+$"
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 20
+        },
+        "selection_indicators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
             "type": "string"
-          },
-          "path": {
-            "type": "string",
-            "pattern": "^profiles/.+\\.json$"
-          },
-          "summary": {
-            "type": "string",
-            "minLength": 10
           }
+        },
+        "exclusion_indicators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "priority_coordinate_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^COORD-[A-Z0-9-]+$"
+          }
+        },
+        "applicable_pillar_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^PILLAR-[0-9]{2}$"
+          }
+        },
+        "evaluation_questions": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        },
+        "selection_note": {
+          "type": "string",
+          "minLength": 10
         }
       }
     }

@@ -1,1644 +1,1239 @@
 {
   "$schema": "../schema/problem-bank.schema.json",
-  "bank_id": "PROBLEM-BANK-QDA-0.1",
-  "version": "0.1.0",
-  "severity_order": [
-    "low",
-    "medium",
-    "high",
-    "critical"
-  ],
+  "schema_version": "0.2.0",
+  "bank_id": "PROBLEM-BANK-QDA-V0.2",
   "matching_policy": {
-    "minimum_basis": "At least one observed signal and one supporting evidence reference.",
-    "prohibition": "Do not diagnose a problem solely from a keyword or absent artifact that was not applicable.",
-    "confidence_scale": {
-      "low": "one weak signal",
-      "medium": "multiple consistent signals",
-      "high": "direct observation or reproduced defect"
-    },
-    "reporting": "Matched problems must distinguish observation, inference, and evaluator judgment."
+    "minimum_basis": "At least one observed signal and one supporting source reference.",
+    "confidence_values": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "rule": "Do not match from keywords alone. Apply exclusions and selected Archetype/Domain context.",
+    "output": "Report observation, affected glossary terms and coordinates, consequence, risk, confirmation path, and focused correction."
   },
   "patterns": [
     {
-      "problem_id": "PROB-001",
-      "name": "False-PASS validator",
-      "risk_level": "critical",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
+      "problem_id": "PROB-GOAL-OBJECTIVE-DRIFT",
+      "name": "Goal or Objective Drift",
+      "glossary_term_ids": [
+        "TERM-GOAL",
+        "TERM-OBJECTIVE",
+        "TERM-QUALITY-DRIFT"
       ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "The validator reports PASS while representative release-breaking mutations remain undetected.",
-      "pattern": "Validation checks presence or shallow shape but not the invariants needed for the release claim.",
-      "observable_signals": [
-        "critical mutations return exit code 0",
-        "validator findings are empty after corrupting an authority surface",
-        "release relies on one package-owned validator"
-      ],
-      "visible_effects": [
-        "high confidence PASS with broken package state",
-        "defects survive to later releases"
-      ],
-      "likely_causes": [
-        "oracles test implementation details rather than obligations",
-        "no mutation suite",
-        "validator and verdict share the same assumptions"
-      ],
-      "consequences": [
-        "invalid baseline selection",
-        "release regression",
-        "false assurance"
-      ],
-      "detection_methods": [
-        "apply isolated single-fault mutations",
-        "require exact finding codes",
-        "cross-check with an independently implemented auditor"
-      ],
-      "corrective_actions": [
-        "block PASS",
-        "implement invariant-level checks",
-        "add isolated mutations for each critical contract",
-        "rerun from a clean extraction"
-      ],
-      "preventive_controls": [
-        "define defect fixtures before implementation",
-        "separate builder and release oracle",
-        "version the mutation suite"
-      ],
-      "required_evidence": [
-        "validator source",
-        "mutation input",
-        "stdout/stderr",
-        "expected and observed finding code"
-      ],
-      "related_hard_gate_ids": [
-        "HG-002"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V14-VAL",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4"
-          ],
-          "observation": "The package validator accepted seven severe mutations, including an unregistered file, corrupt manifest hash, empty schema index, rejected ADR, empty work plan, missing summary, and broken evidence path.",
-          "lesson": "A clean PASS is not evidence of defect sensitivity."
-        },
-        {
-          "example_id": "EX-V15-VAL",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Independent mutation checks found five severe changes still accepted, including empty evidence, unverified work, semantic contradiction, broken Reflection evidence, and fabricated proof identity or hashes.",
-          "lesson": "Coverage counts did not establish invariant enforcement."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-002",
-      "name": "Coverage without contract strength",
-      "risk_level": "critical",
-      "applicable_stages": [
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
+      "affected_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-OBJECTIVE-COVERAGE"
+      ],
       "applicable_archetype_ids": [
-        "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
-        "ARCH-SOFTWARE-LIBRARY-CLI-SDK",
-        "ARCH-DATA-PIPELINE-DATASET",
-        "ARCH-POLICY-CONTROL-PACK"
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
       ],
-      "problem_statement": "Every instance is nominally assigned a schema, but the schemas do not constrain meaningful content.",
-      "pattern": "Coverage percentage is optimized by using generic, open, or container-only schemas.",
-      "observable_signals": [
-        "additionalProperties is unrestricted on critical records",
-        "only schema_version or top-level type is required",
-        "negative fixtures pass"
-      ],
-      "visible_effects": [
-        "100% schema coverage with low defect detection",
-        "invalid or contradictory records validate"
-      ],
-      "likely_causes": [
-        "metric substitution",
-        "pressure to reach coverage targets",
-        "schema migration by weakening"
-      ],
-      "consequences": [
-        "contract regression",
-        "silent data corruption",
-        "misleading governance metrics"
-      ],
-      "detection_methods": [
-        "compare required fields and constraints to the baseline",
-        "run malformed and semantically contradictory fixtures",
-        "inspect closed-object policy"
-      ],
-      "corrective_actions": [
-        "restore required properties and item schemas",
-        "use explicit extension fields",
-        "add constraint-strength regression metrics"
-      ],
-      "preventive_controls": [
-        "define critical-schema minimums",
-        "reject weakening unless authorized",
-        "track constraint counts and semantic invariants"
-      ],
-      "required_evidence": [
-        "schema diff",
-        "positive and negative validation results",
-        "authorization for weakened constraints"
-      ],
-      "related_hard_gate_ids": [
-        "HG-006"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-SCHEMA",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Complete JSON governance was claimed while several critical schemas were permissive or validated only shallow containers.",
-          "lesson": "Binding coverage and schema quality must be scored separately."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-003",
-      "name": "Assertion-only evidence",
       "risk_level": "critical",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "Evidence records state PASS without recording the observation that would support it.",
-      "pattern": "The evidence ledger stores target paths and statuses but omits procedure, expected result, observed result, provenance, or output.",
+      "definition": "The evaluated surface solves, optimizes, or validates a materially different target from the governing Goal or Objectives.",
       "observable_signals": [
-        "status=pass is the main evidence field",
-        "same generic ledger entry supports many gates",
-        "no stdout, diff, timestamp, or hash"
+        "Goal wording changes without user authorization",
+        "local tasks pass while key Objectives disappear",
+        "new acceptance criteria replace the original target"
+      ],
+      "exclusions": [
+        "User explicitly changed the Goal",
+        "the difference is a documented clarification preserving meaning"
       ],
       "visible_effects": [
-        "claims cannot be independently checked",
-        "later reviewers cannot distinguish execution from declaration"
+        "complete-looking result for the wrong problem",
+        "misleading success claims"
       ],
       "likely_causes": [
-        "evidence schema is too weak",
-        "evidence is generated in bulk after work",
-        "QA and evidence are conflated"
+        "scope pressure",
+        "metric optimization",
+        "ambiguous Build Package"
       ],
       "consequences": [
-        "unverifiable release",
-        "stale evidence reuse",
-        "false PASS"
+        "Project value decreases despite implementation activity"
       ],
-      "detection_methods": [
-        "sample evidence records against the claim they support",
-        "verify observation and provenance fields",
-        "resolve referenced artifacts"
+      "drift_risks": [
+        "later versions compound the wrong direction"
       ],
-      "corrective_actions": [
-        "mark unsupported claims unconfirmed",
-        "regenerate evidence from actual checks",
-        "separate evidence capture from QA judgment"
+      "how_to_confirm": [
+        "compare User Request, Intent, Goal, Objectives, and delivered outcomes",
+        "identify the first stage containing the changed meaning"
       ],
-      "preventive_controls": [
-        "strict evidence schema",
-        "minimum observation fields",
-        "one evidence item may support multiple claims only when scope is explicit"
+      "how_to_fix": [
+        "restore the original Goal/Objective boundary or obtain explicit user amendment",
+        "rewrite only affected prompts, profiles, metrics, or outputs"
       ],
-      "required_evidence": [
-        "command or procedure",
-        "expected",
-        "observed",
-        "timestamp",
-        "verifier",
-        "artifact hash",
-        "result"
+      "wrong_fix_patterns": [
+        "add more tests without restoring the Goal",
+        "rewrite the whole Project when a focused correction is possible"
       ],
-      "related_hard_gate_ids": [
-        "HG-003"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-EVIDENCE",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "The 103 work-verification records were chiefly PASS assertions pointing at target files rather than observation-bearing verification records.",
-          "lesson": "One-file work cardinality does not prove one-file verification."
-        }
-      ]
+      "real_examples": []
     },
     {
-      "problem_id": "PROB-004",
-      "name": "Builder-owned release oracle",
-      "risk_level": "high",
-      "applicable_stages": [
-        "build_package",
-        "agent_work",
-        "build_result"
+      "problem_id": "PROB-INTENT-ROUTING-DRIFT",
+      "name": "Intent Routing Drift",
+      "glossary_term_ids": [
+        "TERM-USER-REQUEST",
+        "TERM-INTENT",
+        "TERM-ARCHETYPE",
+        "TERM-DOMAIN"
       ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "The same implementation process creates the artifact, validator, evidence, QA score, and release verdict.",
-      "pattern": "A single trust domain certifies itself without an independent logic path.",
-      "observable_signals": [
-        "validator is authored during the same build",
-        "QA report repeats validator output",
-        "no independent recomputation"
-      ],
-      "visible_effects": [
-        "shared blind spots",
-        "circular release acceptance"
-      ],
-      "likely_causes": [
-        "insufficient separation of duties",
-        "small build prompt treats internal PASS as final"
-      ],
-      "consequences": [
-        "systematic false positives",
-        "unfair comparison"
-      ],
-      "detection_methods": [
-        "independently recompute key invariants",
-        "review validator assumptions",
-        "run external mutation tests"
-      ],
-      "corrective_actions": [
-        "treat package validator as one evidence source",
-        "add independent audit",
-        "compare outputs and investigate disagreement"
-      ],
-      "preventive_controls": [
-        "architecturally separate builder and release auditor",
-        "freeze audit rules before build"
-      ],
-      "required_evidence": [
-        "builder identity",
-        "auditor identity",
-        "independent implementation description",
-        "comparison report"
-      ],
-      "related_hard_gate_ids": [
-        "HG-002"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-SELF-CERT",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "The building agent produced the package, evidence, validator results, perfect gate summaries, and final PASS.",
-          "lesson": "A single trust path amplified implementation blind spots."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-005",
-      "name": "Proof-fixture overfitting",
-      "risk_level": "high",
-      "applicable_stages": [
-        "build_package",
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
-        "ARCH-ML-AGENT-SYSTEM",
-        "ARCH-SOFTWARE-APPLICATION-SERVICE"
-      ],
-      "problem_statement": "A narrow, known fixture is treated as evidence for a broader runtime or package capability.",
-      "pattern": "The build becomes optimized for one expected example and its success is generalized beyond the tested claims.",
-      "observable_signals": [
-        "same fixture reused across releases",
-        "fixture behavior is simpler than package obligations",
-        "fixture PASS appears in overall verdict rationale"
-      ],
-      "visible_effects": [
-        "high confidence despite untested semantics or integrations",
-        "missed generalization failures"
-      ],
-      "likely_causes": [
-        "test convenience",
-        "unclear proof boundary",
-        "fixture named in generic control"
-      ],
-      "consequences": [
-        "overfitting",
-        "false generalization",
-        "quality drift hidden by stable demo"
-      ],
-      "detection_methods": [
-        "map each proof step to the exact claim exercised",
-        "add materially different held-out proofs",
-        "inspect whether fixture was hardcoded"
-      ],
-      "corrective_actions": [
-        "narrow the claim",
-        "add a second nontrivial proof and negative cases",
-        "rotate or hold out fixtures"
-      ],
-      "preventive_controls": [
-        "proof claim matrix",
-        "fixture independence policy",
-        "prohibit fixture PASS as package PASS"
-      ],
-      "required_evidence": [
-        "fixture definition",
-        "oracle",
-        "claim mapping",
-        "held-out result"
-      ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-CALCULATOR",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4",
-            "1.5"
-          ],
-          "observation": "simple-calculator.zip passed arithmetic tests, but those tests did not exercise glossary semantics, schema strength, inventory, evidence integrity, ADR references, or validator mutations.",
-          "lesson": "The calculator was not the root cause; it became a false-confidence amplifier when its bounded result was generalized."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-006",
-      "name": "Replay-order inversion",
-      "risk_level": "critical",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
-        "ARCH-SOFTWARE-APPLICATION-SERVICE",
-        "ARCH-DATA-PIPELINE-DATASET",
-        "ARCH-INFRASTRUCTURE-PLATFORM"
-      ],
-      "problem_statement": "The proof artifact is created before the final release candidate or by an external builder path not present in the final package.",
-      "pattern": "The evidence proves a provisional workspace or hidden script rather than the delivered artifact.",
-      "observable_signals": [
-        "proof timestamp precedes final package build",
-        "replay tool absent from release",
-        "proof cannot be recreated from clean extraction"
-      ],
-      "visible_effects": [
-        "non-reproducible release claim",
-        "hidden implementation dependency"
-      ],
-      "likely_causes": [
-        "incorrect Reflection ordering",
-        "runtime path selected after planning",
-        "external script substitutes for package capability"
-      ],
-      "consequences": [
-        "bootstrap/runtime claim is unproven",
-        "future users cannot repeat the process"
-      ],
-      "detection_methods": [
-        "replay from two clean extractions of the final candidate",
-        "verify tool path exists in package",
-        "compare artifact hashes"
-      ],
-      "corrective_actions": [
-        "invalidate pre-final proof",
-        "add package-local replay tool",
-        "rebuild, then replay and preserve output"
-      ],
-      "preventive_controls": [
-        "freeze replay path before work scheduling",
-        "gate final verdict on final-artifact origin"
-      ],
-      "required_evidence": [
-        "final artifact hash",
-        "clean extraction paths",
-        "replay command",
-        "proof hashes"
-      ],
-      "related_hard_gate_ids": [
-        "HG-004"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-ORDER",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "External proof packages were created by build logic before reset and final package construction; the final ZIP did not independently establish the same replay path.",
-          "lesson": "Proof origin and order are part of the claim."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-007",
-      "name": "Ungrounded work plan",
-      "risk_level": "high",
-      "applicable_stages": [
+      "affected_input_types": [
         "build_package",
         "agent_work"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-ARCHETYPE-FIT",
+        "COORD-DOMAIN-FIT"
       ],
-      "problem_statement": "Planned work is not traceable to concrete files, components, or verifiable outcomes.",
-      "pattern": "Atomic work entries group unrelated targets, omit targets, or carry only generic verification text.",
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "The User Request is normalized into the wrong Intent, Archetype, or Domain.",
       "observable_signals": [
-        "empty target list",
-        "plural target set for supposedly atomic work",
-        "no requirement or evidence link"
+        "one request purpose is omitted",
+        "different purposes are collapsed",
+        "Archetype describes subject area rather than delivery type"
+      ],
+      "exclusions": [
+        "user explicitly reprioritized the request",
+        "secondary Domain is clearly labeled"
       ],
       "visible_effects": [
-        "changes cannot be audited",
-        "omissions and scope expansion are easy"
+        "wrong evaluation frame",
+        "irrelevant outputs or metrics"
       ],
       "likely_causes": [
-        "planning schema too permissive",
-        "bulk generated work plan",
-        "atomicity defined but not enforced"
+        "insufficient decomposition",
+        "keyword classification",
+        "Archetype/Domain confusion"
       ],
       "consequences": [
-        "poor traceability",
-        "hidden defects",
-        "unreliable completion count"
+        "subsequent stages remain internally consistent but irrelevant"
       ],
-      "detection_methods": [
-        "validate target cardinality",
-        "resolve every target",
-        "sample work-to-diff and work-to-evidence links"
+      "drift_risks": [
+        "wrong baseline and corrective actions"
       ],
-      "corrective_actions": [
-        "replan as one target per work where applicable",
-        "add requirement and evidence IDs",
-        "verify each target outcome"
+      "how_to_confirm": [
+        "reconstruct request clauses and map each to Intent, Archetype, and Domain"
       ],
-      "preventive_controls": [
-        "strict work schema",
-        "scheduler checks",
-        "no completion without evidence"
+      "how_to_fix": [
+        "split or correct the Intent and rerun downstream evaluation"
       ],
-      "required_evidence": [
-        "work plan",
-        "target inventory",
-        "requirement mapping",
-        "verification evidence"
+      "wrong_fix_patterns": [
+        "patch result details while preserving wrong routing"
       ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V14-WORK",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4"
-          ],
-          "observation": "All twelve work records lacked usable target grounding and the work plan did not satisfy its intended contract.",
-          "lesson": "Work-count metrics are meaningless without target and evidence resolution."
-        }
-      ]
+      "real_examples": []
     },
     {
-      "problem_id": "PROB-008",
-      "name": "Semantic surface desynchronization",
-      "risk_level": "critical",
-      "applicable_stages": [
+      "problem_id": "PROB-ARCHETYPE-MISMATCH",
+      "name": "Archetype Mismatch",
+      "glossary_term_ids": [
+        "TERM-ARCHETYPE"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
-        "ARCH-POLICY-CONTROL-PACK",
-        "ARCH-DOCUMENTATION-SPECIFICATION"
+      "affected_coordinate_ids": [
+        "COORD-ARCHETYPE-FIT"
       ],
-      "problem_statement": "Multiple authoritative representations of the same concepts disagree.",
-      "pattern": "Terms, registries, matrices, taxonomies, schemas, documentation, or exports evolve at different rates.",
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "The selected Archetype does not match the Project's primary Delivery.",
       "observable_signals": [
-        "term exists in one surface but not another",
-        "cardinality or definition differs",
-        "export omits approved concepts"
+        "research report evaluated as app",
+        "profile package judged mainly by runtime behavior",
+        "prompt use mistaken for Prompt Archetype"
+      ],
+      "exclusions": [
+        "Project intentionally changed primary Delivery with explicit authorization"
       ],
       "visible_effects": [
-        "consumers receive incompatible meanings",
-        "machine and human validation diverge"
+        "wrong priorities and missing critical dimensions"
       ],
       "likely_causes": [
-        "no synchronization invariant",
+        "classification by filename or technology",
+        "mixing Archetype and Domain"
+      ],
+      "consequences": [
+        "quality assessment becomes systematically biased"
+      ],
+      "drift_risks": [
+        "future versions optimize the wrong artifact shape"
+      ],
+      "how_to_confirm": [
+        "inspect purpose and material Deliveries",
+        "compare specialized profiles and exclusions"
+      ],
+      "how_to_fix": [
+        "select the correct primary Archetype and rescore relevant coordinates"
+      ],
+      "wrong_fix_patterns": [
+        "add many Archetypes simultaneously to avoid choosing"
+      ],
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-DOMAIN-MISMATCH",
+      "name": "Domain Mismatch",
+      "glossary_term_ids": [
+        "TERM-DOMAIN"
+      ],
+      "affected_input_types": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-DOMAIN-FIT"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "The evaluation or build uses constraints, metrics, or evidence standards from the wrong subject Domain.",
+      "observable_signals": [
+        "generic business metric used for science validity",
+        "software correctness substituted for educational quality",
+        "trading assumptions omitted"
+      ],
+      "exclusions": [
+        "cross-domain Project explicitly documents multiple subject areas"
+      ],
+      "visible_effects": [
+        "important constraints and risks are invisible"
+      ],
+      "likely_causes": [
+        "Domain inferred from Project type",
+        "generic metric reuse"
+      ],
+      "consequences": [
+        "misleading quality judgment"
+      ],
+      "drift_risks": [
+        "domain-specific harm or invalid decisions"
+      ],
+      "how_to_confirm": [
+        "identify the subject ontology and irreversible actions",
+        "review Domain-specific evidence expectations"
+      ],
+      "how_to_fix": [
+        "correct Domain selection and add missing domain criteria"
+      ],
+      "wrong_fix_patterns": [
+        "change Archetype when the issue is subject area"
+      ],
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-PROFILE-DRIFT",
+      "name": "ADOS Profile Drift",
+      "glossary_term_ids": [
+        "TERM-ADOS-PROFILE",
+        "TERM-PILLAR",
+        "TERM-ADOS-PILLAR-SET"
+      ],
+      "affected_input_types": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-ADOS-PROFILE-ALIGNMENT",
+        "COORD-DRIFT-CONTROL"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "A Project claims ADOS Profile alignment while changing or omitting applicable concept or Pillar meaning.",
+      "observable_signals": [
+        "profile name remains but Glossary or core-file roles change",
+        "Pillars copied without applicability analysis",
+        "self-compliance report substitutes for material alignment"
+      ],
+      "exclusions": [
+        "Profile version intentionally changed and differences are documented"
+      ],
+      "visible_effects": [
+        "compliance becomes nominal"
+      ],
+      "likely_causes": [
+        "profile treated as branding",
+        "partial copy",
+        "self-certification"
+      ],
+      "consequences": [
+        "downstream agents interpret the Package inconsistently"
+      ],
+      "drift_risks": [
+        "future drift is amplified"
+      ],
+      "how_to_confirm": [
+        "list claimed Profile concepts and applicable Pillars",
+        "compare material behavior and authority surfaces"
+      ],
+      "how_to_fix": [
+        "repair concept alignment or narrow the compliance Claim"
+      ],
+      "wrong_fix_patterns": [
+        "add a boolean profile-compliance field"
+      ],
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-SEMANTIC-SURFACE-DRIFT",
+      "name": "Semantic Surface Drift",
+      "glossary_term_ids": [
+        "TERM-GLOSSARY",
+        "TERM-STATEMENT",
+        "TERM-CLAIM"
+      ],
+      "affected_input_types": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-SEMANTIC-INTEGRITY"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-RESEARCH",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "critical",
+      "definition": "Human and machine surfaces representing the same concept disagree.",
+      "observable_signals": [
+        "term exists in one registry but not another",
+        "definition, status, parent, or cardinality differs",
+        "schema accepts a meaning rejected by Glossary"
+      ],
+      "exclusions": [
+        "surface is explicitly historical or compatibility-only"
+      ],
+      "visible_effects": [
+        "different consumers receive different meaning"
+      ],
+      "likely_causes": [
         "partial update",
-        "new terms generated without semantic review"
+        "duplicate authority",
+        "generated boilerplate"
       ],
       "consequences": [
-        "semantic drift",
-        "incorrect downstream decisions",
-        "loss of trust"
+        "semantic correctness and evaluation repeatability decline"
       ],
-      "detection_methods": [
-        "join records by stable ID",
-        "compare definitions, status, parent, cardinality, and export presence",
-        "run competency questions"
+      "drift_risks": [
+        "later versions cannot identify the authoritative meaning"
       ],
-      "corrective_actions": [
-        "choose controlling authority",
-        "synchronize all governed surfaces",
-        "record intentional exclusions"
+      "how_to_confirm": [
+        "join surfaces by stable term or object ID",
+        "compare active definitions and classifications"
       ],
-      "preventive_controls": [
-        "stable concept IDs",
-        "cross-surface tests",
-        "block release on unresolved authoritative conflicts"
+      "how_to_fix": [
+        "choose one authority and synchronize dependent surfaces"
       ],
-      "required_evidence": [
-        "surface inventories",
-        "semantic diff",
-        "approved exceptions"
-      ],
-      "related_hard_gate_ids": [
-        "HG-007"
+      "wrong_fix_patterns": [
+        "increase schema coverage without resolving meaning"
       ],
       "real_examples": [
         {
-          "example_id": "EX-V14-SEMANTIC",
           "project": "ADOS Glossary",
           "versions": [
-            "1.4"
-          ],
-          "observation": "New terms were present in the term registry but were not consistently propagated to the concept matrix and SKOS export.",
-          "lesson": "More terms can reduce quality when governed semantic surfaces diverge."
-        },
-        {
-          "example_id": "EX-V15-SKOS",
-          "project": "ADOS Glossary",
-          "versions": [
+            "1.4",
             "1.5"
           ],
-          "observation": "Approved terms remained missing from SKOS and several candidate definitions were boilerplate.",
-          "lesson": "Packaging closure did not establish semantic completion."
+          "observation": "Term registries and SKOS/export surfaces were not fully synchronized.",
+          "lesson": "More semantic files do not establish semantic consistency."
         }
       ]
     },
     {
-      "problem_id": "PROB-009",
-      "name": "Stale version or package identity",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-SCHEMA-COVERAGE-WITHOUT-STRENGTH",
+      "name": "Schema Coverage Without Contract Strength",
+      "glossary_term_ids": [
+        "TERM-ADOS-PROFILE",
+        "TERM-METRIC"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-BUILD-RESULT-QUALITY",
+        "COORD-DRIFT-CONTROL"
       ],
-      "problem_statement": "Active authority surfaces identify different versions, package names, or release states.",
-      "pattern": "Bulk replacement or incomplete update leaves old identifiers in active fields.",
+      "applicable_archetype_ids": [
+        "ARCH-PROFILE",
+        "ARCH-RUNTIME",
+        "ARCH-APP",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "critical",
+      "definition": "Every JSON instance is nominally covered while schemas do not constrain meaningful content.",
       "observable_signals": [
-        "root docs and machine records disagree",
-        "repeated version suffix",
-        "historical version not classified"
+        "critical schema requires only version or container type",
+        "unrestricted top-level properties",
+        "malformed semantic records validate"
+      ],
+      "exclusions": [
+        "open extension object is explicitly bounded and core fields remain strict"
       ],
       "visible_effects": [
-        "ambiguous authority",
-        "wrong baseline or schema selected"
+        "100 percent coverage with low defect detection"
       ],
       "likely_causes": [
-        "unclassified search-and-replace",
-        "identity not modeled as invariant"
+        "coverage target substitutes for contract design",
+        "migration weakens schema"
       ],
       "consequences": [
-        "release confusion",
-        "broken automation",
-        "incorrect evidence attribution"
+        "invalid records appear compliant"
       ],
-      "detection_methods": [
-        "classify every version reference as active, historical, example, or compatibility",
-        "compare package IDs across authority surfaces"
+      "drift_risks": [
+        "contract drift compounds"
       ],
-      "corrective_actions": [
-        "repair active identity",
-        "retain historical references only with classification",
-        "regenerate derived records"
+      "how_to_confirm": [
+        "compare required fields and constraints with baseline",
+        "run meaningful negative examples"
       ],
-      "preventive_controls": [
-        "single identity registry",
-        "version-reference classification gate"
+      "how_to_fix": [
+        "restore semantic constraints and explicit extension points"
       ],
-      "required_evidence": [
-        "identity matrix",
-        "classified references",
-        "fresh package metadata"
-      ],
-      "related_hard_gate_ids": [
-        "HG-005"
+      "wrong_fix_patterns": [
+        "bind all instances to one generic schema"
       ],
       "real_examples": [
         {
-          "example_id": "EX-V1410-ID",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4.10"
-          ],
-          "observation": "A broad replacement produced repeated version text such as v1.4.10.10 and other active identity inconsistencies.",
-          "lesson": "Text replacement is not identity governance."
-        },
-        {
-          "example_id": "EX-V15-ID",
           "project": "ADOS Glossary",
           "versions": [
             "1.5"
           ],
-          "observation": "Active fields retained v1.4 references after the v1.5 upgrade.",
-          "lesson": "Historical and active references must be classified separately."
+          "observation": "Complete governance was reported while critical schemas remained permissive or shallow.",
+          "lesson": "Coverage and strength are separate coordinates."
         }
       ]
     },
     {
-      "problem_id": "PROB-010",
-      "name": "Inventory or metadata coverage gap",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-FALSE-PASS",
+      "name": "False PASS",
+      "glossary_term_ids": [
+        "TERM-CLAIM",
+        "TERM-QA-EVIDENCE",
+        "TERM-METRIC-GUARDRAIL"
+      ],
+      "affected_input_types": [
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-EVIDENCE-SUFFICIENCY",
+        "COORD-DRIFT-CONTROL"
       ],
-      "problem_statement": "The actual artifact tree differs from its manifest, project structure, or metadata registry.",
-      "pattern": "Generated or newly introduced files are omitted, stale files remain registered, or metadata coverage is partial.",
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "critical",
+      "definition": "A source reports PASS or no blockers despite material unresolved defects or checks that cannot detect them.",
       "observable_signals": [
-        "file counts disagree",
-        "unregistered files",
-        "manifest path missing",
-        "metadata coverage below 100% when required"
+        "validator accepts representative severe defects",
+        "PASS is self-authored by the same logic that built the artifact",
+        "unsupported zero-findings claim"
+      ],
+      "exclusions": [
+        "PASS is clearly scoped to one bounded check"
       ],
       "visible_effects": [
-        "validation ignores part of the release",
-        "hash and ownership claims are incomplete"
+        "overconfidence and incorrect baseline selection"
       ],
       "likely_causes": [
-        "inventory generated too early",
-        "multiple authorities",
-        "post-validation file creation"
+        "weak oracle",
+        "self-certification",
+        "pre-authored verdict"
       ],
       "consequences": [
-        "tamper detection gaps",
-        "non-reproducible package"
+        "defective version treated as improvement"
       ],
-      "detection_methods": [
-        "enumerate a fresh extraction",
-        "compare exact sorted paths",
-        "recompute hashes after all files are final"
+      "drift_risks": [
+        "false assurance propagates"
       ],
-      "corrective_actions": [
-        "regenerate inventories last",
-        "use an explicit self-hash policy",
-        "remove unregistered content"
+      "how_to_confirm": [
+        "inspect check scope and negative sensitivity",
+        "recompute key Claims independently"
       ],
-      "preventive_controls": [
-        "single finalization step",
-        "fresh-extraction inventory gate"
+      "how_to_fix": [
+        "narrow the Claim and correct the check or evidence"
       ],
-      "required_evidence": [
-        "actual tree",
-        "manifest",
-        "metadata registry",
-        "hash recomputation"
-      ],
-      "related_hard_gate_ids": [
-        "HG-005"
+      "wrong_fix_patterns": [
+        "add more PASS records or perfect scores"
       ],
       "real_examples": [
         {
-          "example_id": "EX-V14-INVENTORY",
           "project": "ADOS Glossary",
           "versions": [
-            "1.4"
+            "1.4",
+            "1.5"
           ],
-          "observation": "Manifest and metadata surfaces omitted parts of the delivered 164-file tree.",
-          "lesson": "File count in a summary is not exact inventory evidence."
+          "observation": "Package-owned validators reported PASS while adversarial review found material blind spots.",
+          "lesson": "PASS is a Claim whose scope must be evaluated."
         }
       ]
     },
     {
-      "problem_id": "PROB-011",
-      "name": "Broken or stale reference",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-PROOF-FIXTURE-OVERGENERALIZATION",
+      "name": "Proof Fixture Overgeneralization",
+      "glossary_term_ids": [
+        "TERM-QA-EVIDENCE",
+        "TERM-CLAIM"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-EVIDENCE-SUFFICIENCY",
+        "COORD-BUILD-RESULT-QUALITY"
       ],
-      "problem_statement": "A claim, ADR, work item, schema, or evidence record references a missing or retired target.",
-      "pattern": "References are syntactically present but do not resolve in the final artifact or source set.",
+      "applicable_archetype_ids": [
+        "ARCH-RUNTIME",
+        "ARCH-APP",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT"
+      ],
+      "risk_level": "high",
+      "definition": "A narrow example is treated as proof of broader Project or Package quality.",
       "observable_signals": [
-        "missing file path",
-        "evidence ID not found",
-        "retired prompt remains active",
-        "schema binding points to absent instance"
+        "same known fixture reused as universal proof",
+        "fixture tests behavior unrelated to major package risks",
+        "fixture success appears in overall verdict"
+      ],
+      "exclusions": [
+        "Claim is explicitly limited to the exercised behavior"
       ],
       "visible_effects": [
-        "traceability chain breaks",
-        "controls cannot be executed"
+        "stable demo conceals other degradation"
       ],
       "likely_causes": [
-        "rename without migration",
-        "copying historical evidence",
-        "reference validation limited to selected fields"
+        "unclear proof boundary",
+        "test overfitting"
       ],
       "consequences": [
-        "unsupported PASS",
-        "runtime failure",
-        "ambiguous authority"
+        "generalization Claim is unsupported"
       ],
-      "detection_methods": [
-        "resolve all typed references",
-        "distinguish external artifacts from package-relative paths",
-        "check referential integrity after packaging"
+      "drift_risks": [
+        "future versions optimize for fixture"
       ],
-      "corrective_actions": [
-        "repair or remove stale references",
-        "regenerate dependent indexes",
-        "mark historical references"
+      "how_to_confirm": [
+        "map each test to exact Claims",
+        "use varied or held-out examples when generalization matters"
       ],
-      "preventive_controls": [
-        "typed reference registry",
-        "fresh-extraction resolution gate"
+      "how_to_fix": [
+        "narrow the Claim",
+        "add a materially different example only when generalization is required"
       ],
-      "required_evidence": [
-        "reference inventory",
-        "resolution results",
-        "exception rationale"
+      "wrong_fix_patterns": [
+        "add a second trivial fixture without defining distinct coverage"
       ],
-      "related_hard_gate_ids": [],
       "real_examples": [
         {
-          "example_id": "EX-V15-REFS",
           "project": "ADOS Glossary",
           "versions": [
+            "1.4",
             "1.5"
           ],
-          "observation": "Some ADR and work evidence references did not resolve after the approved pack was installed and files were retired.",
-          "lesson": "Index presence is not reference integrity."
+          "observation": "simple-calculator arithmetic tests passed but did not test glossary semantics, schema strength, evidence integrity, or version drift.",
+          "lesson": "The calculator was bounded evidence, not the root cause."
         }
       ]
     },
     {
-      "problem_id": "PROB-012",
-      "name": "Uncontrolled scope expansion",
+      "problem_id": "PROB-EVIDENCE-ASSERTION",
+      "name": "Evidence Assertion Without Observation",
+      "glossary_term_ids": [
+        "TERM-EVIDENCE-LEDGER",
+        "TERM-QA-EVIDENCE",
+        "TERM-CLAIM"
+      ],
+      "affected_input_types": [
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-EVIDENCE-SUFFICIENCY"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
       "risk_level": "high",
-      "applicable_stages": [
+      "definition": "A record labels a Claim PASS without describing the relevant target, criteria, method, or observed result.",
+      "observable_signals": [
+        "status field is the main evidence",
+        "target file points to itself as proof",
+        "many gates cite one generic record"
+      ],
+      "exclusions": [
+        "the source explicitly defines the record as a summary and raw evidence is available"
+      ],
+      "visible_effects": [
+        "conclusions cannot be independently interpreted"
+      ],
+      "likely_causes": [
+        "weak evidence schema",
+        "bulk report generation"
+      ],
+      "consequences": [
+        "unsupported quality Claims"
+      ],
+      "drift_risks": [
+        "stale assertion reused in later versions"
+      ],
+      "how_to_confirm": [
+        "inspect evidence scope and provenance",
+        "resolve supporting artifacts"
+      ],
+      "how_to_fix": [
+        "capture scoped QA Evidence or mark the Claim unconfirmed"
+      ],
+      "wrong_fix_patterns": [
+        "create more assertion-only rows"
+      ],
+      "real_examples": [
+        {
+          "project": "ADOS Glossary",
+          "versions": [
+            "1.5"
+          ],
+          "observation": "Many work-verification records chiefly asserted PASS and target paths without observation-bearing detail.",
+          "lesson": "Record count is not evidence quality."
+        }
+      ]
+    },
+    {
+      "problem_id": "PROB-BUILD-PACKAGE-TO-AGENT-DRIFT",
+      "name": "Build Package to Agent Work Drift",
+      "glossary_term_ids": [
+        "TERM-BUILD-PACKAGE",
+        "TERM-BUILDING-AGENT-WORK",
+        "TERM-QUALITY-DRIFT"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work"
       ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "The build introduces material files, decisions, or behavior outside the authorized change set.",
-      "pattern": "Builder-selected implementation is added without first amending the governing plan.",
-      "observable_signals": [
-        "new files absent from PDD or manifest obligations",
-        "architectural decision made during execution with no record",
-        "broader proof selected after scheduling"
-      ],
-      "visible_effects": [
-        "review cannot distinguish intended improvement from drift",
-        "acceptance criteria no longer cover all changes"
-      ],
-      "likely_causes": [
-        "underspecified prompt",
-        "implementation convenience",
-        "missing amendment workflow"
-      ],
-      "consequences": [
-        "scope drift",
-        "hidden maintenance burden",
-        "unverified behavior"
-      ],
-      "detection_methods": [
-        "diff actual changes against authorized actions",
-        "inspect amendment records",
-        "classify each unplanned file"
-      ],
-      "corrective_actions": [
-        "create formal amendment",
-        "add requirements and verification",
-        "remove unnecessary additions"
-      ],
-      "preventive_controls": [
-        "freeze change set before execution",
-        "block unplanned files",
-        "require owner approval for architectural scope changes"
-      ],
-      "required_evidence": [
-        "authorized file set",
-        "actual diff",
-        "amendment decision"
-      ],
-      "related_hard_gate_ids": [
-        "HG-008"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-SCOPE",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Implementation paths and files were selected during execution even though exact runtime paths were intended to be registered before work-plan generation.",
-          "lesson": "Builder-selected does not mean ungoverned."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-013",
-      "name": "Pre-authored PASS or score",
-      "risk_level": "critical",
-      "applicable_stages": [
-        "build_package",
-        "agent_work",
-        "build_result"
+      "affected_coordinate_ids": [
+        "COORD-BUILD-PACKAGE-QUALITY",
+        "COORD-AGENT-WORK-FIDELITY",
+        "COORD-DRIFT-CONTROL"
       ],
       "applicable_archetype_ids": [
-        "*"
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
       ],
-      "problem_statement": "The release verdict or perfect score is written before the evidence and gates are complete.",
-      "pattern": "Acceptance records become desired output templates rather than derived results.",
-      "observable_signals": [
-        "all gates initialized as pass",
-        "10/10 appears before test completion",
-        "no non-pass branch is exercised"
-      ],
-      "visible_effects": [
-        "circular evaluation",
-        "failures are normalized away"
-      ],
-      "likely_causes": [
-        "prompt rewards completion language",
-        "report generated before checks",
-        "score used as gate"
-      ],
-      "consequences": [
-        "false assurance",
-        "lost failure evidence"
-      ],
-      "detection_methods": [
-        "compare timestamps and execution order",
-        "recalculate verdict from raw gate results",
-        "inspect default values"
-      ],
-      "corrective_actions": [
-        "reset verdict to pending",
-        "derive after checks",
-        "preserve failed iterations"
-      ],
-      "preventive_controls": [
-        "schema disallows PASS without evidence refs",
-        "separate report generation from result derivation"
-      ],
-      "required_evidence": [
-        "raw gate results",
-        "timestamps",
-        "verdict calculation"
-      ],
-      "related_hard_gate_ids": [
-        "HG-009"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-PASS",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "All-PASS Reflection and QA summaries coexisted with unresolved replay, evidence, and schema weaknesses.",
-          "lesson": "Verdict records must be outcomes, not build products with predetermined values."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-014",
-      "name": "Weak negative-test oracle",
       "risk_level": "high",
-      "applicable_stages": [
-        "build_package",
+      "definition": "Visible agent work materially diverges from the Build Package without an explicit user-authorized correction.",
+      "observable_signals": [
+        "required concept or check omitted",
+        "unplanned architecture selected",
+        "scope expanded during implementation"
+      ],
+      "exclusions": [
+        "agent documents a necessary correction to contradictory controls and user approves it"
+      ],
+      "visible_effects": [
+        "result no longer represents the intended build"
+      ],
+      "likely_causes": [
+        "underspecified controls",
+        "convenience implementation",
+        "goal loss"
+      ],
+      "consequences": [
+        "control quality and execution quality become conflated"
+      ],
+      "drift_risks": [
+        "future corrections target the wrong source"
+      ],
+      "how_to_confirm": [
+        "map major Build Package obligations to visible work and decisions"
+      ],
+      "how_to_fix": [
+        "correct agent instructions or Build Package depending on where the defect originated"
+      ],
+      "wrong_fix_patterns": [
+        "repair only the final Package without addressing recurring work drift"
+      ],
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-AGENT-TO-RESULT-DRIFT",
+      "name": "Agent Work to Build Result Drift",
+      "glossary_term_ids": [
+        "TERM-BUILDING-AGENT-WORK",
+        "TERM-BUILD-RESULT",
+        "TERM-QUALITY-DRIFT"
+      ],
+      "affected_input_types": [
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "A negative test is counted as successful when any failure occurs, even if the intended defect was not detected.",
-      "pattern": "The test does not isolate one fault or require an exact finding code and location.",
-      "observable_signals": [
-        "expected nonzero exit only",
-        "multiple corruptions in one fixture",
-        "generic exception treated as detection"
-      ],
-      "visible_effects": [
-        "wrong validator branch appears to work",
-        "defect-specific coverage is overstated"
-      ],
-      "likely_causes": [
-        "test designed after implementation",
-        "no finding taxonomy",
-        "fixture contamination"
-      ],
-      "consequences": [
-        "false mutation coverage",
-        "masked regressions"
-      ],
-      "detection_methods": [
-        "use one mutation per copy",
-        "update unrelated inventories so they do not mask target defect",
-        "assert exact code and path"
-      ],
-      "corrective_actions": [
-        "rewrite fixtures",
-        "record expected and observed findings",
-        "retain stdout/stderr"
-      ],
-      "preventive_controls": [
-        "stable finding codes",
-        "single-fault fixtures",
-        "mutation contract"
-      ],
-      "required_evidence": [
-        "mutation diff",
-        "expected code",
-        "observed code",
-        "exit status"
-      ],
-      "related_hard_gate_ids": [
-        "HG-002"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-NEG",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Negative-test evidence was normalized to a generic exit code without preserving a defect-specific oracle for every fixture.",
-          "lesson": "Failure is not equivalent to detecting the intended defect."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-015",
-      "name": "Duplicate or generated-path drift",
-      "risk_level": "medium",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
+      "affected_coordinate_ids": [
+        "COORD-AGENT-WORK-FIDELITY",
+        "COORD-BUILD-RESULT-QUALITY"
       ],
       "applicable_archetype_ids": [
-        "*"
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
       ],
-      "problem_statement": "Copied controls, duplicated outputs, or malformed generated paths create multiple apparent authorities.",
-      "pattern": "Files are duplicated across active locations or path concatenation repeats segments.",
-      "observable_signals": [
-        "generated/generated paths",
-        "duplicate prompt files",
-        "byte-identical control copies"
-      ],
-      "visible_effects": [
-        "agents load the wrong authority",
-        "inventories and references become noisy"
-      ],
-      "likely_causes": [
-        "migration without retirement",
-        "path composition bug",
-        "copy-first build strategy"
-      ],
-      "consequences": [
-        "authority ambiguity",
-        "maintenance divergence"
-      ],
-      "detection_methods": [
-        "hash duplicate files",
-        "search repeated path tokens",
-        "identify canonical owner"
-      ],
-      "corrective_actions": [
-        "keep one canonical active file",
-        "retire or classify historical copies",
-        "repair path construction"
-      ],
-      "preventive_controls": [
-        "canonical path registry",
-        "duplicate-content check"
-      ],
-      "required_evidence": [
-        "duplicate groups",
-        "authority resolution",
-        "corrected references"
-      ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V14-DUP",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4"
-          ],
-          "observation": "Duplicate control files and repeated generated path segments were present.",
-          "lesson": "Structural growth without canonicalization increases drift risk."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-016",
-      "name": "Absolute environment path leak",
-      "risk_level": "medium",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "Portable package records contain workspace-specific absolute paths.",
-      "pattern": "Evidence or configuration embeds temporary build-machine locations.",
-      "observable_signals": [
-        "paths begin with /mnt, C:\\\\, or user home",
-        "fresh extraction references missing workspace"
-      ],
-      "visible_effects": [
-        "package is non-portable",
-        "evidence cannot resolve for another user"
-      ],
-      "likely_causes": [
-        "capturing raw build paths",
-        "no path normalization"
-      ],
-      "consequences": [
-        "replay failure",
-        "information leakage"
-      ],
-      "detection_methods": [
-        "scan text and JSON fields for absolute paths",
-        "extract to unrelated location"
-      ],
-      "corrective_actions": [
-        "replace with package-relative or artifact identifiers",
-        "store environment paths only in explicitly external run logs"
-      ],
-      "preventive_controls": [
-        "portability check",
-        "path-type schema"
-      ],
-      "required_evidence": [
-        "path scan",
-        "clean-extraction test"
-      ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V14-ABS",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.4"
-          ],
-          "observation": "Generated records contained absolute sandbox paths.",
-          "lesson": "A package-relative evidence model is required for portable review."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-017",
-      "name": "Ambiguous or cyclic hash policy",
       "risk_level": "high",
-      "applicable_stages": [
+      "definition": "The delivered result does not match the work, checks, or claims recorded by the building agent.",
+      "observable_signals": [
+        "claimed file absent",
+        "reported check not reproducible",
+        "result contains unmentioned changes"
+      ],
+      "exclusions": [
+        "result was intentionally rebuilt after the recorded work and new evidence is supplied"
+      ],
+      "visible_effects": [
+        "trace and artifact tell different stories"
+      ],
+      "likely_causes": [
+        "packaging after validation",
+        "stale summary",
+        "hidden mutation"
+      ],
+      "consequences": [
+        "review cannot attribute defects"
+      ],
+      "drift_risks": [
+        "later baseline uses incorrect provenance"
+      ],
+      "how_to_confirm": [
+        "compare final artifact with work claims and artifact identities"
+      ],
+      "how_to_fix": [
+        "regenerate result or update work evidence honestly"
+      ],
+      "wrong_fix_patterns": [
+        "edit only the summary to match desired state"
+      ],
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-BASELINE-REGRESSION",
+      "name": "Baseline Quality Regression",
+      "glossary_term_ids": [
+        "TERM-BASELINE-VERSION",
+        "TERM-QUALITY-DRIFT"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "Hash fields cannot be deterministically calculated or use unexplained nulls.",
-      "pattern": "Self-referential files, post-validation outputs, or multiple inventories create unstable hash expectations.",
-      "observable_signals": [
-        "null hashes without classification",
-        "manifest hashes itself inconsistently",
-        "hash changes after summary creation"
-      ],
-      "visible_effects": [
-        "fresh extraction cannot reproduce integrity result",
-        "false hash mismatch or false exclusion"
-      ],
-      "likely_causes": [
-        "policy not designed before generation",
-        "finalization order unclear"
-      ],
-      "consequences": [
-        "integrity claims become non-auditable"
-      ],
-      "detection_methods": [
-        "model a non-cyclic hash graph",
-        "classify excluded self-referential fields",
-        "recalculate after finalization"
-      ],
-      "corrective_actions": [
-        "adopt explicit stable policy",
-        "hash immutable content",
-        "separate external release digest from internal inventory"
-      ],
-      "preventive_controls": [
-        "documented hash policy",
-        "deterministic generation test"
-      ],
-      "required_evidence": [
-        "hash graph",
-        "recalculation result",
-        "exclusion rationale"
-      ],
-      "related_hard_gate_ids": [
-        "HG-005"
-      ],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-HASH",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Null or exceptional hashes remained inconsistent with the stronger stated hash contract.",
-          "lesson": "Hash coverage must be governed by an acyclic policy, not repaired ad hoc."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-018",
-      "name": "Generated or cache contamination",
-      "risk_level": "medium",
-      "applicable_stages": [
-        "agent_work",
-        "build_result"
+      "affected_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-DRIFT-CONTROL"
       ],
       "applicable_archetype_ids": [
-        "ARCH-SOFTWARE-LIBRARY-CLI-SDK",
-        "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
-        "ARCH-SOFTWARE-APPLICATION-SERVICE"
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
       ],
-      "problem_statement": "The package includes undeclared runtime caches, bytecode, temporary files, or build residue.",
-      "pattern": "Execution occurs inside the packaging tree without deterministic cleanup and inventory checks.",
-      "observable_signals": [
-        "__pycache__",
-        "*.pyc",
-        "temporary directories",
-        "unlisted build outputs"
-      ],
-      "visible_effects": [
-        "non-deterministic ZIP hashes",
-        "platform-specific contamination"
-      ],
-      "likely_causes": [
-        "tests run before packaging cleanup",
-        "broad recursive archive command"
-      ],
-      "consequences": [
-        "reproducibility loss",
-        "larger attack and review surface"
-      ],
-      "detection_methods": [
-        "compare exact allowlist",
-        "extract and scan generated classes",
-        "build twice and compare"
-      ],
-      "corrective_actions": [
-        "delete residue",
-        "package from a staged allowlist",
-        "disable bytecode generation where appropriate"
-      ],
-      "preventive_controls": [
-        "artifact allowlist",
-        "clean staging directory",
-        "post-build contamination scan"
-      ],
-      "required_evidence": [
-        "tree inventory",
-        "build environment",
-        "repeat hash"
-      ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V15-PYC",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.5"
-          ],
-          "observation": "Downstream proof ZIPs included undeclared Python cache artifacts in at least one inspected build path.",
-          "lesson": "Functional tests should not mutate the final package inventory."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-019",
-      "name": "Missing baseline regression floor",
       "risk_level": "critical",
-      "applicable_stages": [
-        "build_package",
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "*"
-      ],
-      "problem_statement": "A new version is evaluated only against its own new controls, not against the strongest verified prior contracts.",
-      "pattern": "The latest version becomes the implicit baseline even when an older version is semantically or technically stronger.",
+      "definition": "A newer version loses confirmed quality of an older version while being treated as the automatic improvement baseline.",
       "observable_signals": [
-        "no baseline metrics",
-        "schema constraints decrease without review",
-        "older verified behavior omitted from tests"
+        "no cross-version contract comparison",
+        "new structure rewarded despite weaker semantics",
+        "latest chosen without rationale"
+      ],
+      "exclusions": [
+        "loss is an explicit accepted trade-off for a changed Goal"
       ],
       "visible_effects": [
-        "quality degradation is labeled progress",
-        "best baseline is lost"
+        "future work starts from a weaker base"
       ],
       "likely_causes": [
         "recency bias",
-        "structure rewarded over contract strength",
-        "no cross-version ledger"
+        "missing regression frame",
+        "metric substitution"
       ],
       "consequences": [
-        "regression",
-        "compounding drift",
-        "expensive future correction"
+        "quality drift compounds"
       ],
-      "detection_methods": [
-        "compare critical claims and constraints across versions",
-        "identify strongest prior version per concern",
-        "score baseline candidates"
+      "drift_risks": [
+        "recovery becomes more expensive"
       ],
-      "corrective_actions": [
-        "select best verified baseline",
-        "use later versions only as named donors",
-        "add non-regression gates"
+      "how_to_confirm": [
+        "rank candidate baselines against next Goal and confirmed coordinates"
       ],
-      "preventive_controls": [
-        "baseline decision record",
-        "contract diff",
-        "cross-version scores"
+      "how_to_fix": [
+        "select the strongest baseline and reuse later ideas only after review"
       ],
-      "required_evidence": [
-        "baseline evaluation report",
-        "contract diff",
-        "cross-version scores"
-      ],
-      "related_hard_gate_ids": [
-        "HG-006"
+      "wrong_fix_patterns": [
+        "start from latest because version is higher"
       ],
       "real_examples": [
         {
-          "example_id": "EX-BASELINE",
           "project": "ADOS Glossary",
           "versions": [
             "1.3",
             "1.4",
             "1.5"
           ],
-          "observation": "v1.3 retained stronger implemented schema and semantic contracts than v1.4, while v1.4 and v1.5 added structure and controls that did not reliably preserve those strengths.",
-          "lesson": "The best next baseline can be older than the latest release."
+          "observation": "v1.3 retained stronger verified semantic/schema contracts while later versions added useful but weaker structures.",
+          "lesson": "Baseline is a quality decision, not a version sort."
         }
       ]
     },
     {
-      "problem_id": "PROB-020",
-      "name": "Structure-over-semantics metric substitution",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-VERSION-IDENTITY-DRIFT",
+      "name": "Version or Package Identity Drift",
+      "glossary_term_ids": [
+        "TERM-PACKAGE",
+        "TERM-PACKAGE-JSON",
+        "TERM-MANIFEST-MD",
+        "TERM-README-MD"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
+      "affected_coordinate_ids": [
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-BUILD-RESULT-QUALITY"
+      ],
       "applicable_archetype_ids": [
-        "*"
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
       ],
-      "problem_statement": "File counts, folders, schemas, records, or polished reports are treated as quality improvements without testing the underlying idea or contract.",
-      "pattern": "Structural completeness substitutes for semantic correctness and decision usefulness.",
-      "observable_signals": [
-        "more files correlates with higher claimed score",
-        "count metrics dominate",
-        "new governance surfaces contradict old contracts"
-      ],
-      "visible_effects": [
-        "larger package with lower reliability",
-        "review effort increases while assurance falls"
-      ],
-      "likely_causes": [
-        "easy-to-count proxies",
-        "polish bias",
-        "insufficient claim weighting"
-      ],
-      "consequences": [
-        "quality drift hidden by complexity",
-        "maintenance burden"
-      ],
-      "detection_methods": [
-        "score core idea and contract strength separately",
-        "weight high-leverage claims",
-        "compare defect sensitivity"
-      ],
-      "corrective_actions": [
-        "cap contribution of count metrics",
-        "require semantic and operational evidence",
-        "remove redundant surfaces"
-      ],
-      "preventive_controls": [
-        "orthogonal axes",
-        "claim-weight ledger",
-        "complexity-to-value review"
-      ],
-      "required_evidence": [
-        "orthogonal axis scores",
-        "claim-weight ledger",
-        "complexity-to-value review"
-      ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V14-STRUCTURE",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.3",
-            "1.4"
-          ],
-          "observation": "v1.4 was structurally more complete but scored lower overall because schema bindings, work grounding, evidence, and semantic synchronization were weaker.",
-          "lesson": "Structural completeness is one axis, not the verdict."
-        }
-      ]
-    },
-    {
-      "problem_id": "PROB-021",
-      "name": "Underspecified broader proof",
       "risk_level": "high",
-      "applicable_stages": [
-        "build_package",
-        "agent_work",
-        "build_result"
-      ],
-      "applicable_archetype_ids": [
-        "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
-        "ARCH-ML-AGENT-SYSTEM",
-        "ARCH-SOFTWARE-APPLICATION-SERVICE"
-      ],
-      "problem_statement": "A required nontrivial or broader proof is left to builder discretion without minimum behavior, structure, or independence criteria.",
-      "pattern": "Any second artifact can satisfy the count even if it adds little evidence beyond the first fixture.",
+      "definition": "Active package surfaces identify different versions, names, statuses, or authority paths.",
       "observable_signals": [
-        "builder-selected proof",
-        "nontrivial undefined",
-        "same generation path and assertions as minimal fixture"
+        "root and machine metadata disagree",
+        "old version appears in active fields",
+        "repeated version suffix"
+      ],
+      "exclusions": [
+        "reference is explicitly historical or compatibility context"
       ],
       "visible_effects": [
-        "illusory generalization evidence",
-        "easy compliance by trivial example"
+        "ambiguous artifact identity and wrong source selection"
       ],
       "likely_causes": [
-        "PDD delegates essential acceptance design",
-        "no proof diversity metric"
+        "bulk text replacement",
+        "partial migration",
+        "duplicate authority"
       ],
       "consequences": [
-        "overfitting remains undetected",
-        "release claim too broad"
+        "evidence and comparisons attach to wrong version"
       ],
-      "detection_methods": [
-        "compare exercised capabilities",
-        "require distinct failure modes and profile surfaces",
-        "review proof complexity against minimums"
+      "drift_risks": [
+        "automation and future repair drift"
       ],
-      "corrective_actions": [
-        "define minimum behaviors and negative tests",
-        "select proof before execution or use held-out selection"
+      "how_to_confirm": [
+        "classify active, historical, example, and compatibility references"
       ],
-      "preventive_controls": [
-        "proof profile schema",
-        "diversity requirements",
-        "independence rule"
+      "how_to_fix": [
+        "repair active identity and preserve historical context explicitly"
       ],
-      "required_evidence": [
-        "proof specification",
-        "capability matrix",
-        "test outputs"
+      "wrong_fix_patterns": [
+        "replace all version strings without classification"
       ],
-      "related_hard_gate_ids": [],
       "real_examples": [
         {
-          "example_id": "EX-V15-BROAD",
           "project": "ADOS Glossary",
           "versions": [
+            "1.4.10",
             "1.5"
           ],
-          "observation": "The broader downstream proof was described as builder-selected without a sufficiently precise minimum behavior and diversity contract.",
-          "lesson": "A second artifact is not automatically broader evidence."
+          "observation": "Version replacement and stale references created active identity inconsistencies.",
+          "lesson": "Identity is a model, not a string-replacement task."
         }
       ]
     },
     {
-      "problem_id": "PROB-022",
-      "name": "Missing independent audit",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-METRIC-SUBSTITUTION",
+      "name": "Metric Substitution",
+      "glossary_term_ids": [
+        "TERM-METRIC",
+        "TERM-METRIC-GUARDRAIL",
+        "TERM-GOAL"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-DRIFT-CONTROL"
       ],
-      "problem_statement": "No separately implemented audit verifies the most consequential release claims.",
-      "pattern": "The package is accepted by the same logic path that produced it.",
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "A convenient count or score substitutes for the quality concept it was intended to approximate.",
       "observable_signals": [
-        "only internal QA exists",
-        "no recomputation of hashes or constraints",
-        "review repeats summary claims"
+        "schema count treated as schema quality",
+        "test count treated as correctness",
+        "file count treated as completeness",
+        "total score hides degraded coordinate"
+      ],
+      "exclusions": [
+        "the metric is explicitly bounded and paired with semantic analysis"
       ],
       "visible_effects": [
-        "shared blind spots survive",
-        "disputes cannot be adjudicated"
+        "optimization targets the number rather than the Goal"
       ],
       "likely_causes": [
-        "cost minimization",
-        "assumption that tests equal audit"
+        "easy measurement",
+        "reporting pressure",
+        "weak guardrails"
       ],
       "consequences": [
-        "false PASS",
-        "weak accountability"
+        "quality appears to improve while core value declines"
       ],
-      "detection_methods": [
-        "implement an external checker for top risks",
-        "compare findings with internal validator",
-        "resolve discrepancies"
+      "drift_risks": [
+        "metric gaming"
       ],
-      "corrective_actions": [
-        "add independent release-audit gate",
-        "freeze audit inputs",
-        "preserve raw evidence"
+      "how_to_confirm": [
+        "trace Metric to Coordinate and Goal",
+        "inspect what the evidence actually measures"
       ],
-      "preventive_controls": [
-        "auditor provenance",
-        "independent results",
-        "discrepancy log"
+      "how_to_fix": [
+        "change or contextualize the Metric and expose coordinate detail"
       ],
-      "required_evidence": [
-        "auditor provenance",
-        "independent results",
-        "discrepancy log"
+      "wrong_fix_patterns": [
+        "add more count metrics"
       ],
-      "related_hard_gate_ids": [
-        "HG-002"
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-OVER-GOVERNANCE-DRIFT",
+      "name": "Over-Governance Drift",
+      "glossary_term_ids": [
+        "TERM-FLOW",
+        "TERM-SKILL",
+        "TERM-PROJECT",
+        "TERM-QUALITY-DRIFT"
+      ],
+      "affected_input_types": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-BUILD-PACKAGE-QUALITY",
+        "COORD-CORRECTIVE-FOCUS"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "Governance mechanisms become the main artifact and displace the Project's original evaluation or delivery Goal.",
+      "observable_signals": [
+        "more workflow or ledger rules than Domain logic",
+        "auditor requires Projects to adopt its process",
+        "correction adds unrelated package governance"
+      ],
+      "exclusions": [
+        "the Project Goal is genuinely a governance or control system"
+      ],
+      "visible_effects": [
+        "complexity grows while product usefulness falls"
+      ],
+      "likely_causes": [
+        "reaction to prior false PASS",
+        "control accumulation",
+        "confusing evaluation with execution"
+      ],
+      "consequences": [
+        "agents optimize compliance surfaces rather than quality"
+      ],
+      "drift_risks": [
+        "future versions become harder to change"
+      ],
+      "how_to_confirm": [
+        "compare governance surface growth with Goal and user value"
+      ],
+      "how_to_fix": [
+        "remove mandatory mechanics not required for evaluation; keep concepts and schemas as guardrails"
+      ],
+      "wrong_fix_patterns": [
+        "respond by adding another mandatory ledger or validator"
       ],
       "real_examples": [
         {
-          "example_id": "EX-V15-AUDIT",
-          "project": "ADOS Glossary",
+          "project": "ADOS Quality Drift Auditor",
           "versions": [
-            "1.5"
+            "0.1"
           ],
-          "observation": "Independent adversarial review detected severe validator blind spots not represented by the package-owned PASS.",
-          "lesson": "Independent logic should focus on the highest-leverage claims."
+          "observation": "The earlier design over-centered ledgers, validators, hard gates, and execution process rather than glossary/RAG semantic evaluation.",
+          "lesson": "A defect-prevention mechanism can itself become Goal drift."
         }
       ]
     },
     {
-      "problem_id": "PROB-023",
-      "name": "Human/machine authority mismatch",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-TERMINOLOGY-DRIFT",
+      "name": "Terminology Drift",
+      "glossary_term_ids": [
+        "TERM-GLOSSARY",
+        "TERM-STATEMENT",
+        "TERM-PROJECT-REQUIREMENT"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
-        "ARCH-POLICY-CONTROL-PACK",
-        "ARCH-DOCUMENTATION-SPECIFICATION"
+      "affected_coordinate_ids": [
+        "COORD-SEMANTIC-INTEGRITY"
       ],
-      "problem_statement": "Human-readable controls and machine-readable records describe different requirements, statuses, paths, or cardinalities.",
-      "pattern": "One surface is updated while its companion schema or registry remains stale.",
+      "applicable_archetype_ids": [
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-RESEARCH",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "Stable concept names or definitions change, broaden, narrow, or conflict without controlled adaptation.",
       "observable_signals": [
-        "README says one rule and schema permits another",
-        "ADR status differs from index",
-        "Markdown and JSON skill disagree"
+        "same term used for different concepts",
+        "new local definition",
+        "app-specific term used as universal Project concept"
+      ],
+      "exclusions": [
+        "a new term or definition is explicitly approved and migration is documented"
       ],
       "visible_effects": [
-        "agents choose inconsistent authority",
-        "automated validation contradicts review"
+        "different files and agents interpret the Project differently"
       ],
       "likely_causes": [
-        "duplicate authoring",
-        "no companion-surface checks"
+        "copying source blindly",
+        "missing Glossary authority",
+        "language immaturity"
       ],
       "consequences": [
-        "ambiguous compliance",
-        "silent implementation divergence"
+        "drift findings and metrics become unreliable"
       ],
-      "detection_methods": [
-        "compare paired fields and statements",
-        "define authority precedence",
-        "test key invariants across formats"
+      "drift_risks": [
+        "future migration errors"
       ],
-      "corrective_actions": [
-        "synchronize or generate one surface from the other",
-        "record deliberate differences"
+      "how_to_confirm": [
+        "retrieve glossary term records and compare source wording by concept"
       ],
-      "preventive_controls": [
-        "single source of truth per fact",
-        "cross-format consistency gate"
+      "how_to_fix": [
+        "adopt one definition, add mapping or subtype, and update references"
       ],
-      "required_evidence": [
-        "paired artifact diff",
-        "authority decision"
+      "wrong_fix_patterns": [
+        "global text replacement without concept review"
       ],
-      "related_hard_gate_ids": [],
       "real_examples": [
         {
-          "example_id": "EX-V15-HM",
-          "project": "ADOS Glossary",
+          "project": "ADOS Profile adaptation",
           "versions": [
-            "1.5"
+            "1.23",
+            "QDA 0.2"
           ],
-          "observation": "Strong human control language for strict schemas and evidence was not fully realized in the machine schemas and generated evidence.",
-          "lesson": "Control quality must be evaluated separately from implementation quality."
+          "observation": "APP Requirements required review and generalization to Project Requirements because App is only one Archetype.",
+          "lesson": "Terminology migration must follow concept applicability."
         }
       ]
     },
     {
-      "problem_id": "PROB-024",
-      "name": "Latest-version baseline bias",
-      "risk_level": "high",
-      "applicable_stages": [
+      "problem_id": "PROB-SCOPE-DRIFT",
+      "name": "Scope Drift",
+      "glossary_term_ids": [
+        "TERM-USER-REQUEST",
+        "TERM-INTENT",
+        "TERM-GOAL",
+        "TERM-BUILD-PACKAGE"
+      ],
+      "affected_input_types": [
         "build_package",
         "agent_work",
         "build_result"
       ],
-      "applicable_archetype_ids": [
-        "*"
+      "affected_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-CORRECTIVE-FOCUS"
       ],
-      "problem_statement": "The newest package is selected as the improvement baseline solely because of version order.",
-      "pattern": "Verified strengths from older versions are discarded while unverified structural additions are retained.",
+      "applicable_archetype_ids": [
+        "ARCH-APP",
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "high",
+      "definition": "Work or Delivery adds, removes, or changes material scope outside the governing request and Intent.",
       "observable_signals": [
-        "baseline rationale is 'latest'",
-        "no cross-version score",
-        "known regressions accepted as inherited"
+        "unrequested components dominate",
+        "required surfaces removed",
+        "corrective build changes unrelated terms or files"
+      ],
+      "exclusions": [
+        "user explicitly authorizes scope change"
       ],
       "visible_effects": [
-        "future work starts from a weaker contract",
-        "corrections become larger"
+        "time and quality are spent on the wrong surface"
       ],
       "likely_causes": [
-        "recency bias",
-        "lack of concern-specific baseline selection"
+        "ambiguous non-goals",
+        "builder preference",
+        "broad correction prompt"
       ],
       "consequences": [
-        "compounding quality drift",
-        "misallocated effort"
+        "Goal and Objective coverage decline"
       ],
-      "detection_methods": [
-        "rank candidate baselines using verified goal, contract, evidence, and hard-gate results",
-        "identify donor components separately"
+      "drift_risks": [
+        "future versions inherit unnecessary complexity"
       ],
-      "corrective_actions": [
-        "select a primary baseline by intended goal",
-        "create component donor map",
-        "carry forward regression floors"
+      "how_to_confirm": [
+        "compare requested and delivered scope; classify intentional changes"
       ],
-      "preventive_controls": [
-        "baseline evaluation report",
-        "donor acceptance evidence"
+      "how_to_fix": [
+        "remove or authorize expansion and focus correction on affected surfaces"
       ],
-      "required_evidence": [
-        "baseline evaluation report",
-        "donor acceptance evidence"
+      "wrong_fix_patterns": [
+        "hide expansion under quality-improvement wording"
       ],
-      "related_hard_gate_ids": [],
-      "real_examples": [
-        {
-          "example_id": "EX-V13-BASE",
-          "project": "ADOS Glossary",
-          "versions": [
-            "1.3",
-            "1.4"
-          ],
-          "observation": "v1.3 was the stronger baseline even though v1.4 had a newer structure; selected v1.4 components were useful only as verified structural donors.",
-          "lesson": "Baseline selection is a quality decision, not a version sort."
-        }
-      ]
+      "real_examples": []
+    },
+    {
+      "problem_id": "PROB-APP-REQUIREMENT-OVERGENERALIZATION",
+      "name": "App Requirement Overgeneralization",
+      "glossary_term_ids": [
+        "TERM-PROJECT-REQUIREMENT",
+        "TERM-APP-ARCHETYPE",
+        "TERM-ARCHETYPE"
+      ],
+      "affected_input_types": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "affected_coordinate_ids": [
+        "COORD-ARCHETYPE-FIT",
+        "COORD-ADOS-PROFILE-ALIGNMENT"
+      ],
+      "applicable_archetype_ids": [
+        "ARCH-RESEARCH",
+        "ARCH-RUNTIME",
+        "ARCH-PROFILE",
+        "ARCH-PROMPT",
+        "ARCH-OTHER"
+      ],
+      "risk_level": "medium",
+      "definition": "An obligation designed for App Projects is applied as a universal Project Requirement.",
+      "observable_signals": [
+        "APP-prefixed doctrine copied into non-App profiles",
+        "runnable UI or app scaffolding required for research/profile work"
+      ],
+      "exclusions": [
+        "the obligation is shown to be Archetype-independent and is generalized explicitly"
+      ],
+      "visible_effects": [
+        "irrelevant files, tests, or governance appear"
+      ],
+      "likely_causes": [
+        "blind source transfer",
+        "App treated as synonym for Project"
+      ],
+      "consequences": [
+        "overbuilt or misclassified Project"
+      ],
+      "drift_risks": [
+        "future profiles inherit app bias"
+      ],
+      "how_to_confirm": [
+        "review Requirement purpose and all supported Archetypes"
+      ],
+      "how_to_fix": [
+        "generalize to Project Requirement or retain as App subtype"
+      ],
+      "wrong_fix_patterns": [
+        "rename APP to Project without checking substantive applicability"
+      ],
+      "real_examples": []
     }
   ]
 }

@@ -1,99 +1,98 @@
-# ADOS Quality Drift Auditor v0.1
+# ADOS Quality Drift Auditor v0.2
 
 ## Metadata
 
 | Attribute | Value |
 |---|---|
 | DOCUMENT_TYPE | guide |
-| DOCUMENT_STATUS | prototype |
-| UPDATED_AT | 2026-06-18 |
-| DOCUMENT_ROLE | usage_entrypoint |
-| GOVERNANCE_AREA | quality; evaluation; project_evolution |
-| CONSUMERS | owner; architect; evaluator; builder; reviewer; self_test |
-| WHEN_TO_USE | Use when comparing build controls, agent execution, and delivered versions of one project. |
-| HOW_TO_USE | Read `MANIFEST.md`, then the skill, archetype bank, metric bank, problem bank, and schemas in that order. |
-| DOCUMENT_CONTENT | Human entrypoint for the project-evolution quality and drift evaluation skill. |
+| DOCUMENT_STATUS | candidate |
+| UPDATED_AT | 2026-06-19 |
+| DOCUMENT_ROLE | human_entrypoint |
+| GOVERNANCE_AREA | project; glossary; quality |
+| CONSUMERS | owner; architect; evaluator; agent; reviewer |
+| WHEN_TO_USE | Use first when a human needs to understand the package and its intended use. |
+| HOW_TO_USE | Read this overview, then load MANIFEST.md and GLOSSARY.md before using the machine skill. |
+| DOCUMENT_CONTENT | Human-readable description and usage guide for the glossary-centered quality-drift auditor. |
 
-## Goal
 
-Provide a deterministic, evidence-traceable, archetype-aware skill for evaluating build controls, building-agent execution, and produced project versions across time, so quality drift, false-PASS risk, regression, and the best improvement baseline can be identified.
+## Purpose
 
-## Objectives
+`ados-quality-drift-auditor` evaluates how the quality and meaning of a Project change across versions and across three input surfaces:
 
-1. Accept build-package, building-agent-work, and build-result inputs for one or many versions of the same project.
-2. Normalize every supplied artifact, extract stable atomic claims, and preserve claim identifiers through scoring and verdict.
-3. Select one primary project archetype from a governed archetype bank and apply its evidence requirements, metrics, hard gates, and drift risks.
-4. Score each input stage using stage-specific metrics and a common nine-axis comparison frame.
-5. Trace changes from baseline result to target build package, agent work, built result, and later versions.
-6. Separate observed evidence, derived calculations, inference, and evaluator judgment in every report.
-7. Detect known quality-failure patterns using a machine-readable problem bank with risks, visible effects, corrections, and prevention controls.
-8. Prevent false release acceptance through evidence coverage thresholds, hard gates, mutation-sensitive validation, replay checks, and verdict derivation rules.
-9. Emit JSON claim ledgers and evaluation reports conforming to JSON Schema Draft 2020-12 in the out/ folder.
-10. Remain usable when evidence is incomplete by returning explicit unknowns and INSUFFICIENT_EVIDENCE rather than inventing support.
+1. **Build Package** — prompts and supplied materials that shape a build.
+2. **Building Agent Work** — the visible work, decisions, checks, and claims made by the building agent.
+3. **Build Result** — the produced Package or version.
 
-## What this package evaluates
+The auditor compares those surfaces against the Project's User Request, Intent, Goal, Objectives, Archetype, Domain, ADOS Profile expectations, and selected Baseline Version.
 
-The skill accepts any combination of three evidence classes for one or more versions:
+## Product boundary
 
-| Input class | Meaning | Typical artifacts |
-|---|---|---|
-| `build_package` | Instructions and supply materials that authorize a build | prompt, PDD, requirements, ADRs, baseline package, test fixtures, control pack |
-| `agent_work` | What the building agent actually did and claimed | response, thinking/activity log, work plan, commands, diffs, evidence, QA reports |
-| `build_result` | The resulting version or release candidate | ZIP, source tree, binary, data package, schema package, deployment manifest |
+This package is an **evaluation skill and semantic model**. It does not tell a builder how to schedule work, maintain ledgers, package files, or execute Apply/Verify directives.
 
-The evaluator may compare:
+ADOS execution concepts are defined in `GLOSSARY.md` because they may appear in Projects being audited. Their presence in the glossary does not make them mandatory for the auditor or for evaluated Projects.
+
+## Semantic architecture
 
 ```text
-baseline build result
-→ target build package
-→ target agent work
-→ target build result
-→ later build packages and results
+User Request
+→ Intent
+→ Goal and Objectives
+→ Project
+   ├── Archetype
+   ├── Domain
+   ├── ADOS Profile expectations
+   ├── Flow
+   ├── Skill
+   └── Package versions
+        ├── Build Package
+        ├── Building Agent Work
+        └── Build Result
+→ Quality Drift
+   ├── Drift Consequence
+   ├── Drift Risk
+   ├── Problem Pattern
+   └── Corrective Prompt
 ```
 
-Missing stages remain explicit. They are never silently reconstructed.
+## How to use
 
-## Core method
+1. Read `MANIFEST.md`.
+2. Load `GLOSSARY.md` as the semantic/RAG authority.
+3. Load the machine skill.
+4. Select one Archetype and one Domain.
+5. Retrieve the glossary terms relevant to the current evaluation.
+6. Apply relevant coordinates, Metrics, and Problem Patterns.
+7. Compare stages and versions.
+8. Write a JSON report conforming to `schema/evaluation-report.schema.json`.
 
-1. Normalize the source set and assign stable source IDs.
-2. Select one primary archetype from `profiles/archetype-bank.json`.
-3. Inventory evidence and record coverage and independence.
-4. Decompose source statements into atomic claims with stable IDs.
-5. Weight and score the claims.
-6. Score each available stage with stage-specific metrics.
-7. Score each source with the common nine-axis frame.
-8. Compare versions and stages, then classify drift by dimension and consequence.
-9. Match observed conditions to `problems/problem-bank.json`.
-10. Apply hard gates and derive—not author—the final verdict.
-11. Save JSON reports in `out/`.
+## Expected outputs
 
-## Non-negotiable safeguards
+The report should answer:
 
-- Evaluate only supplied material.
-- Use `I cannot confirm this.` when a proposition lacks evidence.
-- Keep observations, calculations, inference, and judgment distinct.
-- A functional sample such as `simple-calculator.zip` is a bounded proof fixture. It cannot establish release quality outside the claims it directly tests.
-- A validator written by the builder is evidence, not an independent oracle.
-- PASS requires observation-bearing evidence, sufficient evidence coverage, no failed hard gate, and a score meeting policy.
-- Structure, file count, schema coverage, or test count cannot substitute for semantic and contract strength.
+- What was the original User Request and normalized Intent?
+- What Goal and Objectives govern the Project?
+- Which Archetype and Domain apply?
+- What did the Build Package ask for?
+- What did the building agent actually do?
+- What did the Build Result deliver?
+- Which quality coordinates improved, degraded, remained unchanged, or could not be confirmed?
+- Where did drift enter?
+- What consequence and risk followed?
+- Which version is the strongest Baseline Version?
+- What focused corrective prompt should guide the next version?
 
-## Quick start
+## Package authority
 
-```bash
-python tools/validate_package.py .
-python tools/self_test.py
-python tools/initialize_audit.py examples/ados-glossary-evolution-input.json out/new-audit.json
-```
+- `GLOSSARY.md` — concept meaning.
+- `PDD.md` — v0.2 Project definition.
+- `adr/` — architectural decisions.
+- `doc/` — explanatory doctrine.
+- JSON banks — archetypes, domains, metrics, report policy, and problem patterns.
+- JSON schemas — structural guardrails for active JSON files.
 
-Then use `skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.md` to complete the claim ledger and report.
+## Important interpretation
 
-## Outputs
-
-- `out/report-template.json` — empty conforming report template.
-- `out/example-ados-glossary-claim-ledger.json` — abbreviated stable-claim example.
-- `out/example-ados-glossary-evolution-report.json` — real-problem example based on supplied v1.3–v1.5 review findings.
-- New reports should use a new filename; do not overwrite examples.
-
-## Prototype boundary
-
-v0.1 provides the governed method, schemas, archetypes, problem patterns, examples, a package validator, mutation self-tests, and an audit initializer. It does not pretend that qualitative evaluation can be reduced to filename scanning. Human or reasoning-agent assessment is still required for claim extraction, semantic comparison, and evidence interpretation.
+A high score is not a release verdict.  
+A missing artifact is not automatically a defect.  
+An Evidence Ledger or Execution Trace is evaluated when present but is not required from every Project.  
+A sample such as `simple-calculator.zip` proves only the behavior directly exercised by its test surface.

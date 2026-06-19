@@ -1,68 +1,146 @@
 {
   "$schema": "../schema/report-policy.schema.json",
-  "policy_id": "REPORT-POLICY-QDA-0.1",
-  "version": "0.1.0",
-  "evidence_classes": [
-    "observed",
-    "derived",
-    "inference",
-    "judgment",
-    "unconfirmed"
-  ],
-  "required_unconfirmed_phrase": "I cannot confirm this.",
-  "evidence_coverage": {
-    "formula": "verified required evidence items / applicable required evidence items",
-    "pass_minimum": 0.8,
-    "conditional_minimum": 0.5,
-    "below_conditional_verdict": "INSUFFICIENT_EVIDENCE"
-  },
-  "verdict_rules": [
-    {
-      "verdict": "PASS",
-      "conditions": [
-        "stage_score >= 85",
-        "evidence_coverage >= 0.80",
-        "no failed hard gate",
-        "no unresolved critical problem"
+  "schema_version": "0.2.0",
+  "policy_id": "REPORT-POLICY-QDA-V0.2",
+  "semantic_authority": "GLOSSARY.md",
+  "required_glossary_retrieval": {
+    "minimum_groups": [
+      [
+        "TERM-USER-REQUEST",
+        "TERM-INTENT",
+        "TERM-GOAL",
+        "TERM-OBJECTIVE"
+      ],
+      [
+        "TERM-PROJECT",
+        "TERM-PACKAGE",
+        "TERM-ARCHETYPE",
+        "TERM-DOMAIN",
+        "TERM-ADOS-PROFILE"
+      ],
+      [
+        "TERM-BUILD-PACKAGE",
+        "TERM-BUILDING-AGENT-WORK",
+        "TERM-BUILD-RESULT"
+      ],
+      [
+        "TERM-QUALITY-DRIFT",
+        "TERM-DRIFT-CONSEQUENCE",
+        "TERM-DRIFT-RISK",
+        "TERM-PROBLEM-PATTERN"
       ]
-    },
-    {
-      "verdict": "CONDITIONAL_PASS",
-      "conditions": [
-        "70 <= stage_score < 85",
-        "evidence_coverage >= 0.50",
-        "no failed hard gate with effect FAIL",
-        "conditions and corrective actions are explicit"
-      ]
-    },
-    {
-      "verdict": "FAIL",
-      "conditions": [
-        "stage_score < 70 or any hard gate with effect FAIL fails"
-      ]
-    },
-    {
-      "verdict": "INSUFFICIENT_EVIDENCE",
-      "conditions": [
-        "decisive evidence is unavailable or evidence_coverage < 0.50"
-      ]
-    }
-  ],
-  "baseline_selection": {
-    "rule": "Select the version with the strongest verified contract and semantic integrity for the intended next change, not automatically the latest version.",
-    "required_checks": [
-      "whole-document score",
-      "archetype-specific stage score",
-      "hard gates",
-      "regression floor",
-      "problem severity",
-      "evidence coverage"
     ],
-    "hybrid_baseline_rule": "A losing version may be used only as a named donor for individually verified components."
+    "report_requirement": "Every major finding identifies the glossary term IDs used to interpret it."
   },
-  "proof_fixture_policy": {
-    "rule": "A proof fixture establishes only the claims directly exercised by its documented oracle.",
-    "forbidden_inference": "Fixture PASS implies package-level or project-level PASS.",
-    "simple_calculator_example": "Arithmetic success may show a narrow execution path works; it does not validate glossary semantics, schemas, inventories, evidence, ADR references, or replay of the final package."
+  "evidence_policy": {
+    "status_values": [
+      "confirmed",
+      "partial",
+      "contradicted",
+      "unconfirmed"
+    ],
+    "confidence_values": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "unconfirmed_phrase": "I cannot confirm this.",
+    "rules": [
+      "Do not infer a missing Project stage.",
+      "Do not treat absence as defect unless the governing Goal, Profile, Requirement, or source requires the surface.",
+      "Distinguish source Claim from evaluator confirmation.",
+      "Evidence Ledger, Execution Trace, and QA Evidence are optional source forms.",
+      "Self-reported PASS is one Claim, not an independent conclusion."
+    ]
+  },
+  "scoring_policy": {
+    "score_scale": "0_to_10_optional",
+    "score_requires": [
+      "coordinate_id",
+      "confidence",
+      "evidence_status",
+      "rationale"
+    ],
+    "no_score_when": [
+      "metric is inapplicable",
+      "decisive evidence is unavailable",
+      "coordinate meaning cannot be normalized"
+    ],
+    "total_score_optional": true,
+    "rules": [
+      "Metric scores are guardrails, not release gates.",
+      "Do not replace missing evidence with a midpoint.",
+      "A total score must not hide coordinate-level degradation.",
+      "File, schema, evidence, or test counts do not determine quality by themselves."
+    ]
+  },
+  "drift_policy": {
+    "direction_values": [
+      "improvement",
+      "degradation",
+      "mixed",
+      "unchanged",
+      "unconfirmed"
+    ],
+    "severity_values": [
+      "low",
+      "medium",
+      "high",
+      "critical"
+    ],
+    "required_elements": [
+      "governing_term_ids",
+      "affected_coordinate_ids",
+      "observation",
+      "direction",
+      "confidence",
+      "consequence_or_uncertainty"
+    ],
+    "comparison_types": [
+      "baseline_to_build_package",
+      "build_package_to_agent_work",
+      "agent_work_to_build_result",
+      "build_package_to_build_result",
+      "result_to_result"
+    ]
+  },
+  "baseline_policy": {
+    "selection_rule": "Select the version with the strongest confirmed fitness for the next improvement Goal; do not default to the latest version.",
+    "required_output": [
+      "selected_version_id",
+      "confidence",
+      "rationale",
+      "rejected_alternatives"
+    ],
+    "component_reuse_note": "A non-baseline version may be cited as a source of individually reviewed ideas without creating a mandatory Donor Component concept."
+  },
+  "final_assessment_policy": {
+    "values": [
+      "improvement",
+      "mixed",
+      "degradation",
+      "unchanged",
+      "insufficient_evidence"
+    ],
+    "rules": [
+      "The final assessment describes Project evolution, not release acceptance.",
+      "Use insufficient_evidence when the available inputs cannot support a comparative judgment.",
+      "List coordinate-level exceptions for improvement, degradation, or unchanged assessments."
+    ]
+  },
+  "corrective_prompt_policy": {
+    "required_elements": [
+      "problem_or_drift_reference",
+      "affected_surfaces",
+      "required_correction",
+      "goal_and_scope_protection",
+      "expected_result"
+    ],
+    "rules": [
+      "Repair the demonstrated mechanism rather than only its visible symptom.",
+      "Preserve User Request, Intent, Goal, and Objectives unless the user explicitly changes them.",
+      "Avoid introducing execution governance unrelated to the defect.",
+      "State uncertainty when the root cause is not confirmed."
+    ]
   }
 }

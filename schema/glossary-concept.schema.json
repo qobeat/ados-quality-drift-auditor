@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/glossary-concept.schema.json",
+  "title": "Glossary Concept Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "term_id",
+    "preferred_term",
+    "russian",
+    "status",
+    "concept_class",
+    "genus",
+    "differentia",
+    "definition",
+    "scope_note",
+    "must_not_mean",
+    "cardinality_rule",
+    "related_term_ids",
+    "auditor_use",
+    "drift_checks",
+    "source_adaptation_note"
+  ],
+  "properties": {
+    "term_id": {
+      "type": "string",
+      "pattern": "^TERM-[A-Z0-9-]+$"
+    },
+    "preferred_term": {
+      "type": "string",
+      "minLength": 2
+    },
+    "russian": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "approved",
+        "deprecated",
+        "historical"
+      ]
+    },
+    "concept_class": {
+      "type": "string",
+      "minLength": 3
+    },
+    "genus": {
+      "type": "string",
+      "minLength": 2
+    },
+    "differentia": {
+      "type": "string",
+      "minLength": 10
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 15
+    },
+    "scope_note": {
+      "type": "string",
+      "minLength": 10
+    },
+    "must_not_mean": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "cardinality_rule": {
+      "type": "string",
+      "minLength": 10
+    },
+    "related_term_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TERM-[A-Z0-9-]+$"
+      }
+    },
+    "auditor_use": {
+      "type": "string",
+      "minLength": 10
+    },
+    "drift_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_adaptation_note": {
+      "type": "string",
+      "minLength": 10
+    }
+  }
+}

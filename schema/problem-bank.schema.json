@@ -1,75 +1,54 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schema/problem-bank.schema.json",
-  "title": "Quality Problem Pattern Bank Schema",
+  "title": "Quality Drift Problem Pattern Bank",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "$schema",
+    "schema_version",
     "bank_id",
-    "version",
-    "severity_order",
     "matching_policy",
     "patterns"
   ],
   "properties": {
     "$schema": {
-      "type": "string"
+      "const": "../schema/problem-bank.schema.json"
+    },
+    "schema_version": {
+      "const": "0.2.0"
     },
     "bank_id": {
-      "type": "string",
-      "pattern": "^PROBLEM-BANK-[A-Z0-9._-]+$"
-    },
-    "version": {
-      "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
-    },
-    "severity_order": {
-      "const": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
+      "const": "PROBLEM-BANK-QDA-V0.2"
     },
     "matching_policy": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "minimum_basis",
-        "prohibition",
-        "confidence_scale",
-        "reporting"
+        "confidence_values",
+        "rule",
+        "output"
       ],
       "properties": {
         "minimum_basis": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10
         },
-        "prohibition": {
-          "type": "string"
-        },
-        "confidence_scale": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "low",
+        "confidence_values": {
+          "const": [
+            "high",
             "medium",
-            "high"
-          ],
-          "properties": {
-            "low": {
-              "type": "string"
-            },
-            "medium": {
-              "type": "string"
-            },
-            "high": {
-              "type": "string"
-            }
-          }
+            "low"
+          ]
         },
-        "reporting": {
-          "type": "string"
+        "rule": {
+          "type": "string",
+          "minLength": 20
+        },
+        "output": {
+          "type": "string",
+          "minLength": 20
         }
       }
     },
@@ -77,41 +56,111 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "#/$defs/problem"
+        "$ref": "#/$defs/pattern"
       }
     }
   },
   "$defs": {
-    "problem": {
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project",
+        "versions",
+        "observation",
+        "lesson"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "observation": {
+          "type": "string",
+          "minLength": 15
+        },
+        "lesson": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    },
+    "pattern": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "problem_id",
         "name",
-        "risk_level",
-        "applicable_stages",
+        "glossary_term_ids",
+        "affected_input_types",
+        "affected_coordinate_ids",
         "applicable_archetype_ids",
-        "problem_statement",
-        "pattern",
+        "risk_level",
+        "definition",
         "observable_signals",
+        "exclusions",
         "visible_effects",
         "likely_causes",
         "consequences",
-        "detection_methods",
-        "corrective_actions",
-        "preventive_controls",
-        "required_evidence",
-        "related_hard_gate_ids",
+        "drift_risks",
+        "how_to_confirm",
+        "how_to_fix",
+        "wrong_fix_patterns",
         "real_examples"
       ],
       "properties": {
         "problem_id": {
           "type": "string",
-          "pattern": "^PROB-[0-9]{3}$"
+          "pattern": "^PROB-[A-Z0-9-]+$"
         },
         "name": {
           "type": "string",
           "minLength": 3
+        },
+        "glossary_term_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^TERM-[A-Z0-9-]+$"
+          }
+        },
+        "affected_input_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "build_package",
+              "agent_work",
+              "build_result"
+            ]
+          }
+        },
+        "affected_coordinate_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^COORD-[A-Z0-9-]+$"
+          }
+        },
+        "applicable_archetype_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ARCH-[A-Z0-9-]+$"
+          }
         },
         "risk_level": {
           "enum": [
@@ -121,43 +170,19 @@
             "critical"
           ]
         },
-        "applicable_stages": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "enum": [
-              "build_package",
-              "agent_work",
-              "build_result"
-            ]
-          }
-        },
-        "applicable_archetype_ids": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "oneOf": [
-              {
-                "const": "*"
-              },
-              {
-                "type": "string",
-                "pattern": "^ARCH-[A-Z0-9-]+$"
-              }
-            ]
-          }
-        },
-        "problem_statement": {
-          "type": "string",
-          "minLength": 20
-        },
-        "pattern": {
+        "definition": {
           "type": "string",
           "minLength": 20
         },
         "observable_signals": {
           "type": "array",
           "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclusions": {
+          "type": "array",
           "items": {
             "type": "string"
           }
@@ -183,77 +208,38 @@
             "type": "string"
           }
         },
-        "detection_methods": {
+        "drift_risks": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "string"
           }
         },
-        "corrective_actions": {
+        "how_to_confirm": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "string"
           }
         },
-        "preventive_controls": {
+        "how_to_fix": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "string"
           }
         },
-        "required_evidence": {
+        "wrong_fix_patterns": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "string"
-          }
-        },
-        "related_hard_gate_ids": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^HG-[0-9]{3}$"
           }
         },
         "real_examples": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "example_id",
-              "project",
-              "versions",
-              "observation",
-              "lesson"
-            ],
-            "properties": {
-              "example_id": {
-                "type": "string",
-                "pattern": "^EX-[A-Z0-9-]+$"
-              },
-              "project": {
-                "type": "string"
-              },
-              "versions": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "type": "string"
-                }
-              },
-              "observation": {
-                "type": "string",
-                "minLength": 20
-              },
-              "lesson": {
-                "type": "string",
-                "minLength": 10
-              }
-            }
+            "$ref": "#/$defs/example"
           }
         }
       }

@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/domain-bank.schema.json",
+  "title": "Domain Bank",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "bank_id",
+    "selection_policy",
+    "domains"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../schema/domain-bank.schema.json"
+    },
+    "schema_version": {
+      "const": "0.2.0"
+    },
+    "bank_id": {
+      "const": "DOMAIN-BANK-QDA-V0.2"
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_count",
+        "fallback_domain_id",
+        "rules"
+      ],
+      "properties": {
+        "primary_count": {
+          "const": 1
+        },
+        "fallback_domain_id": {
+          "const": "DOMAIN-OTHER"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "domain_id",
+          "name",
+          "glossary_term_id",
+          "definition",
+          "selection_signals",
+          "evaluation_focus",
+          "common_drift_risks",
+          "selection_note"
+        ],
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "pattern": "^DOMAIN-[A-Z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "glossary_term_id": {
+            "type": "string",
+            "pattern": "^TERM-[A-Z0-9-]+$"
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 20
+          },
+          "selection_signals": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "evaluation_focus": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "common_drift_risks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "selection_note": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    }
+  }
+}

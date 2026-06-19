@@ -1,78 +1,237 @@
 {
   "$schema": "../schema/archetype-bank.schema.json",
-  "bank_id": "ARCHETYPE-BANK-QDA-0.1",
-  "version": "0.1.0",
+  "schema_version": "0.2.0",
+  "bank_id": "ARCHETYPE-BANK-QDA-V0.2",
   "selection_policy": {
-    "primary_archetype_count": 1,
-    "method": [
-      "Use explicit project purpose and delivered artifact type before keywords.",
-      "Compare positive and exclusion signals.",
-      "Record evidence references and a confidence from 0 to 1.",
-      "Use the general profile when no specialized profile reaches 0.60.",
-      "Modifiers may be noted in the report but do not create a second primary archetype."
-    ],
-    "tie_breaker": "Select the profile whose failure modes best explain the release decision and whose mandatory evidence most directly applies."
+    "primary_count": 1,
+    "minimum_confidence": "medium",
+    "fallback_archetype_id": "ARCH-OTHER",
+    "rules": [
+      "Infer from Project purpose and primary Delivery.",
+      "Separate Archetype from Domain.",
+      "Record alternatives and reasons for rejection.",
+      "Use ARCH-OTHER only with explicit rationale.",
+      "Do not classify Package as an Archetype."
+    ]
   },
-  "profiles": [
+  "archetypes": [
     {
-      "profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT",
-      "name": "General engineered artifact",
-      "path": "profiles/general-engineered-artifact.json",
-      "summary": "Fallback for governed artifacts that do not meet a specialized profile with sufficient confidence."
+      "archetype_id": "ARCH-APP",
+      "name": "App Archetype",
+      "glossary_term_id": "TERM-APP-ARCHETYPE",
+      "definition": "App Archetype applies when the primary Project Delivery is application-like.",
+      "selection_indicators": [
+        "primary Delivery is an application, service, interface, workflow, command, or automation surface"
+      ],
+      "exclusion_indicators": [
+        "findings or doctrine are the primary Delivery",
+        "execution environment itself is the primary Delivery"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-OBJECTIVE-COVERAGE",
+        "COORD-ARCHETYPE-FIT",
+        "COORD-DOMAIN-FIT",
+        "COORD-BUILD-RESULT-QUALITY",
+        "COORD-EVIDENCE-SUFFICIENCY"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-01",
+        "PILLAR-02",
+        "PILLAR-03",
+        "PILLAR-06",
+        "PILLAR-10",
+        "PILLAR-16",
+        "PILLAR-19"
+      ],
+      "evaluation_questions": [
+        "Does the app perform the intended user-facing behavior?",
+        "Are interfaces and failure behavior appropriate?",
+        "Did package or process concerns displace product value?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     },
     {
-      "profile_id": "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
-      "name": "Schema-governed knowledge package",
-      "path": "profiles/schema-governed-knowledge.json",
-      "summary": "Glossaries, taxonomies, ontologies, registries, metadata packs, or knowledge artifacts governed by schemas and synchronized representations."
+      "archetype_id": "ARCH-RESEARCH",
+      "name": "Research Archetype",
+      "glossary_term_id": "TERM-RESEARCH-ARCHETYPE",
+      "definition": "Research Archetype applies when the main output is knowledge or investigation represented in governed artifacts.",
+      "selection_indicators": [
+        "primary Delivery is findings, analysis, evidence map, corpus, experiment, or research report"
+      ],
+      "exclusion_indicators": [
+        "a runnable app is the primary Delivery",
+        "a profile or prompt artifact is the primary Delivery"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-DOMAIN-FIT",
+        "COORD-BUILD-RESULT-QUALITY",
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-EVIDENCE-SUFFICIENCY"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-02",
+        "PILLAR-03",
+        "PILLAR-06",
+        "PILLAR-11",
+        "PILLAR-12",
+        "PILLAR-20"
+      ],
+      "evaluation_questions": [
+        "Are Claims supported by appropriate sources or methods?",
+        "Are uncertainty and limitations represented?",
+        "Can findings be distinguished from inference?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     },
     {
-      "profile_id": "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
-      "name": "Profile plus runtime bootstrap package",
-      "path": "profiles/multi-artifact-profile-runtime.json",
-      "summary": "A package that defines a profile or contract and also claims to execute, generate, validate, or bootstrap downstream artifacts."
+      "archetype_id": "ARCH-RUNTIME",
+      "name": "Runtime Archetype",
+      "glossary_term_id": "TERM-RUNTIME-ARCHETYPE",
+      "definition": "Runtime Archetype applies when the deliverable is an environment or capability for executing, building, testing, or orchestrating work.",
+      "selection_indicators": [
+        "primary Delivery is an execution, build, test, sandbox, orchestration, or operational runtime"
+      ],
+      "exclusion_indicators": [
+        "the main Delivery is an end-user app rather than the environment",
+        "the package only defines profile doctrine"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-ARCHETYPE-FIT",
+        "COORD-ADOS-PROFILE-ALIGNMENT",
+        "COORD-AGENT-WORK-FIDELITY",
+        "COORD-BUILD-RESULT-QUALITY",
+        "COORD-EVIDENCE-SUFFICIENCY",
+        "COORD-DRIFT-CONTROL"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-02",
+        "PILLAR-06",
+        "PILLAR-10",
+        "PILLAR-11",
+        "PILLAR-13",
+        "PILLAR-15",
+        "PILLAR-16",
+        "PILLAR-18"
+      ],
+      "evaluation_questions": [
+        "Can the runtime perform the declared capability?",
+        "Are host boundaries and hidden state explicit?",
+        "Does proof originate from the delivered runtime?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     },
     {
-      "profile_id": "ARCH-SOFTWARE-APPLICATION-SERVICE",
-      "name": "Software application or service",
-      "path": "profiles/software-application-service.json",
-      "summary": "Deployable application, API, web service, desktop application, or end-user executable."
+      "archetype_id": "ARCH-PROFILE",
+      "name": "Profile Archetype",
+      "glossary_term_id": "TERM-PROFILE-ARCHETYPE",
+      "definition": "Profile Archetype applies when the primary output defines meaning, expectations, or operating rules for other work.",
+      "selection_indicators": [
+        "primary Delivery is a glossary, profile, doctrine, policy, schema pack, or governed configuration"
+      ],
+      "exclusion_indicators": [
+        "prompt behavior is the only primary Delivery",
+        "the principal purpose is end-user application behavior"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-ADOS-PROFILE-ALIGNMENT",
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-EVIDENCE-SUFFICIENCY",
+        "COORD-DRIFT-CONTROL",
+        "COORD-BUILD-RESULT-QUALITY"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-02",
+        "PILLAR-05",
+        "PILLAR-06",
+        "PILLAR-07",
+        "PILLAR-08",
+        "PILLAR-09",
+        "PILLAR-12",
+        "PILLAR-17",
+        "PILLAR-20"
+      ],
+      "evaluation_questions": [
+        "Are semantic authorities clear and synchronized?",
+        "Are Requirements applicable and not copied blindly?",
+        "Do machine guardrails preserve rather than weaken meaning?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     },
     {
-      "profile_id": "ARCH-SOFTWARE-LIBRARY-CLI-SDK",
-      "name": "Software library, CLI, or SDK",
-      "path": "profiles/software-library-cli-sdk.json",
-      "summary": "Reusable code package, command-line tool, client library, plugin, or developer SDK."
+      "archetype_id": "ARCH-PROMPT",
+      "name": "Prompt Archetype",
+      "glossary_term_id": "TERM-PROMPT-ARCHETYPE",
+      "definition": "Prompt Archetype applies when the principal deliverable is a Prompt artifact or prompt system.",
+      "selection_indicators": [
+        "primary Delivery is a Prompt, prompt pack, prompt system, or prompt-governed interaction contract"
+      ],
+      "exclusion_indicators": [
+        "prompts are merely implementation tools for another primary Delivery"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-OBJECTIVE-COVERAGE",
+        "COORD-ARCHETYPE-FIT",
+        "COORD-BUILD-PACKAGE-QUALITY",
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-CORRECTIVE-FOCUS"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-02",
+        "PILLAR-03",
+        "PILLAR-06",
+        "PILLAR-10",
+        "PILLAR-12",
+        "PILLAR-15",
+        "PILLAR-20"
+      ],
+      "evaluation_questions": [
+        "Does the Prompt preserve Intent and scope?",
+        "Are instructions non-contradictory and robust?",
+        "Do examples bias behavior away from the Goal?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     },
     {
-      "profile_id": "ARCH-DATA-PIPELINE-DATASET",
-      "name": "Data pipeline or dataset",
-      "path": "profiles/data-pipeline-dataset.json",
-      "summary": "Dataset, ETL/ELT pipeline, analytical transformation, data contract, or reproducible data product."
-    },
-    {
-      "profile_id": "ARCH-ML-AGENT-SYSTEM",
-      "name": "ML, LLM, or autonomous-agent system",
-      "path": "profiles/ml-agent-system.json",
-      "summary": "Model, prompt-driven agent, evaluation harness, retrieval system, or autonomous workflow with probabilistic behavior."
-    },
-    {
-      "profile_id": "ARCH-POLICY-CONTROL-PACK",
-      "name": "Policy, governance, or control pack",
-      "path": "profiles/policy-control-pack.json",
-      "summary": "Requirements, standards, ADR packs, prompts, compliance controls, or governance documents intended to control later execution."
-    },
-    {
-      "profile_id": "ARCH-DOCUMENTATION-SPECIFICATION",
-      "name": "Documentation or specification",
-      "path": "profiles/documentation-specification.json",
-      "summary": "Human-readable technical documentation, specification set, reference manual, or process guide."
-    },
-    {
-      "profile_id": "ARCH-INFRASTRUCTURE-PLATFORM",
-      "name": "Infrastructure or platform",
-      "path": "profiles/infrastructure-platform.json",
-      "summary": "Infrastructure-as-code, platform configuration, deployment topology, cluster, cloud, or environment definition."
+      "archetype_id": "ARCH-OTHER",
+      "name": "Other Archetype",
+      "glossary_term_id": "TERM-OTHER-ARCHETYPE",
+      "definition": "Other Archetype is the fallback project-shape classification.",
+      "selection_indicators": [
+        "none of the defined specialized Archetypes adequately describes the primary Delivery"
+      ],
+      "exclusion_indicators": [
+        "a specialized Archetype clearly applies"
+      ],
+      "priority_coordinate_ids": [
+        "COORD-REQUEST-INTENT-ALIGNMENT",
+        "COORD-GOAL-ALIGNMENT",
+        "COORD-OBJECTIVE-COVERAGE",
+        "COORD-ARCHETYPE-FIT",
+        "COORD-DOMAIN-FIT",
+        "COORD-BUILD-RESULT-QUALITY",
+        "COORD-EVIDENCE-SUFFICIENCY"
+      ],
+      "applicable_pillar_ids": [
+        "PILLAR-01",
+        "PILLAR-02",
+        "PILLAR-03",
+        "PILLAR-06",
+        "PILLAR-20"
+      ],
+      "evaluation_questions": [
+        "Why do specialized Archetypes not apply?",
+        "Which custom quality coordinates are required?",
+        "What evidence and risks are specific to this Project?"
+      ],
+      "selection_note": "Select from Project purpose and primary Delivery, not from filename keywords alone."
     }
   ]
 }

@@ -1,35 +1,66 @@
 {
-  "schema_version": "0.1.0",
+  "$schema": "../schema/adr-index.schema.json",
+  "schema_version": "0.2.0",
   "records": [
     {
       "adr_id": "ADR-001",
-      "title": "Preserve strict, file-grounded contracts from the v1.3 baseline",
+      "title": "GLOSSARY.md is the semantic and retrieval authority",
       "status": "accepted",
       "path": "adr/adr-001.md"
     },
     {
       "adr_id": "ADR-002",
-      "title": "Use stable atomic claims and separate evidence from judgment",
+      "title": "The auditor evaluates execution but does not govern it",
       "status": "accepted",
       "path": "adr/adr-002.md"
     },
     {
       "adr_id": "ADR-003",
-      "title": "Combine one primary archetype with stage-specific and common metrics",
+      "title": "Adopt the v0.2 ADOS core concept scope",
       "status": "accepted",
       "path": "adr/adr-003.md"
     },
     {
       "adr_id": "ADR-004",
-      "title": "Treat fixtures as bounded evidence and require hard-gate defect sensitivity",
+      "title": "Adopt Goal-Attractor Geometry for drift interpretation",
       "status": "accepted",
       "path": "adr/adr-004.md"
     },
     {
       "adr_id": "ADR-005",
-      "title": "Use the governed full prompt for the production-grade v1.0 build",
+      "title": "Generalize App Requirements to Project Requirements",
       "status": "accepted",
       "path": "adr/adr-005.md"
+    },
+    {
+      "adr_id": "ADR-006",
+      "title": "Adopt six Archetypes and seven primary Domains",
+      "status": "accepted",
+      "path": "adr/adr-006.md"
+    },
+    {
+      "adr_id": "ADR-007",
+      "title": "Keep doctrine in doc/ and decisions in adr/",
+      "status": "accepted",
+      "path": "adr/adr-007.md"
+    },
+    {
+      "adr_id": "ADR-008",
+      "title": "Metrics are interpretive guardrails, not execution gates",
+      "status": "accepted",
+      "path": "adr/adr-008.md"
+    },
+    {
+      "adr_id": "ADR-009",
+      "title": "Use direct JSON reports without mandatory ledgers",
+      "status": "accepted",
+      "path": "adr/adr-009.md"
+    },
+    {
+      "adr_id": "ADR-010",
+      "title": "Govern the future production-grade v1.0 build with a full prompt",
+      "status": "accepted",
+      "path": "adr/adr-010.md"
     }
   ]
 }

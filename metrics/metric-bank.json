@@ -1,577 +1,921 @@
 {
   "$schema": "../schema/metric-bank.schema.json",
-  "bank_id": "METRIC-BANK-QDA-0.1",
-  "version": "0.1.0",
-  "common_axes": [
-    {
-      "axis_id": "AX-01",
-      "name": "Goal coverage & decision usefulness",
-      "weight": 20,
-      "definition": "How well the source helps choose, compare, or judge a solution against the stated goal.",
-      "score_anchors": {
-        "10": "Complete, decision-ready coverage",
-        "8": "Useful with minor gaps",
-        "6": "Partial or weakly operational",
-        "4": "Underspecified",
-        "2": "Materially misleading",
-        "0": "Absent or unusable"
-      }
-    },
-    {
-      "axis_id": "AX-02",
-      "name": "Core idea strength",
-      "weight": 18,
-      "definition": "Quality and value of the central evaluation or build idea independent of writing polish.",
-      "score_anchors": {
-        "10": "Strong, coherent central idea",
-        "8": "Sound with minor limitations",
-        "6": "Mixed or incompletely developed",
-        "4": "Weak",
-        "2": "Self-undermining",
-        "0": "No viable idea"
-      }
-    },
-    {
-      "axis_id": "AX-03",
-      "name": "Technical soundness",
-      "weight": 14,
-      "definition": "Whether the reasoning, contracts, and technical mechanics are internally credible.",
-      "score_anchors": {
-        "10": "Technically rigorous",
-        "8": "Mostly sound",
-        "6": "Some material gaps",
-        "4": "Multiple weak mechanics",
-        "2": "Contradicted or broken",
-        "0": "Unusable"
-      }
-    },
-    {
-      "axis_id": "AX-04",
-      "name": "Structural completeness",
-      "weight": 12,
-      "definition": "Whether essential workflow and artifact components are present.",
-      "score_anchors": {
-        "10": "Complete",
-        "8": "Minor missing surfaces",
-        "6": "Important gaps",
-        "4": "Large omissions",
-        "2": "Fragmentary",
-        "0": "Absent"
-      }
-    },
-    {
-      "axis_id": "AX-05",
-      "name": "Operationalization detail",
-      "weight": 10,
-      "definition": "How executable the method is without hidden steps.",
-      "score_anchors": {
-        "10": "Directly executable",
-        "8": "Minor interpretation needed",
-        "6": "Several hidden steps",
-        "4": "Mostly conceptual",
-        "2": "Not operational",
-        "0": "No method"
-      }
-    },
-    {
-      "axis_id": "AX-06",
-      "name": "Evidence traceability",
-      "weight": 10,
-      "definition": "How clearly conclusions and PASS claims resolve to observation-bearing evidence.",
-      "score_anchors": {
-        "10": "Complete bidirectional traceability",
-        "8": "Minor gaps",
-        "6": "Partial resolution",
-        "4": "Mostly assertions",
-        "2": "Broken traceability",
-        "0": "No evidence"
-      }
-    },
-    {
-      "axis_id": "AX-07",
-      "name": "Risk & control adequacy",
-      "weight": 7,
-      "definition": "How well the source prevents drift, ambiguity, false positives, and unfair scoring.",
-      "score_anchors": {
-        "10": "Strong preventive and detective controls",
-        "8": "Good controls",
-        "6": "Uneven controls",
-        "4": "Weak safeguards",
-        "2": "False-PASS prone",
-        "0": "No controls"
-      }
-    },
-    {
-      "axis_id": "AX-08",
-      "name": "Internal consistency",
-      "weight": 5,
-      "definition": "Whether the source avoids contradictions, overlaps, and self-undermining rules.",
-      "score_anchors": {
-        "10": "Consistent",
-        "8": "Minor tension",
-        "6": "Some conflicts",
-        "4": "Material contradictions",
-        "2": "Severely inconsistent",
-        "0": "Incoherent"
-      }
-    },
-    {
-      "axis_id": "AX-09",
-      "name": "Document discipline & terminology",
-      "weight": 4,
-      "definition": "Clarity, naming discipline, identity hygiene, and terminology consistency.",
-      "score_anchors": {
-        "10": "Precise and disciplined",
-        "8": "Minor inconsistencies",
-        "6": "Noticeable drift",
-        "4": "Frequent ambiguity",
-        "2": "Confusing",
-        "0": "Unusable"
-      }
-    }
-  ],
-  "stage_metrics": {
-    "build_package": [
+  "schema_version": "0.2.0",
+  "bank_id": "METRIC-BANK-QDA-V0.2",
+  "geometry": {
+    "semantic_model_term_id": "TERM-GOAL-ATTRACTOR-GEOMETRY",
+    "coordinate_term_id": "TERM-COORDINATE-DIMENSION",
+    "metric_term_id": "TERM-EVALUATION-METRIC",
+    "coordinates": [
       {
-        "metric_id": "BP-001",
-        "name": "Goal and objective precision",
-        "default_weight": 14,
-        "definition": "Goal, objectives, success boundary, and non-goals are explicit and testable.",
-        "required_evidence": [
-          "controlling prompt or PDD",
-          "goal/objective mapping"
+        "coordinate_id": "COORD-REQUEST-INTENT-ALIGNMENT",
+        "name": "User Request and Intent Alignment",
+        "definition": "Degree to which evaluated inputs preserve explicit User Request meaning and the normalized Intent.",
+        "glossary_term_ids": [
+          "TERM-USER-REQUEST",
+          "TERM-INTENT"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher with adequate support"
+        },
+        "evidence_guidance": [
+          "explicit request text",
+          "intent summary",
+          "scope and correction preservation"
+        ],
+        "default_metric_ids": [
+          "MET-REQUEST-INTENT-ALIGNMENT"
         ]
       },
       {
-        "metric_id": "BP-002",
-        "name": "Baseline and change-set control",
-        "default_weight": 12,
-        "definition": "The authorized baseline, inherited contracts, intended changes, and preservation obligations are explicit.",
-        "required_evidence": [
-          "baseline identity",
-          "change classification",
-          "regression floor"
+        "coordinate_id": "COORD-GOAL-ALIGNMENT",
+        "name": "Goal Alignment",
+        "definition": "Degree to which the evaluated surface preserves and advances the governing Goal.",
+        "glossary_term_ids": [
+          "TERM-GOAL",
+          "TERM-GOAL-FIGURE",
+          "TERM-GOAL-SURFACE"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "Goal statement",
+          "delivered outcomes",
+          "Goal Surface conditions"
+        ],
+        "default_metric_ids": [
+          "MET-GOAL-ALIGNMENT"
         ]
       },
       {
-        "metric_id": "BP-003",
-        "name": "Scope and file obligations",
-        "default_weight": 10,
-        "definition": "Every required create/modify/delete action is grounded to governed artifacts and unauthorized scope is constrained.",
-        "required_evidence": [
-          "file or component obligations",
-          "scope amendment rule"
+        "coordinate_id": "COORD-OBJECTIVE-COVERAGE",
+        "name": "Objective Coverage",
+        "definition": "Degree to which material Objectives are represented and satisfied without unauthorized substitution.",
+        "glossary_term_ids": [
+          "TERM-OBJECTIVE",
+          "TERM-REQUIREMENT",
+          "TERM-PROJECT-REQUIREMENT"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "Objective list",
+          "requirements or acceptance criteria",
+          "result coverage"
+        ],
+        "default_metric_ids": [
+          "MET-OBJECTIVE-COVERAGE"
         ]
       },
       {
-        "metric_id": "BP-004",
-        "name": "Architecture and archetype fit",
-        "default_weight": 10,
-        "definition": "Controls match the project archetype, dependencies, risk profile, and expected outputs.",
-        "required_evidence": [
-          "archetype rationale",
-          "architecture decisions"
+        "coordinate_id": "COORD-ARCHETYPE-FIT",
+        "name": "Archetype Fit",
+        "definition": "Fitness of the selected Project Archetype and resulting artifact shape.",
+        "glossary_term_ids": [
+          "TERM-ARCHETYPE",
+          "TERM-APP-ARCHETYPE",
+          "TERM-RESEARCH-ARCHETYPE",
+          "TERM-RUNTIME-ARCHETYPE",
+          "TERM-PROFILE-ARCHETYPE",
+          "TERM-PROMPT-ARCHETYPE",
+          "TERM-OTHER-ARCHETYPE"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "primary delivery form",
+          "selected profile",
+          "artifact surfaces"
+        ],
+        "default_metric_ids": [
+          "MET-ARCHETYPE-FIT"
         ]
       },
       {
-        "metric_id": "BP-005",
-        "name": "Verification design",
-        "default_weight": 14,
-        "definition": "Positive, negative, semantic, integration, replay, and regression checks are defined with explicit oracles.",
-        "required_evidence": [
-          "verification procedures",
-          "expected findings or outcomes"
+        "coordinate_id": "COORD-DOMAIN-FIT",
+        "name": "Domain Fit",
+        "definition": "Fitness of Domain-specific terminology, constraints, metrics, and evidence expectations.",
+        "glossary_term_ids": [
+          "TERM-DOMAIN"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "Domain constraints",
+          "Domain evidence standards",
+          "subject terminology"
+        ],
+        "default_metric_ids": [
+          "MET-DOMAIN-FIT"
         ]
       },
       {
-        "metric_id": "BP-006",
-        "name": "Evidence contract",
-        "default_weight": 12,
-        "definition": "Required evidence fields, provenance, observations, timestamps, commands, and hashes are specified.",
-        "required_evidence": [
-          "evidence schema or template",
-          "traceability rule"
+        "coordinate_id": "COORD-ADOS-PROFILE-ALIGNMENT",
+        "name": "ADOS Profile Alignment",
+        "definition": "Material alignment with applicable ADOS concepts, Pillars, core-file principles, and claimed profile expectations.",
+        "glossary_term_ids": [
+          "TERM-ADOS-PROFILE",
+          "TERM-PILLAR",
+          "TERM-ADOS-PILLAR-SET"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "Profile-specific"
+        },
+        "evidence_guidance": [
+          "claimed profile",
+          "applicable Pillars",
+          "concept and artifact consistency"
+        ],
+        "default_metric_ids": [
+          "MET-PROFILE-ALIGNMENT"
         ]
       },
       {
-        "metric_id": "BP-007",
-        "name": "Drift safeguards",
-        "default_weight": 10,
-        "definition": "Semantic, contract, scope, identity, evidence, and validator drift are actively prevented or detected.",
-        "required_evidence": [
-          "baseline comparison rules",
-          "drift gates"
+        "coordinate_id": "COORD-BUILD-PACKAGE-QUALITY",
+        "name": "Build Package Quality",
+        "definition": "Quality of the prompts and supplied materials shaping the build.",
+        "glossary_term_ids": [
+          "TERM-BUILD-PACKAGE",
+          "TERM-PROMPT",
+          "TERM-PDD",
+          "TERM-GOAL",
+          "TERM-OBJECTIVE"
+        ],
+        "applies_to": [
+          "build_package"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "scope clarity",
+          "baseline clarity",
+          "concept consistency",
+          "expected outputs"
+        ],
+        "default_metric_ids": [
+          "MET-BUILD-PACKAGE-QUALITY"
         ]
       },
       {
-        "metric_id": "BP-008",
-        "name": "Oracle independence and defect sensitivity",
-        "default_weight": 10,
-        "definition": "Release acceptance is not circular and includes mutation-sensitive or independently implemented checks.",
-        "required_evidence": [
-          "independent audit or cross-check",
-          "known-defect tests"
+        "coordinate_id": "COORD-AGENT-WORK-FIDELITY",
+        "name": "Building Agent Work Fidelity",
+        "definition": "Degree to which visible agent work follows the intended semantic frame and makes material deviations assessable.",
+        "glossary_term_ids": [
+          "TERM-BUILDING-AGENT-WORK",
+          "TERM-EXECUTION-TRACE",
+          "TERM-QA-EVIDENCE"
+        ],
+        "applies_to": [
+          "agent_work"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "visible actions",
+          "deviation explanations",
+          "tests and QA evidence",
+          "unsupported claims"
+        ],
+        "default_metric_ids": [
+          "MET-AGENT-WORK-FIDELITY"
         ]
       },
       {
-        "metric_id": "BP-009",
-        "name": "Deliverable and acceptance clarity",
-        "default_weight": 8,
-        "definition": "Deliverables, artifact boundaries, acceptance gates, and non-pass behavior are unambiguous.",
-        "required_evidence": [
-          "deliverable list",
-          "verdict rules"
-        ]
-      }
-    ],
-    "agent_work": [
-      {
-        "metric_id": "AW-001",
-        "name": "Authority acquisition",
-        "default_weight": 10,
-        "definition": "The agent demonstrably loaded and reconciled all controlling sources before planning.",
-        "required_evidence": [
-          "source inventory",
-          "authority resolution"
-        ]
-      },
-      {
-        "metric_id": "AW-002",
-        "name": "Plan and work grounding",
-        "default_weight": 12,
-        "definition": "Work is decomposed into traceable units grounded to requirements and concrete targets.",
-        "required_evidence": [
-          "work plan",
-          "requirement-to-work mapping"
+        "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+        "name": "Build Result Quality",
+        "definition": "Fitness of the produced version or Package for the Project Goal and intended Delivery.",
+        "glossary_term_ids": [
+          "TERM-BUILD-RESULT",
+          "TERM-PACKAGE",
+          "TERM-DELIVERY"
+        ],
+        "applies_to": [
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "Archetype-specific"
+        },
+        "evidence_guidance": [
+          "delivered behavior",
+          "content and structure",
+          "quality findings",
+          "comparative result"
+        ],
+        "default_metric_ids": [
+          "MET-BUILD-RESULT-QUALITY"
         ]
       },
       {
-        "metric_id": "AW-003",
-        "name": "Scope fidelity",
-        "default_weight": 10,
-        "definition": "Executed changes remain within authorized scope or use an explicit amendment path.",
-        "required_evidence": [
-          "change inventory",
-          "scope deviation record"
+        "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+        "name": "Semantic Integrity",
+        "definition": "Consistency of meaning across glossary, documentation, schemas, reports, exports, and versions.",
+        "glossary_term_ids": [
+          "TERM-GLOSSARY",
+          "TERM-STATEMENT",
+          "TERM-CLAIM",
+          "TERM-QUALITY-DRIFT"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "9 or higher for Profile Archetype"
+        },
+        "evidence_guidance": [
+          "term ID and definition comparison",
+          "human-machine consistency",
+          "version terminology"
+        ],
+        "default_metric_ids": [
+          "MET-SEMANTIC-INTEGRITY"
         ]
       },
       {
-        "metric_id": "AW-004",
-        "name": "Execution traceability",
-        "default_weight": 14,
-        "definition": "Commands, edits, intermediate states, failures, and corrections can be reconstructed.",
-        "required_evidence": [
-          "activity log",
-          "diffs or commands",
-          "state transitions"
+        "coordinate_id": "COORD-EVIDENCE-SUFFICIENCY",
+        "name": "Evidence Sufficiency",
+        "definition": "Degree to which evaluation conclusions are supported by relevant, scoped, and interpretable source or QA evidence.",
+        "glossary_term_ids": [
+          "TERM-QA-EVIDENCE",
+          "TERM-EVIDENCE-LEDGER",
+          "TERM-EXECUTION-TRACE",
+          "TERM-CLAIM"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "Conclusion-specific"
+        },
+        "evidence_guidance": [
+          "source accessibility",
+          "scope match",
+          "independence",
+          "contradiction handling"
+        ],
+        "default_metric_ids": [
+          "MET-EVIDENCE-SUFFICIENCY"
         ]
       },
       {
-        "metric_id": "AW-005",
-        "name": "Evidence quality",
-        "default_weight": 16,
-        "definition": "Evidence contains observations rather than status assertions and resolves to the claims it supports.",
-        "required_evidence": [
-          "observed outputs",
-          "provenance",
-          "timestamps",
-          "hashes"
-        ]
-      },
-      {
-        "metric_id": "AW-006",
-        "name": "Test and validator quality",
-        "default_weight": 14,
-        "definition": "Checks use correct oracles, isolate defects, reject known-bad cases, and do not merely count coverage.",
-        "required_evidence": [
-          "test results",
-          "negative cases",
-          "finding codes"
-        ]
-      },
-      {
-        "metric_id": "AW-007",
-        "name": "Replay and final-artifact proof",
-        "default_weight": 10,
-        "definition": "Proof starts from the final candidate or clean extraction and is reproducible without hidden builder state.",
-        "required_evidence": [
-          "replay procedure",
-          "fresh-extraction outputs"
-        ]
-      },
-      {
-        "metric_id": "AW-008",
-        "name": "Correction-loop quality",
-        "default_weight": 8,
-        "definition": "Failures create focused corrective work and are revalidated without erasing evidence.",
-        "required_evidence": [
-          "finding-to-fix trace",
-          "rerun evidence"
-        ]
-      },
-      {
-        "metric_id": "AW-009",
-        "name": "Verdict discipline",
-        "default_weight": 6,
-        "definition": "Scores and verdicts are derived after gates and unresolved conditions are represented honestly.",
-        "required_evidence": [
-          "gate summary",
-          "blocker list",
-          "verdict derivation"
-        ]
-      }
-    ],
-    "build_result": [
-      {
-        "metric_id": "BR-001",
-        "name": "Goal and requirement coverage",
-        "default_weight": 12,
-        "definition": "The delivered result materially satisfies authorized goals and requirements.",
-        "required_evidence": [
-          "requirement coverage",
-          "delivered behavior"
-        ]
-      },
-      {
-        "metric_id": "BR-002",
-        "name": "Functional correctness",
-        "default_weight": 10,
-        "definition": "Observable functions and declared behaviors operate correctly, including defined failure behavior.",
-        "required_evidence": [
-          "functional tests",
-          "negative behavior tests"
-        ]
-      },
-      {
-        "metric_id": "BR-003",
-        "name": "Contract and schema integrity",
-        "default_weight": 14,
-        "definition": "Machine contracts are strict enough for their purpose and all governed instances conform.",
-        "required_evidence": [
-          "schema validation",
-          "constraint comparison",
-          "negative fixtures"
-        ]
-      },
-      {
-        "metric_id": "BR-004",
-        "name": "Semantic and data consistency",
-        "default_weight": 12,
-        "definition": "Human and machine representations, data exports, terminology, and relationships remain synchronized.",
-        "required_evidence": [
-          "cross-surface comparison",
-          "semantic invariants"
-        ]
-      },
-      {
-        "metric_id": "BR-005",
-        "name": "Inventory, reference, and identity integrity",
-        "default_weight": 10,
-        "definition": "Version identity, paths, inventories, hashes, references, and artifact boundaries are exact.",
-        "required_evidence": [
-          "fresh tree inventory",
-          "reference resolution",
-          "hash report"
-        ]
-      },
-      {
-        "metric_id": "BR-006",
-        "name": "Evidence and release traceability",
-        "default_weight": 12,
-        "definition": "Release claims resolve to current, observation-bearing evidence with clear provenance.",
-        "required_evidence": [
-          "evidence ledger",
-          "claim-to-evidence links"
-        ]
-      },
-      {
-        "metric_id": "BR-007",
-        "name": "Reproducibility and replayability",
-        "default_weight": 10,
-        "definition": "The result and required proof artifacts can be recreated from declared inputs in clean environments.",
-        "required_evidence": [
-          "replay runs",
-          "determinism report"
-        ]
-      },
-      {
-        "metric_id": "BR-008",
-        "name": "Validator and resilience quality",
-        "default_weight": 10,
-        "definition": "Validation detects representative high-impact defects and cannot be bypassed by shallow conformance.",
-        "required_evidence": [
-          "mutation suite",
-          "independent checks"
-        ]
-      },
-      {
-        "metric_id": "BR-009",
-        "name": "Baseline regression and drift",
-        "default_weight": 6,
-        "definition": "Quality-relevant inherited contracts are preserved or intentionally superseded with evidence.",
-        "required_evidence": [
+        "coordinate_id": "COORD-DRIFT-CONTROL",
+        "name": "Drift Control",
+        "definition": "Ability of the Project evolution to preserve intended meaning and detect harmful divergence.",
+        "glossary_term_ids": [
+          "TERM-QUALITY-DRIFT",
+          "TERM-BASELINE-VERSION",
+          "TERM-PROBLEM-PATTERN"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "build_result",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
           "baseline comparison",
-          "regression rationale"
+          "explicit preservation rules",
+          "drift findings and corrections"
+        ],
+        "default_metric_ids": [
+          "MET-DRIFT-CONTROL"
         ]
       },
       {
-        "metric_id": "BR-010",
-        "name": "Packaging and document discipline",
-        "default_weight": 4,
-        "definition": "The artifact is clean, navigable, internally consistent, and free from generated contamination or stale paths.",
-        "required_evidence": [
-          "package inspection",
-          "document consistency check"
+        "coordinate_id": "COORD-CORRECTIVE-FOCUS",
+        "name": "Corrective Focus",
+        "definition": "Degree to which proposed corrections address the demonstrated mechanism without changing unrelated Goal or scope.",
+        "glossary_term_ids": [
+          "TERM-CORRECTIVE-PROMPT",
+          "TERM-PROBLEM-PATTERN",
+          "TERM-GOAL",
+          "TERM-OBJECTIVE"
+        ],
+        "applies_to": [
+          "build_package",
+          "agent_work",
+          "cross_version"
+        ],
+        "scale": {
+          "type": "0_to_10",
+          "polarity": "higher_is_better",
+          "target": "8 or higher"
+        },
+        "evidence_guidance": [
+          "finding-to-action mapping",
+          "scope protection",
+          "expected corrected state"
+        ],
+        "default_metric_ids": [
+          "MET-CORRECTIVE-FOCUS"
         ]
       }
     ]
   },
-  "drift_dimensions": [
+  "metrics": [
     {
-      "dimension_id": "DRIFT-GOAL",
-      "name": "Goal drift",
-      "definition": "The delivered or executed work no longer serves the controlling goal."
-    },
-    {
-      "dimension_id": "DRIFT-SCOPE",
-      "name": "Scope drift",
-      "definition": "Changes exceed or omit the authorized change set."
-    },
-    {
-      "dimension_id": "DRIFT-SEMANTIC",
-      "name": "Semantic drift",
-      "definition": "Meaning, terminology, relationships, or exported representations diverge."
-    },
-    {
-      "dimension_id": "DRIFT-CONTRACT",
-      "name": "Contract drift",
-      "definition": "Schemas, APIs, invariants, or required constraints weaken or change unintentionally."
-    },
-    {
-      "dimension_id": "DRIFT-STRUCTURE",
-      "name": "Structural drift",
-      "definition": "Folders, artifact boundaries, inventories, or component topology diverge."
-    },
-    {
-      "dimension_id": "DRIFT-EVIDENCE",
-      "name": "Evidence drift",
-      "definition": "Evidence becomes stale, assertion-only, non-resolving, or detached from claims."
-    },
-    {
-      "dimension_id": "DRIFT-VALIDATOR",
-      "name": "Validator drift",
-      "definition": "Validation coverage or defect sensitivity no longer matches release claims."
-    },
-    {
-      "dimension_id": "DRIFT-REPRO",
-      "name": "Reproducibility drift",
-      "definition": "Replay increasingly depends on hidden state, order, or external builder logic."
-    },
-    {
-      "dimension_id": "DRIFT-DEPENDENCY",
-      "name": "Dependency drift",
-      "definition": "Dependencies, versions, or integration assumptions change without governed analysis."
-    },
-    {
-      "dimension_id": "DRIFT-DISCIPLINE",
-      "name": "Discipline drift",
-      "definition": "Identity, paths, hashes, naming, or document hygiene degrade."
-    }
-  ],
-  "hard_gates": [
-    {
-      "gate_id": "HG-001",
-      "name": "Source readability",
-      "applies_to": [
-        "all"
+      "metric_id": "MET-REQUEST-INTENT-ALIGNMENT",
+      "name": "User Request and Intent Alignment",
+      "coordinate_id": "COORD-REQUEST-INTENT-ALIGNMENT",
+      "glossary_term_ids": [
+        "TERM-USER-REQUEST",
+        "TERM-INTENT"
       ],
-      "fail_condition": "A decisive required source cannot be read or identified.",
-      "effect": "INSUFFICIENT_EVIDENCE"
-    },
-    {
-      "gate_id": "HG-002",
-      "name": "False-PASS sensitivity",
-      "applies_to": [
-        "agent_work",
-        "build_result"
-      ],
-      "fail_condition": "The release validator accepts representative critical mutations or no defect-sensitivity evidence exists for a high-risk release claim.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-003",
-      "name": "Observation-bearing evidence",
-      "applies_to": [
-        "agent_work",
-        "build_result"
-      ],
-      "fail_condition": "Mandatory PASS claims are supported only by self-authored status assertions.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-004",
-      "name": "Final-artifact replay",
-      "applies_to": [
-        "agent_work",
-        "build_result"
-      ],
-      "fail_condition": "A required runtime or bootstrap proof was not produced from the final candidate or a clean extraction.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-005",
-      "name": "Inventory and identity integrity",
-      "applies_to": [
-        "build_result"
-      ],
-      "fail_condition": "Authoritative inventory, identity, or release hashes materially disagree with the delivered artifact.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-006",
-      "name": "Critical contract regression",
-      "applies_to": [
-        "build_result"
-      ],
-      "fail_condition": "A critical inherited schema, API, invariant, or safety contract is weakened without explicit authorization and regression evidence.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-007",
-      "name": "Semantic synchronization",
-      "applies_to": [
-        "build_result"
-      ],
-      "fail_condition": "Authoritative semantic surfaces materially disagree and the conflict affects delivered meaning.",
-      "effect": "FAIL"
-    },
-    {
-      "gate_id": "HG-008",
-      "name": "Controlled scope",
       "applies_to": [
         "build_package",
-        "agent_work"
+        "agent_work",
+        "build_result",
+        "cross_version"
       ],
-      "fail_condition": "Material unplanned work is introduced without an authorized amendment.",
-      "effect": "FAIL"
+      "question": "Does the evaluated surface preserve the explicit User Request and normalized Intent?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
     },
     {
-      "gate_id": "HG-009",
-      "name": "Verdict derivation",
-      "applies_to": [
-        "all"
+      "metric_id": "MET-GOAL-ALIGNMENT",
+      "name": "Goal Alignment",
+      "coordinate_id": "COORD-GOAL-ALIGNMENT",
+      "glossary_term_ids": [
+        "TERM-GOAL",
+        "TERM-GOAL-FIGURE",
+        "TERM-GOAL-SURFACE"
       ],
-      "fail_condition": "PASS or a perfect score is written before or independently of the required gate outcomes.",
-      "effect": "FAIL"
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Does the evaluated surface preserve and advance the governing Goal?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-OBJECTIVE-COVERAGE",
+      "name": "Objective Coverage",
+      "coordinate_id": "COORD-OBJECTIVE-COVERAGE",
+      "glossary_term_ids": [
+        "TERM-OBJECTIVE",
+        "TERM-REQUIREMENT",
+        "TERM-PROJECT-REQUIREMENT"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Are material Objectives represented and satisfied without substitution?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-ARCHETYPE-FIT",
+      "name": "Archetype Fit",
+      "coordinate_id": "COORD-ARCHETYPE-FIT",
+      "glossary_term_ids": [
+        "TERM-ARCHETYPE",
+        "TERM-APP-ARCHETYPE",
+        "TERM-RESEARCH-ARCHETYPE",
+        "TERM-RUNTIME-ARCHETYPE",
+        "TERM-PROFILE-ARCHETYPE",
+        "TERM-PROMPT-ARCHETYPE",
+        "TERM-OTHER-ARCHETYPE"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "question": "Does the selected Archetype match the primary Delivery and evaluation needs?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-DOMAIN-FIT",
+      "name": "Domain Fit",
+      "coordinate_id": "COORD-DOMAIN-FIT",
+      "glossary_term_ids": [
+        "TERM-DOMAIN"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "question": "Are Domain terminology, constraints, and evidence expectations correctly applied?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-PROFILE-ALIGNMENT",
+      "name": "ADOS Profile Alignment",
+      "coordinate_id": "COORD-ADOS-PROFILE-ALIGNMENT",
+      "glossary_term_ids": [
+        "TERM-ADOS-PROFILE",
+        "TERM-PILLAR",
+        "TERM-ADOS-PILLAR-SET"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Does the Project materially follow applicable ADOS Profile concepts and Pillars?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-BUILD-PACKAGE-QUALITY",
+      "name": "Build Package Quality",
+      "coordinate_id": "COORD-BUILD-PACKAGE-QUALITY",
+      "glossary_term_ids": [
+        "TERM-BUILD-PACKAGE",
+        "TERM-PROMPT",
+        "TERM-PDD",
+        "TERM-GOAL",
+        "TERM-OBJECTIVE"
+      ],
+      "applies_to": [
+        "build_package"
+      ],
+      "question": "Does the Build Package clearly and coherently shape the intended change?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-AGENT-WORK-FIDELITY",
+      "name": "Building Agent Work Fidelity",
+      "coordinate_id": "COORD-AGENT-WORK-FIDELITY",
+      "glossary_term_ids": [
+        "TERM-BUILDING-AGENT-WORK",
+        "TERM-EXECUTION-TRACE",
+        "TERM-QA-EVIDENCE"
+      ],
+      "applies_to": [
+        "agent_work"
+      ],
+      "question": "Does visible Building Agent Work remain faithful to the Build Package and semantic frame?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-BUILD-RESULT-QUALITY",
+      "name": "Build Result Quality",
+      "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+      "glossary_term_ids": [
+        "TERM-BUILD-RESULT",
+        "TERM-PACKAGE",
+        "TERM-DELIVERY"
+      ],
+      "applies_to": [
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Does the Build Result provide the intended Delivery at suitable quality?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-SEMANTIC-INTEGRITY",
+      "name": "Semantic Integrity",
+      "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+      "glossary_term_ids": [
+        "TERM-GLOSSARY",
+        "TERM-STATEMENT",
+        "TERM-CLAIM",
+        "TERM-QUALITY-DRIFT"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Are meanings consistent across authoritative surfaces and versions?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-EVIDENCE-SUFFICIENCY",
+      "name": "Evidence Sufficiency",
+      "coordinate_id": "COORD-EVIDENCE-SUFFICIENCY",
+      "glossary_term_ids": [
+        "TERM-QA-EVIDENCE",
+        "TERM-EVIDENCE-LEDGER",
+        "TERM-EXECUTION-TRACE",
+        "TERM-CLAIM"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Is the conclusion adequately supported and correctly scoped?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-DRIFT-CONTROL",
+      "name": "Drift Control",
+      "coordinate_id": "COORD-DRIFT-CONTROL",
+      "glossary_term_ids": [
+        "TERM-QUALITY-DRIFT",
+        "TERM-BASELINE-VERSION",
+        "TERM-PROBLEM-PATTERN"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "build_result",
+        "cross_version"
+      ],
+      "question": "Does the evolution preserve important baseline qualities and expose harmful drift?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
+    },
+    {
+      "metric_id": "MET-CORRECTIVE-FOCUS",
+      "name": "Corrective Focus",
+      "coordinate_id": "COORD-CORRECTIVE-FOCUS",
+      "glossary_term_ids": [
+        "TERM-CORRECTIVE-PROMPT",
+        "TERM-PROBLEM-PATTERN",
+        "TERM-GOAL",
+        "TERM-OBJECTIVE"
+      ],
+      "applies_to": [
+        "build_package",
+        "agent_work",
+        "cross_version"
+      ],
+      "question": "Does the corrective action address the observed mechanism without unrelated expansion?",
+      "scale": {
+        "type": "0_to_10_optional",
+        "anchors": {
+          "9-10": "Strong, coherent, and well supported.",
+          "7-8": "Good with bounded limitations.",
+          "5-6": "Mixed, incomplete, or uncertain.",
+          "3-4": "Weak or materially drifting.",
+          "0-2": "Broken, contradicted, or substantially misaligned.",
+          "null": "Not scored because evidence is insufficient or the metric is inapplicable."
+        }
+      },
+      "required_interpretation": [
+        "score",
+        "confidence",
+        "evidence_status",
+        "rationale"
+      ],
+      "guardrails": [
+        "Do not infer quality from counts alone.",
+        "Do not convert missing evidence into a midpoint.",
+        "Do not treat this Metric as a release gate.",
+        "Explain coordinate-level degradation even when the total score increases."
+      ]
     }
   ],
-  "scoring": {
-    "metric_score_range": {
-      "minimum": 0,
-      "maximum": 10
-    },
-    "weighted_score_formula": "sum(metric_weight * metric_score / 10)",
-    "rounding": "Round final stage and document scores to two decimal places; retain unrounded values during calculation.",
-    "unknown_rule": "Do not replace missing evidence with a midpoint. Record null and reduce evidence coverage."
+  "summary_policy": {
+    "total_score_optional": true,
+    "total_score_method": "Weighted or unweighted aggregation may be used only when the report identifies the method and does not hide coordinate-level drift.",
+    "default_score_scale": "0_to_10",
+    "confidence_values": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "evidence_status_values": [
+      "confirmed",
+      "partial",
+      "contradicted",
+      "unconfirmed"
+    ]
   }
 }

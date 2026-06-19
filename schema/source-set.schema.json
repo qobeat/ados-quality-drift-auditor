@@ -1,22 +1,23 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schema/source-set.schema.json",
-  "title": "Project Evolution Source Set Schema",
+  "title": "Project Evolution Source Set",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "$schema",
     "schema_version",
     "source_set_id",
     "project",
     "versions",
-    "artifacts"
+    "inputs"
   ],
   "properties": {
     "$schema": {
       "type": "string"
     },
     "schema_version": {
-      "const": "0.1.0"
+      "const": "0.2.0"
     },
     "source_set_id": {
       "type": "string",
@@ -49,6 +50,19 @@
             "null"
           ],
           "pattern": "^ARCH-[A-Z0-9-]+$"
+        },
+        "declared_domain_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^DOMAIN-[A-Z0-9-]+$"
+        },
+        "claimed_ados_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -62,7 +76,7 @@
           "version_id",
           "label",
           "sequence",
-          "status"
+          "role"
         ],
         "properties": {
           "version_id": {
@@ -74,14 +88,14 @@
             "minLength": 1
           },
           "sequence": {
-            "type": "integer",
-            "minimum": 0
+            "type": "number"
           },
-          "status": {
+          "role": {
             "enum": [
               "baseline_candidate",
               "target",
               "historical",
+              "comparison",
               "unknown"
             ]
           },
@@ -98,7 +112,7 @@
         }
       }
     },
-    "artifacts": {
+    "inputs": {
       "type": "array",
       "minItems": 1,
       "items": {
@@ -109,11 +123,9 @@
           "version_id",
           "input_type",
           "name",
-          "path",
-          "media_type",
-          "role",
+          "locator",
           "availability",
-          "evidence_scope"
+          "scope"
         ],
         "properties": {
           "source_id": {
@@ -135,17 +147,12 @@
             "type": "string",
             "minLength": 1
           },
-          "path": {
+          "locator": {
             "type": "string",
             "minLength": 1
           },
           "media_type": {
-            "type": "string",
-            "minLength": 3
-          },
-          "role": {
-            "type": "string",
-            "minLength": 3
+            "type": "string"
           },
           "availability": {
             "enum": [
@@ -162,12 +169,11 @@
             ],
             "pattern": "^[0-9a-f]{64}$"
           },
-          "evidence_scope": {
+          "scope": {
             "type": "array",
             "minItems": 1,
             "items": {
-              "type": "string",
-              "minLength": 2
+              "type": "string"
             }
           },
           "notes": {

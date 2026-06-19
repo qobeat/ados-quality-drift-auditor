@@ -1,0 +1,202 @@
+{
+  "$schema": "../schema/domain-bank.schema.json",
+  "schema_version": "0.2.0",
+  "bank_id": "DOMAIN-BANK-QDA-V0.2",
+  "selection_policy": {
+    "primary_count": 1,
+    "fallback_domain_id": "DOMAIN-OTHER",
+    "rules": [
+      "Select the primary subject area of the Intent.",
+      "Keep Domain separate from Archetype.",
+      "Record secondary Domains only as context.",
+      "Use DOMAIN-OTHER only with a custom ontology and risk rationale."
+    ]
+  },
+  "domains": [
+    {
+      "domain_id": "DOMAIN-BUSINESS",
+      "name": "Business Domain",
+      "glossary_term_id": "TERM-BUSINESS-DOMAIN",
+      "definition": "Business Domain is the subject-area profile that concerns organizations, customers, operations, products, services, revenue, cost, or business process.",
+      "selection_signals": [
+        "organizations",
+        "customers",
+        "operations",
+        "products",
+        "services",
+        "revenue",
+        "cost"
+      ],
+      "evaluation_focus": [
+        "stakeholder value",
+        "workflow fit",
+        "economics",
+        "operational risk"
+      ],
+      "common_drift_risks": [
+        "unmodeled stakeholder conflict",
+        "workflow mismatch",
+        "value claim without business evidence"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-SCIENCE",
+      "name": "Science Domain",
+      "glossary_term_id": "TERM-SCIENCE-DOMAIN",
+      "definition": "Science Domain is the subject-area profile that concerns scientific inquiry, hypotheses, experiments, models, observations, reproducibility, and falsifiability.",
+      "selection_signals": [
+        "hypothesis",
+        "experiment",
+        "scientific model",
+        "observation",
+        "reproducibility",
+        "falsifiability"
+      ],
+      "evaluation_focus": [
+        "method validity",
+        "provenance",
+        "uncertainty",
+        "reproducibility"
+      ],
+      "common_drift_risks": [
+        "unsupported causal claim",
+        "method drift",
+        "non-reproducible result"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-BUSINESS-TRADING",
+      "name": "Business-Trading Domain",
+      "glossary_term_id": "TERM-BUSINESS-TRADING-DOMAIN",
+      "definition": "Business-Trading Domain is the subject-area profile that concerns markets, trading, portfolio decisions, execution, risk, liquidity, regulation, and financial performance.",
+      "selection_signals": [
+        "market",
+        "trading",
+        "portfolio",
+        "execution",
+        "liquidity",
+        "financial risk"
+      ],
+      "evaluation_focus": [
+        "risk-adjusted performance",
+        "data quality",
+        "market assumptions",
+        "regulation",
+        "irreversibility"
+      ],
+      "common_drift_risks": [
+        "look-ahead bias",
+        "unrealistic execution",
+        "risk omission",
+        "fabricated performance"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-EDUCATION",
+      "name": "Education Domain",
+      "glossary_term_id": "TERM-EDUCATION-DOMAIN",
+      "definition": "Education Domain is the subject-area profile that concerns learning objectives, instruction, assessment, curriculum, learners, and educational outcomes.",
+      "selection_signals": [
+        "learner",
+        "curriculum",
+        "instruction",
+        "assessment",
+        "learning objective"
+      ],
+      "evaluation_focus": [
+        "accuracy",
+        "pedagogy",
+        "learner fit",
+        "assessment validity",
+        "accessibility"
+      ],
+      "common_drift_risks": [
+        "misaligned assessment",
+        "incorrect content",
+        "age/level mismatch",
+        "learning-goal drift"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-SOFTWARE-ENGINEERING",
+      "name": "Software-Engineering Domain",
+      "glossary_term_id": "TERM-SOFTWARE-ENGINEERING-DOMAIN",
+      "definition": "Software-Engineering Domain is the subject-area profile that concerns software architecture, code, APIs, testing, deployment, maintainability, security, and operations.",
+      "selection_signals": [
+        "software architecture",
+        "API",
+        "code",
+        "test",
+        "deployment",
+        "security",
+        "maintainability"
+      ],
+      "evaluation_focus": [
+        "technical correctness",
+        "compatibility",
+        "testing",
+        "security",
+        "operations"
+      ],
+      "common_drift_risks": [
+        "contract regression",
+        "untested integration",
+        "deployment drift",
+        "security weakness"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-GOVERNANCE",
+      "name": "Governance Domain",
+      "glossary_term_id": "TERM-GOVERNANCE-DOMAIN",
+      "definition": "Governance Domain is the subject-area profile that concerns policies, authority, compliance, decision rights, controls, auditability, and institutional rules.",
+      "selection_signals": [
+        "policy",
+        "authority",
+        "compliance",
+        "decision right",
+        "audit",
+        "control"
+      ],
+      "evaluation_focus": [
+        "authority clarity",
+        "applicability",
+        "consistency",
+        "traceability",
+        "control effectiveness"
+      ],
+      "common_drift_risks": [
+        "conflicting authority",
+        "over-governance",
+        "non-operational control",
+        "self-certification"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    },
+    {
+      "domain_id": "DOMAIN-OTHER",
+      "name": "Other Domain",
+      "glossary_term_id": "TERM-OTHER-DOMAIN",
+      "definition": "Other Domain is the subject-area profile that is used when the subject area does not fit the defined primary Domains.",
+      "selection_signals": [
+        "no defined Domain adequately represents the subject area"
+      ],
+      "evaluation_focus": [
+        "custom ontology",
+        "custom constraints",
+        "custom evidence hierarchy"
+      ],
+      "common_drift_risks": [
+        "unexplained fallback",
+        "missing Domain risks",
+        "borrowed metrics without applicability"
+      ],
+      "selection_note": "Select from subject ontology and constraints, not from Project type."
+    }
+  ]
+}

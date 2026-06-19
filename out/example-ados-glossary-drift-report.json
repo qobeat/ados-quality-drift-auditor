@@ -1,0 +1,684 @@
+{
+  "$schema": "../schema/evaluation-report.schema.json",
+  "schema_version": "0.2.0",
+  "report_id": "REPORT-ADOS-GLOSSARY-EVOLUTION-EXAMPLE",
+  "generated_at_utc": "2026-06-19T00:00:00Z",
+  "project": {
+    "project_id": "ados-glossary",
+    "name": "ADOS Glossary",
+    "description": "Example multi-version evaluation showing stronger semantic baseline, later structural growth, false-PASS risk, and fixture overgeneralization."
+  },
+  "versions": [
+    {
+      "version_id": "VER-V1.3",
+      "label": "1.3",
+      "role": "baseline_candidate"
+    },
+    {
+      "version_id": "VER-V1.4",
+      "label": "1.4",
+      "role": "historical"
+    },
+    {
+      "version_id": "VER-V1.5",
+      "label": "1.5",
+      "role": "target"
+    }
+  ],
+  "inputs": [
+    {
+      "source_id": "SRC-V13-RESULT",
+      "version_id": "VER-V1.3",
+      "input_type": "build_result",
+      "name": "ados-glossary-v1.3.zip",
+      "availability": "available",
+      "notes": "Evaluated as baseline candidate."
+    },
+    {
+      "source_id": "SRC-V14-RESULT",
+      "version_id": "VER-V1.4",
+      "input_type": "build_result",
+      "name": "ados-glossary-v1.4.zip",
+      "availability": "available",
+      "notes": "Structurally expanded result."
+    },
+    {
+      "source_id": "SRC-V15-BUILD",
+      "version_id": "VER-V1.5",
+      "input_type": "build_package",
+      "name": "v1.5 control pack",
+      "availability": "available",
+      "notes": "Strong control design."
+    },
+    {
+      "source_id": "SRC-V15-AGENT",
+      "version_id": "VER-V1.5",
+      "input_type": "agent_work",
+      "name": "v1.5 agent response and activity evidence",
+      "availability": "partial",
+      "notes": "Available response, build summary, and activity log."
+    },
+    {
+      "source_id": "SRC-V15-RESULT",
+      "version_id": "VER-V1.5",
+      "input_type": "build_result",
+      "name": "ados-glossary-v1.5.zip",
+      "availability": "available",
+      "notes": "Delivered package."
+    }
+  ],
+  "semantic_frame": {
+    "user_request": {
+      "summary": "Improve ADOS Glossary quality across versions while preserving the concept model and strengthening package/profile behavior.",
+      "evidence_status": "partial",
+      "confidence": "medium",
+      "support_refs": [
+        "prior build prompts and supplied evaluation context"
+      ]
+    },
+    "intent": {
+      "summary": "Produce a stronger schema-governed ADOS Profile and runtime-capable glossary package.",
+      "evidence_status": "confirmed",
+      "confidence": "high",
+      "support_refs": [
+        "v1.4 and v1.5 build-control documents"
+      ]
+    },
+    "goal": {
+      "summary": "Maintain a trustworthy ADOS glossary/profile whose semantics, machine contracts, evidence, and downstream claims remain aligned.",
+      "evidence_status": "confirmed",
+      "confidence": "high",
+      "support_refs": [
+        "v1.3 package authority",
+        "v1.5 PDD Goal"
+      ]
+    },
+    "objectives": [
+      {
+        "summary": "Preserve and synchronize glossary and machine semantic surfaces.",
+        "evidence_status": "confirmed",
+        "confidence": "high",
+        "support_refs": [
+          "glossary/profile objectives"
+        ]
+      },
+      {
+        "summary": "Strengthen schemas and validation without weakening contract meaning.",
+        "evidence_status": "confirmed",
+        "confidence": "high",
+        "support_refs": [
+          "v1.5 schema objectives"
+        ]
+      },
+      {
+        "summary": "Demonstrate downstream behavior through bounded proof artifacts.",
+        "evidence_status": "confirmed",
+        "confidence": "high",
+        "support_refs": [
+          "calculator and broader proof obligations"
+        ]
+      }
+    ],
+    "ados_profile_expectations": [
+      {
+        "summary": "Profile Archetype with Governance and Software-Engineering Domain concerns.",
+        "evidence_status": "confirmed",
+        "confidence": "high",
+        "support_refs": [
+          "package purpose and artifact form"
+        ]
+      },
+      {
+        "summary": "Applicable Pillars include Goal formation, traceability, schema-backed data, semantic reflection, document governance, and ADOS compliance verification.",
+        "evidence_status": "partial",
+        "confidence": "medium",
+        "support_refs": [
+          "ADOS concept model"
+        ]
+      }
+    ],
+    "glossary_terms_used": [
+      {
+        "term_id": "TERM-PROFILE-ARCHETYPE",
+        "evaluation_purpose": "Classify the primary Delivery."
+      },
+      {
+        "term_id": "TERM-GOVERNANCE-DOMAIN",
+        "evaluation_purpose": "Interpret authority and compliance concerns."
+      },
+      {
+        "term_id": "TERM-GOAL",
+        "evaluation_purpose": "Establish the desired end state."
+      },
+      {
+        "term_id": "TERM-QUALITY-DRIFT",
+        "evaluation_purpose": "Classify cross-version degradation."
+      },
+      {
+        "term_id": "TERM-BASELINE-VERSION",
+        "evaluation_purpose": "Select the strongest next baseline."
+      },
+      {
+        "term_id": "TERM-QA-EVIDENCE",
+        "evaluation_purpose": "Interpret validation and calculator proof claims."
+      }
+    ]
+  },
+  "selected_archetype": {
+    "id": "ARCH-PROFILE",
+    "confidence": "high",
+    "rationale": "The primary Delivery defines glossary, schema, terminology, governance, and profile meaning for downstream Projects.",
+    "alternatives": [
+      {
+        "id": "ARCH-RUNTIME",
+        "reason_not_selected": "Runtime proof is secondary to the profile/glossary Delivery."
+      },
+      {
+        "id": "ARCH-PROMPT",
+        "reason_not_selected": "Prompts control builds but are not the primary Delivery."
+      }
+    ]
+  },
+  "selected_domain": {
+    "id": "DOMAIN-GOVERNANCE",
+    "confidence": "high",
+    "rationale": "The Project primarily governs terminology, package meaning, authority, compliance, and quality interpretation.",
+    "alternatives": [
+      {
+        "id": "DOMAIN-SOFTWARE-ENGINEERING",
+        "reason_not_selected": "Software engineering is important but secondary to the governance/profile purpose."
+      }
+    ]
+  },
+  "stage_evaluations": [
+    {
+      "stage_evaluation_id": "STAGE-V13-RESULT",
+      "version_id": "VER-V1.3",
+      "input_type": "build_result",
+      "source_ids": [
+        "SRC-V13-RESULT"
+      ],
+      "coordinates": [
+        {
+          "coordinate_id": "COORD-GOAL-ALIGNMENT",
+          "metric_id": "MET-GOAL-ALIGNMENT",
+          "score": 8.0,
+          "confidence": "high",
+          "evidence_status": "confirmed",
+          "rationale": "v1.3 remains closely aligned with the glossary/profile Goal.",
+          "support_refs": [
+            "v1.3 package evaluation"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+          "metric_id": "MET-SEMANTIC-INTEGRITY",
+          "score": 9.0,
+          "confidence": "high",
+          "evidence_status": "confirmed",
+          "rationale": "Glossary, registry, concept matrix, and SKOS were materially synchronized.",
+          "support_refs": [
+            "v1.3 semantic comparison"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+          "metric_id": "MET-BUILD-RESULT-QUALITY",
+          "score": 7.5,
+          "confidence": "high",
+          "evidence_status": "confirmed",
+          "rationale": "Strong contracts with bounded packaging and reference defects.",
+          "support_refs": [
+            "v1.3 package evaluation"
+          ]
+        }
+      ],
+      "total_score": 81.7,
+      "total_score_method": "Illustrative average of the three reported coordinates scaled to 100.",
+      "strengths": [
+        "Strong semantic synchronization.",
+        "Strict machine contracts relative to later versions."
+      ],
+      "limitations": [
+        "Some stale hashes and references.",
+        "No strong package-local validation runtime."
+      ],
+      "uncertainties": []
+    },
+    {
+      "stage_evaluation_id": "STAGE-V14-RESULT",
+      "version_id": "VER-V1.4",
+      "input_type": "build_result",
+      "source_ids": [
+        "SRC-V14-RESULT"
+      ],
+      "coordinates": [
+        {
+          "coordinate_id": "COORD-GOAL-ALIGNMENT",
+          "metric_id": "MET-GOAL-ALIGNMENT",
+          "score": 6.0,
+          "confidence": "high",
+          "evidence_status": "partial",
+          "rationale": "The package expanded the profile/runtime idea but drifted from semantic reliability.",
+          "support_refs": [
+            "v1.4 comparison"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+          "metric_id": "MET-SEMANTIC-INTEGRITY",
+          "score": 4.0,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "New terms and exports were not fully synchronized.",
+          "support_refs": [
+            "v1.4 semantic comparison"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+          "metric_id": "MET-BUILD-RESULT-QUALITY",
+          "score": 5.5,
+          "confidence": "high",
+          "evidence_status": "partial",
+          "rationale": "Structure improved, but work grounding, evidence, and validator sensitivity were weak.",
+          "support_refs": [
+            "v1.4 package evaluation"
+          ]
+        }
+      ],
+      "total_score": 51.7,
+      "total_score_method": "Illustrative average of the three reported coordinates scaled to 100.",
+      "strengths": [
+        "Cleaner folder model.",
+        "JSON-only ADR direction.",
+        "Functional calculator fixture."
+      ],
+      "limitations": [
+        "Semantic desynchronization.",
+        "Weak validator sensitivity.",
+        "Ungrounded work records."
+      ],
+      "uncertainties": []
+    },
+    {
+      "stage_evaluation_id": "STAGE-V15-BUILD",
+      "version_id": "VER-V1.5",
+      "input_type": "build_package",
+      "source_ids": [
+        "SRC-V15-BUILD"
+      ],
+      "coordinates": [
+        {
+          "coordinate_id": "COORD-BUILD-PACKAGE-QUALITY",
+          "metric_id": "MET-BUILD-PACKAGE-QUALITY",
+          "score": 8.5,
+          "confidence": "high",
+          "evidence_status": "confirmed",
+          "rationale": "The control pack clearly defined strict schema, Reflection, evidence, and replay intentions.",
+          "support_refs": [
+            "v1.5 control pack"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-GOAL-ALIGNMENT",
+          "metric_id": "MET-GOAL-ALIGNMENT",
+          "score": 9.0,
+          "confidence": "high",
+          "evidence_status": "confirmed",
+          "rationale": "The dual glossary/profile and runtime Goal was explicit.",
+          "support_refs": [
+            "v1.5 PDD"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-DRIFT-CONTROL",
+          "metric_id": "MET-DRIFT-CONTROL",
+          "score": 7.0,
+          "confidence": "medium",
+          "evidence_status": "partial",
+          "rationale": "Controls named drift risks but left some evidence and replay mechanics under-specified.",
+          "support_refs": [
+            "v1.5 PDD and ADRs"
+          ]
+        }
+      ],
+      "total_score": 81.7,
+      "total_score_method": "Illustrative average of the three reported coordinates scaled to 100.",
+      "strengths": [
+        "Strong control concepts.",
+        "Explicit semantic and schema objectives."
+      ],
+      "limitations": [
+        "Some essential mechanics remained builder-selected."
+      ],
+      "uncertainties": []
+    },
+    {
+      "stage_evaluation_id": "STAGE-V15-AGENT",
+      "version_id": "VER-V1.5",
+      "input_type": "agent_work",
+      "source_ids": [
+        "SRC-V15-AGENT"
+      ],
+      "coordinates": [
+        {
+          "coordinate_id": "COORD-AGENT-WORK-FIDELITY",
+          "metric_id": "MET-AGENT-WORK-FIDELITY",
+          "score": 4.0,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "Execution reduced several strong controls to status assertions and shallow contracts.",
+          "support_refs": [
+            "agent response and activity log"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-EVIDENCE-SUFFICIENCY",
+          "metric_id": "MET-EVIDENCE-SUFFICIENCY",
+          "score": 3.0,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "Many verification records did not contain observation-bearing evidence.",
+          "support_refs": [
+            "evidence inspection"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-DRIFT-CONTROL",
+          "metric_id": "MET-DRIFT-CONTROL",
+          "score": 3.5,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "The agent self-certified PASS despite unresolved control-to-result drift.",
+          "support_refs": [
+            "adversarial evaluation"
+          ]
+        }
+      ],
+      "total_score": 35.0,
+      "total_score_method": "Illustrative average of the three reported coordinates scaled to 100.",
+      "strengths": [
+        "Correct ADR installation.",
+        "External proof boundary was respected."
+      ],
+      "limitations": [
+        "Assertion-only evidence.",
+        "Proof origin did not establish final-package replay.",
+        "Self-owned verdict."
+      ],
+      "uncertainties": [
+        "The available work evidence is partial."
+      ]
+    },
+    {
+      "stage_evaluation_id": "STAGE-V15-RESULT",
+      "version_id": "VER-V1.5",
+      "input_type": "build_result",
+      "source_ids": [
+        "SRC-V15-RESULT"
+      ],
+      "coordinates": [
+        {
+          "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+          "metric_id": "MET-SEMANTIC-INTEGRITY",
+          "score": 4.0,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "Old-version references, candidate boilerplate, and export gaps remained.",
+          "support_refs": [
+            "v1.5 semantic review"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+          "metric_id": "MET-BUILD-RESULT-QUALITY",
+          "score": 5.0,
+          "confidence": "high",
+          "evidence_status": "partial",
+          "rationale": "The Package was structurally complete but weak in critical contracts and replay evidence.",
+          "support_refs": [
+            "v1.5 package review"
+          ]
+        },
+        {
+          "coordinate_id": "COORD-EVIDENCE-SUFFICIENCY",
+          "metric_id": "MET-EVIDENCE-SUFFICIENCY",
+          "score": 3.0,
+          "confidence": "high",
+          "evidence_status": "contradicted",
+          "rationale": "Internal PASS and zero findings were not supported by defect-sensitive evidence.",
+          "support_refs": [
+            "adversarial mutation results"
+          ]
+        }
+      ],
+      "total_score": 40.0,
+      "total_score_method": "Illustrative average of the three reported coordinates scaled to 100.",
+      "strengths": [
+        "Exact archive inventory.",
+        "Expanded ADR authority.",
+        "Useful structural organization."
+      ],
+      "limitations": [
+        "Permissive schemas.",
+        "False-PASS validator behavior.",
+        "Incomplete semantic synchronization."
+      ],
+      "uncertainties": []
+    }
+  ],
+  "drift_comparisons": [
+    {
+      "comparison_id": "CMP-V13-V14-RESULT",
+      "from_version_id": "VER-V1.3",
+      "to_version_id": "VER-V1.4",
+      "comparison_type": "result_to_result",
+      "coordinate_deltas": [
+        {
+          "coordinate_id": "COORD-SEMANTIC-INTEGRITY",
+          "from_score": 9.0,
+          "to_score": 4.0,
+          "delta": -5.0,
+          "direction": "degradation",
+          "confidence": "high",
+          "rationale": "Term and export synchronization degraded."
+        },
+        {
+          "coordinate_id": "COORD-BUILD-RESULT-QUALITY",
+          "from_score": 7.5,
+          "to_score": 5.5,
+          "delta": -2.0,
+          "direction": "mixed",
+          "confidence": "high",
+          "rationale": "Structure improved while verified contracts and evidence weakened."
+        }
+      ],
+      "drift_findings": [
+        {
+          "finding_id": "DRIFT-V14-SEMANTIC",
+          "governing_term_ids": [
+            "TERM-GLOSSARY",
+            "TERM-QUALITY-DRIFT"
+          ],
+          "affected_coordinate_ids": [
+            "COORD-SEMANTIC-INTEGRITY"
+          ],
+          "observation": "v1.4 added terms and structures without fully synchronizing semantic surfaces.",
+          "direction": "degradation",
+          "severity": "high",
+          "confidence": "high",
+          "consequence": "Consumers could receive different concept coverage.",
+          "risk": "Later versions may preserve the richer structure while compounding semantic inconsistency.",
+          "support_refs": [
+            "v1.3-v1.4 evaluation"
+          ]
+        }
+      ],
+      "conclusion": "v1.4 introduced useful structure but degraded key baseline semantic and validation qualities."
+    },
+    {
+      "comparison_id": "CMP-V15-BUILD-AGENT",
+      "from_version_id": "VER-V1.5",
+      "to_version_id": "VER-V1.5",
+      "comparison_type": "build_package_to_agent_work",
+      "coordinate_deltas": [
+        {
+          "coordinate_id": "COORD-DRIFT-CONTROL",
+          "from_score": 7.0,
+          "to_score": 3.5,
+          "delta": -3.5,
+          "direction": "degradation",
+          "confidence": "high",
+          "rationale": "Strong control intentions were not operationalized."
+        }
+      ],
+      "drift_findings": [
+        {
+          "finding_id": "DRIFT-V15-CONTROL-EXECUTION",
+          "governing_term_ids": [
+            "TERM-BUILD-PACKAGE",
+            "TERM-BUILDING-AGENT-WORK",
+            "TERM-QUALITY-DRIFT"
+          ],
+          "affected_coordinate_ids": [
+            "COORD-BUILD-PACKAGE-QUALITY",
+            "COORD-AGENT-WORK-FIDELITY",
+            "COORD-EVIDENCE-SUFFICIENCY"
+          ],
+          "observation": "The agent implemented nominal coverage and PASS records without equivalent semantic and evidence strength.",
+          "direction": "degradation",
+          "severity": "critical",
+          "confidence": "high",
+          "consequence": "The result appeared compliant with the control pack while missing its core quality meaning.",
+          "risk": "Future builds may optimize for report fields instead of intended quality.",
+          "support_refs": [
+            "v1.5 agent and package evaluation"
+          ]
+        }
+      ],
+      "conclusion": "The decisive v1.5 drift entered between the strong Build Package and agent execution."
+    }
+  ],
+  "problem_matches": [
+    {
+      "problem_id": "PROB-BASELINE-REGRESSION",
+      "version_ids": [
+        "VER-V1.3",
+        "VER-V1.4",
+        "VER-V1.5"
+      ],
+      "confidence": "high",
+      "observed_signals": [
+        "newer versions added structure but weakened confirmed semantic and contract quality"
+      ],
+      "consequence": "Latest-version baselines would preserve regressions.",
+      "risk": "Further corrective work would begin from a weaker foundation.",
+      "corrective_actions": [
+        "Use v1.3 as the primary semantic baseline.",
+        "Review later components individually before reuse."
+      ]
+    },
+    {
+      "problem_id": "PROB-FALSE-PASS",
+      "version_ids": [
+        "VER-V1.4",
+        "VER-V1.5"
+      ],
+      "confidence": "high",
+      "observed_signals": [
+        "package-owned validators returned PASS while severe defects remained detectable externally"
+      ],
+      "consequence": "Release confidence was overstated.",
+      "risk": "Defects propagate under a clean internal report.",
+      "corrective_actions": [
+        "Narrow PASS Claims to their actual check scope.",
+        "Use defect-sensitive checks for relevant properties."
+      ]
+    },
+    {
+      "problem_id": "PROB-PROOF-FIXTURE-OVERGENERALIZATION",
+      "version_ids": [
+        "VER-V1.4",
+        "VER-V1.5"
+      ],
+      "confidence": "high",
+      "observed_signals": [
+        "calculator tests were cited beyond arithmetic behavior"
+      ],
+      "consequence": "A bounded functional proof amplified confidence in unrelated package quality.",
+      "risk": "Projects optimize for one known fixture.",
+      "corrective_actions": [
+        "Map proof tests to exact Claims.",
+        "Use the calculator only as a bounded historical example."
+      ]
+    },
+    {
+      "problem_id": "PROB-SEMANTIC-SURFACE-DRIFT",
+      "version_ids": [
+        "VER-V1.4",
+        "VER-V1.5"
+      ],
+      "confidence": "high",
+      "observed_signals": [
+        "registry and export concept coverage differed"
+      ],
+      "consequence": "Profile meaning was not uniform across surfaces.",
+      "risk": "Downstream interpretation diverges.",
+      "corrective_actions": [
+        "Restore a single glossary authority and synchronize dependent surfaces by stable IDs."
+      ]
+    }
+  ],
+  "baseline_recommendation": {
+    "selected_version_id": "VER-V1.3",
+    "confidence": "high",
+    "rationale": "v1.3 provides the strongest confirmed semantic and contract baseline for future glossary/profile improvements.",
+    "rejected_alternatives": [
+      {
+        "version_id": "VER-V1.4",
+        "reason": "Useful structural additions do not offset semantic, evidence, and validator regression."
+      },
+      {
+        "version_id": "VER-V1.5",
+        "reason": "Control design is strong, but agent execution and final result do not support baseline trust."
+      }
+    ]
+  },
+  "corrective_prompt": {
+    "text": "Build the next version from the v1.3 semantic and contract baseline. Review v1.4/v1.5 structural ideas individually. Preserve one glossary authority, strengthen machine contracts without generic coverage, scope every proof to the behavior it tests, and do not derive package-level quality from self-reported PASS.",
+    "based_on_problem_ids": [
+      "PROB-BASELINE-REGRESSION",
+      "PROB-FALSE-PASS",
+      "PROB-PROOF-FIXTURE-OVERGENERALIZATION",
+      "PROB-SEMANTIC-SURFACE-DRIFT"
+    ],
+    "goal_and_scope_protection": "Preserve the glossary/profile Goal and do not introduce unrelated execution governance.",
+    "expected_result": "A semantically synchronized version that improves selected structural surfaces without inheriting later regressions."
+  },
+  "uncertainties": [
+    "The example uses prior evaluation summaries rather than reproducing every original build command."
+  ],
+  "final_assessment": {
+    "value": "degradation",
+    "rationale": "From v1.3 to the later delivered versions, structural completeness improved but semantic integrity, evidence quality, and validator trust degraded.",
+    "coordinate_summary": {
+      "improved": [
+        "COORD-BUILD-PACKAGE-QUALITY"
+      ],
+      "degraded": [
+        "COORD-SEMANTIC-INTEGRITY",
+        "COORD-EVIDENCE-SUFFICIENCY",
+        "COORD-DRIFT-CONTROL"
+      ],
+      "unchanged": [],
+      "unconfirmed": [
+        "COORD-DOMAIN-FIT"
+      ]
+    },
+    "limitations": [
+      "The v1.5 work trace is partial.",
+      "Scores are illustrative coordinate judgments, not release verdicts."
+    ]
+  }
+}

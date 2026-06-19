@@ -1,16 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schema/adr-index.schema.json",
-  "title": "ADR Index Schema",
+  "title": "ADR Index",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "$schema",
     "schema_version",
     "records"
   ],
   "properties": {
+    "$schema": {
+      "const": "../schema/adr-index.schema.json"
+    },
     "schema_version": {
-      "const": "0.1.0"
+      "const": "0.2.0"
     },
     "records": {
       "type": "array",
@@ -30,13 +34,15 @@
             "pattern": "^ADR-[0-9]{3}$"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "minLength": 5
           },
           "status": {
             "enum": [
-              "accepted",
               "proposed",
-              "superseded"
+              "accepted",
+              "superseded",
+              "historical"
             ]
           },
           "path": {
