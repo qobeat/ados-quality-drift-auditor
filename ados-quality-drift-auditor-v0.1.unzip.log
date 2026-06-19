@@ -1,0 +1,23 @@
+== [ ZIP INFO ] ===
+/mnt/c/Users/kirae/Downloads/fox-dev/ados-quality-drift-auditor-v0.1.zip
+
+TIME: 2026-06-18 19:27:11
+
+TOTAL SIZE: 127.2KB (130258 bytes)
+
+CHECKSUM: e8369bc2 (md5-8)
+
+== [ UNZIP INFO ] ===
+PID:1788
+
+CMD: /home/alex/.local/bin/unzip-gpt.sh -x auditor
+
+TIME: 2026-06-18 20:57:39 -0400
+
+LOG: /home/alex/tmp/unzip-gpt-rsync.HX2M52.log
+
+TOTAL SIZE: 429.7KB (439987 bytes)
+
+NUMBER OF FILES: 71
+
+--

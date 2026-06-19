@@ -1,0 +1,179 @@
+{
+  "schema_version": "0.1.0",
+  "package_name": "ados-quality-drift-auditor",
+  "schemas": [
+    {
+      "schema_id": "SCHEMA-ADR-INDEX",
+      "path": "schema/adr-index.schema.json",
+      "sha256": "af14f82e7723a28acd9e45bf6e82be280168e128c1ae3d90822dbb0ffd0392d3"
+    },
+    {
+      "schema_id": "SCHEMA-ARCHETYPE-BANK",
+      "path": "schema/archetype-bank.schema.json",
+      "sha256": "038ecd415dac0b62e3ec8b10e5eb450bcabd0a072ce7fed015d380b1b050454f"
+    },
+    {
+      "schema_id": "SCHEMA-ARCHETYPE-PROFILE",
+      "path": "schema/archetype-profile.schema.json",
+      "sha256": "a2086d6c88eb73df63543865243448aed82369f7a31807076d1859c01b4674af"
+    },
+    {
+      "schema_id": "SCHEMA-CLAIM-LEDGER",
+      "path": "schema/claim-ledger.schema.json",
+      "sha256": "7f39082b88c92102ba982e2921a57ee9064eb46437a2b99828e37b6319e7efe4"
+    },
+    {
+      "schema_id": "SCHEMA-EVALUATION-REPORT",
+      "path": "schema/evaluation-report.schema.json",
+      "sha256": "d4f0e462a003a3ce078598af0be4b67b1a7fa70c70fb4582cca15b78f98a98b9"
+    },
+    {
+      "schema_id": "SCHEMA-EVIDENCE-LEDGER",
+      "path": "schema/evidence-ledger.schema.json",
+      "sha256": "9e0d12ff9e84e54d7dda9fffa602b7942bac1ba719450f779ba08b0b8b8896bb"
+    },
+    {
+      "schema_id": "SCHEMA-MANIFEST",
+      "path": "schema/manifest.schema.json",
+      "sha256": "4f1dfa6b52ea76918157db4ce21a9a49ab37c0cd94b4ad29576f749ee3cbaf29"
+    },
+    {
+      "schema_id": "SCHEMA-METRIC-BANK",
+      "path": "schema/metric-bank.schema.json",
+      "sha256": "1996e2289e6b3fa1896df1a7c2bc5a7d96e077c8588403a21a03018870f429d2"
+    },
+    {
+      "schema_id": "SCHEMA-PACKAGE",
+      "path": "schema/package.schema.json",
+      "sha256": "7357aa2908cb83598da170ef66054c035637eb883f4a09e3ce12e43f502b9c95"
+    },
+    {
+      "schema_id": "SCHEMA-PROBLEM-BANK",
+      "path": "schema/problem-bank.schema.json",
+      "sha256": "9397c6098ae0a932e3cc7da8491384d21e71f4e5af232ba6cdac559dfc55c187"
+    },
+    {
+      "schema_id": "SCHEMA-REPORT-POLICY",
+      "path": "schema/report-policy.schema.json",
+      "sha256": "81b7e075f053503cd898f4ce20df61415d8b742598501b70724b0b97723b01c3"
+    },
+    {
+      "schema_id": "SCHEMA-SCHEMA-INDEX",
+      "path": "schema/schema-index.schema.json",
+      "sha256": "79b26318beb113086975358079459112a806b82fcfc0ac84b128a8550d86d3c7"
+    },
+    {
+      "schema_id": "SCHEMA-SKILL",
+      "path": "schema/skill.schema.json",
+      "sha256": "8da57efe15a8bd9210fd8de80f4d548f50b86e8281f660993c7b35f9442e4f91"
+    },
+    {
+      "schema_id": "SCHEMA-SOURCE-SET",
+      "path": "schema/source-set.schema.json",
+      "sha256": "60864a3ab4f70fac0e96d42a6ca3f5d09aa2bcb305201cd1c8e7dc881ed1a10b"
+    }
+  ],
+  "bindings": [
+    {
+      "instance": "PACKAGE.json",
+      "schema": "schema/package.schema.json"
+    },
+    {
+      "instance": "adr/index.json",
+      "schema": "schema/adr-index.schema.json"
+    },
+    {
+      "instance": "examples/ados-glossary-evolution-input.json",
+      "schema": "schema/source-set.schema.json"
+    },
+    {
+      "instance": "examples/input-template.json",
+      "schema": "schema/source-set.schema.json"
+    },
+    {
+      "instance": "manifest.json",
+      "schema": "schema/manifest.schema.json"
+    },
+    {
+      "instance": "metrics/metric-bank.json",
+      "schema": "schema/metric-bank.schema.json"
+    },
+    {
+      "instance": "metrics/report-policy.json",
+      "schema": "schema/report-policy.schema.json"
+    },
+    {
+      "instance": "out/example-ados-glossary-claim-ledger.json",
+      "schema": "schema/claim-ledger.schema.json"
+    },
+    {
+      "instance": "out/example-ados-glossary-evidence-ledger.json",
+      "schema": "schema/evidence-ledger.schema.json"
+    },
+    {
+      "instance": "out/example-ados-glossary-evolution-report.json",
+      "schema": "schema/evaluation-report.schema.json"
+    },
+    {
+      "instance": "out/report-template.json",
+      "schema": "schema/evaluation-report.schema.json"
+    },
+    {
+      "instance": "problems/problem-bank.json",
+      "schema": "schema/problem-bank.schema.json"
+    },
+    {
+      "instance": "profiles/archetype-bank.json",
+      "schema": "schema/archetype-bank.schema.json"
+    },
+    {
+      "instance": "profiles/data-pipeline-dataset.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/documentation-specification.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/general-engineered-artifact.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/infrastructure-platform.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/ml-agent-system.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/multi-artifact-profile-runtime.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/policy-control-pack.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/schema-governed-knowledge.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/software-application-service.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "profiles/software-library-cli-sdk.json",
+      "schema": "schema/archetype-profile.schema.json"
+    },
+    {
+      "instance": "schema/schema-index.json",
+      "schema": "schema/schema-index.schema.json"
+    },
+    {
+      "instance": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.json",
+      "schema": "schema/skill.schema.json"
+    }
+  ],
+  "exemptions": []
+}

@@ -1,0 +1,194 @@
+{
+  "$schema": "../schema/archetype-profile.schema.json",
+  "profile_id": "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
+  "version": "0.1.0",
+  "name": "Schema-governed knowledge package",
+  "description": "Glossaries, taxonomies, ontologies, registries, metadata packs, or knowledge artifacts governed by schemas and synchronized representations.",
+  "selection": {
+    "positive_signals": [
+      "glossary",
+      "taxonomy",
+      "ontology",
+      "JSON Schema",
+      "registry",
+      "SKOS",
+      "controlled vocabulary"
+    ],
+    "exclusion_signals": [
+      "runtime behavior is the sole deliverable"
+    ],
+    "minimum_confidence_for_primary": 0.6,
+    "fallback_profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT"
+  },
+  "stage_metric_weights": {
+    "build_package": [
+      {
+        "metric_id": "BP-001",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-002",
+        "weight": 14
+      },
+      {
+        "metric_id": "BP-003",
+        "weight": 8
+      },
+      {
+        "metric_id": "BP-004",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-005",
+        "weight": 14
+      },
+      {
+        "metric_id": "BP-006",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-007",
+        "weight": 14
+      },
+      {
+        "metric_id": "BP-008",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-009",
+        "weight": 6
+      }
+    ],
+    "agent_work": [
+      {
+        "metric_id": "AW-001",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-002",
+        "weight": 12
+      },
+      {
+        "metric_id": "AW-003",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-004",
+        "weight": 14
+      },
+      {
+        "metric_id": "AW-005",
+        "weight": 18
+      },
+      {
+        "metric_id": "AW-006",
+        "weight": 16
+      },
+      {
+        "metric_id": "AW-007",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-008",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-009",
+        "weight": 8
+      }
+    ],
+    "build_result": [
+      {
+        "metric_id": "BR-001",
+        "weight": 10
+      },
+      {
+        "metric_id": "BR-002",
+        "weight": 4
+      },
+      {
+        "metric_id": "BR-003",
+        "weight": 20
+      },
+      {
+        "metric_id": "BR-004",
+        "weight": 20
+      },
+      {
+        "metric_id": "BR-005",
+        "weight": 12
+      },
+      {
+        "metric_id": "BR-006",
+        "weight": 12
+      },
+      {
+        "metric_id": "BR-007",
+        "weight": 6
+      },
+      {
+        "metric_id": "BR-008",
+        "weight": 8
+      },
+      {
+        "metric_id": "BR-009",
+        "weight": 6
+      },
+      {
+        "metric_id": "BR-010",
+        "weight": 2
+      }
+    ]
+  },
+  "common_axis_profile": "metrics/metric-bank.json#common_axes",
+  "primary_risks": [
+    "schema weakening",
+    "semantic export desynchronization",
+    "inventory mismatch",
+    "boilerplate terms",
+    "identity drift"
+  ],
+  "mandatory_evidence": {
+    "build_package": [
+      "semantic authority map",
+      "schema strictness floor",
+      "synchronization checks"
+    ],
+    "agent_work": [
+      "schema diff",
+      "term/export comparison",
+      "reference resolution"
+    ],
+    "build_result": [
+      "positive and negative schema validation",
+      "cross-representation semantic comparison",
+      "exact inventory"
+    ]
+  },
+  "applicable_problem_ids": [
+    "PROB-002",
+    "PROB-008",
+    "PROB-009",
+    "PROB-010",
+    "PROB-011",
+    "PROB-019",
+    "PROB-023"
+  ],
+  "drift_dimensions": [
+    "DRIFT-GOAL",
+    "DRIFT-SCOPE",
+    "DRIFT-SEMANTIC",
+    "DRIFT-CONTRACT",
+    "DRIFT-STRUCTURE",
+    "DRIFT-EVIDENCE",
+    "DRIFT-VALIDATOR",
+    "DRIFT-REPRO",
+    "DRIFT-DEPENDENCY",
+    "DRIFT-DISCIPLINE"
+  ],
+  "proof_policy": {
+    "bounded_claim_rule": "A proof demonstrates only the claims exercised by its oracle.",
+    "fixture_pass_is_release_pass": false,
+    "require_final_artifact_origin": false
+  }
+}

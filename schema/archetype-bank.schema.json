@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/archetype-bank.schema.json",
+  "title": "Archetype Bank Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "bank_id",
+    "version",
+    "selection_policy",
+    "profiles"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "bank_id": {
+      "type": "string",
+      "pattern": "^ARCHETYPE-BANK-[A-Z0-9._-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_archetype_count",
+        "method",
+        "tie_breaker"
+      ],
+      "properties": {
+        "primary_archetype_count": {
+          "const": 1
+        },
+        "method": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "tie_breaker": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "profile_id",
+          "name",
+          "path",
+          "summary"
+        ],
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "pattern": "^ARCH-[A-Z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^profiles/.+\\.json$"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    }
+  }
+}

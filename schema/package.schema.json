@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/package.schema.json",
+  "title": "ADOS Quality Drift Auditor Package Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "package_name",
+    "slug",
+    "version",
+    "artifact_name",
+    "status",
+    "goal",
+    "objectives",
+    "primary_skill",
+    "machine_skill",
+    "standards",
+    "based_on",
+    "entrypoints"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "schema/package.schema.json"
+    },
+    "package_name": {
+      "const": "ados-quality-drift-auditor"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^ados-[a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "artifact_name": {
+      "type": "string",
+      "pattern": "^ados-[a-z0-9-]+-v[0-9]+\\.[0-9]+\\.zip$"
+    },
+    "status": {
+      "enum": [
+        "prototype",
+        "candidate",
+        "production",
+        "deprecated"
+      ]
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 40
+    },
+    "objectives": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 20
+      }
+    },
+    "primary_skill": {
+      "type": "string",
+      "pattern": "^skills/.+\\.md$"
+    },
+    "machine_skill": {
+      "type": "string",
+      "pattern": "^skills/.+\\.json$"
+    },
+    "standards": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "usage"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "version": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    },
+    "based_on": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project",
+        "version",
+        "adopted_patterns",
+        "not_copied_as_authority"
+      ],
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "adopted_patterns": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string"
+          }
+        },
+        "not_copied_as_authority": {
+          "const": true
+        }
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human",
+        "agent",
+        "skill",
+        "schemas",
+        "outputs"
+      ],
+      "properties": {
+        "human": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schemas": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputs": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

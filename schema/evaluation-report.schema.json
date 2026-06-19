@@ -1,0 +1,920 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/evaluation-report.schema.json",
+  "title": "Project Evolution Quality Evaluation Report Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "report_id",
+    "generated_at_utc",
+    "project",
+    "source_set_ref",
+    "claim_ledger_ref",
+    "evidence_ledger_ref",
+    "evaluation_scope",
+    "source_normalization",
+    "archetype_selection",
+    "evidence_assessment",
+    "stage_evaluations",
+    "common_axis_evaluations",
+    "comparisons",
+    "problem_matches",
+    "baseline_recommendation",
+    "final_verdict"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "report_id": {
+      "type": "string",
+      "pattern": "^REPORT-[A-Z0-9._-]+$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "name",
+        "version_ids"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^VER-[A-Z0-9._-]+$"
+          }
+        }
+      }
+    },
+    "source_set_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_ledger_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_ledger_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evaluation_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version_ids",
+        "input_types",
+        "excluded_items"
+      ],
+      "properties": {
+        "version_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^VER-[A-Z0-9._-]+$"
+          }
+        },
+        "input_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "build_package",
+              "agent_work",
+              "build_result"
+            ]
+          }
+        },
+        "excluded_items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_normalization": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "version_id",
+          "input_type",
+          "source_name",
+          "source_type",
+          "apparent_scope",
+          "primary_purpose",
+          "assumed_target_user",
+          "evidence_basis"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9._-]+$"
+          },
+          "version_id": {
+            "type": "string",
+            "pattern": "^VER-[A-Z0-9._-]+$"
+          },
+          "input_type": {
+            "enum": [
+              "build_package",
+              "agent_work",
+              "build_result"
+            ]
+          },
+          "source_name": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "apparent_scope": {
+            "type": "string"
+          },
+          "primary_purpose": {
+            "type": "string"
+          },
+          "assumed_target_user": {
+            "type": "string"
+          },
+          "evidence_basis": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "archetype_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_profile_id",
+        "confidence",
+        "rationale",
+        "evidence_refs",
+        "alternatives"
+      ],
+      "properties": {
+        "primary_profile_id": {
+          "type": "string",
+          "pattern": "^ARCH-[A-Z0-9-]+$"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 10
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_id",
+              "confidence",
+              "reason_not_selected"
+            ],
+            "properties": {
+              "profile_id": {
+                "type": "string",
+                "pattern": "^ARCH-[A-Z0-9-]+$"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "reason_not_selected": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "evidence_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coverage",
+        "independence",
+        "decisive_gaps",
+        "assessment"
+      ],
+      "properties": {
+        "coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "decisive_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assessment": {
+          "enum": [
+            "sufficient",
+            "partial",
+            "insufficient"
+          ]
+        }
+      }
+    },
+    "stage_evaluations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stageEvaluation"
+      }
+    },
+    "common_axis_evaluations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/commonAxisEvaluation"
+      }
+    },
+    "comparisons": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/comparison"
+      }
+    },
+    "problem_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/problemMatch"
+      }
+    },
+    "baseline_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selected_version_id",
+        "confidence",
+        "rationale",
+        "donor_components",
+        "rejected_alternatives"
+      ],
+      "properties": {
+        "selected_version_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^VER-[A-Z0-9._-]+$"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "donor_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from_version_id",
+              "component",
+              "conditions"
+            ],
+            "properties": {
+              "from_version_id": {
+                "type": "string",
+                "pattern": "^VER-[A-Z0-9._-]+$"
+              },
+              "component": {
+                "type": "string"
+              },
+              "conditions": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rejected_alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version_id",
+              "reason"
+            ],
+            "properties": {
+              "version_id": {
+                "type": "string",
+                "pattern": "^VER-[A-Z0-9._-]+$"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "final_verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overall",
+        "ranking",
+        "decisive_reasons",
+        "priority_actions",
+        "limitations"
+      ],
+      "properties": {
+        "overall": {
+          "enum": [
+            "PASS",
+            "CONDITIONAL_PASS",
+            "FAIL",
+            "INSUFFICIENT_EVIDENCE",
+            "NOT_EVALUATED"
+          ]
+        },
+        "ranking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version_id",
+              "rank",
+              "score"
+            ],
+            "properties": {
+              "version_id": {
+                "type": "string",
+                "pattern": "^VER-[A-Z0-9._-]+$"
+              },
+              "rank": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "score": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        },
+        "decisive_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "priority_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "metricResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "weight",
+        "score",
+        "weighted_score",
+        "status",
+        "evidence_refs",
+        "rationale"
+      ],
+      "properties": {
+        "metric_id": {
+          "type": "string",
+          "pattern": "^(BP|AW|BR)-[0-9]{3}$"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "weighted_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "status": {
+          "enum": [
+            "strong",
+            "acceptable",
+            "weak",
+            "broken",
+            "not_scored"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          }
+        },
+        "rationale": {
+          "type": "string"
+        }
+      }
+    },
+    "gateResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gate_id",
+        "status",
+        "evidence_refs",
+        "rationale"
+      ],
+      "properties": {
+        "gate_id": {
+          "type": "string",
+          "pattern": "^HG-[0-9]{3}$"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "not_applicable",
+            "unconfirmed"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          }
+        },
+        "rationale": {
+          "type": "string"
+        }
+      }
+    },
+    "stageEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_evaluation_id",
+        "version_id",
+        "input_type",
+        "source_ids",
+        "profile_id",
+        "metrics",
+        "stage_score",
+        "evidence_coverage",
+        "hard_gates",
+        "verdict",
+        "strengths",
+        "limitations"
+      ],
+      "properties": {
+        "stage_evaluation_id": {
+          "type": "string",
+          "pattern": "^STAGEEVAL-[A-Z0-9._-]+$"
+        },
+        "version_id": {
+          "type": "string",
+          "pattern": "^VER-[A-Z0-9._-]+$"
+        },
+        "input_type": {
+          "enum": [
+            "build_package",
+            "agent_work",
+            "build_result"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9._-]+$"
+          }
+        },
+        "profile_id": {
+          "type": "string",
+          "pattern": "^ARCH-[A-Z0-9-]+$"
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/metricResult"
+          }
+        },
+        "stage_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evidence_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "hard_gates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gateResult"
+          }
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "CONDITIONAL_PASS",
+            "FAIL",
+            "INSUFFICIENT_EVIDENCE",
+            "NOT_EVALUATED"
+          ]
+        },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "axisResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axis_id",
+        "weight",
+        "score",
+        "weighted_score",
+        "rationale",
+        "claim_ids"
+      ],
+      "properties": {
+        "axis_id": {
+          "type": "string",
+          "pattern": "^AX-[0-9]{2}$"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "weighted_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CLM-[A-Z0-9._-]+$"
+          }
+        }
+      }
+    },
+    "commonAxisEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "axes",
+        "whole_document_score"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^SRC-[A-Z0-9._-]+$"
+        },
+        "axes": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "$ref": "#/$defs/axisResult"
+          }
+        },
+        "whole_document_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "driftFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension_id",
+        "direction",
+        "severity",
+        "observation",
+        "evidence_refs",
+        "consequence"
+      ],
+      "properties": {
+        "dimension_id": {
+          "type": "string",
+          "pattern": "^DRIFT-[A-Z0-9-]+$"
+        },
+        "direction": {
+          "enum": [
+            "improvement",
+            "degradation",
+            "mixed",
+            "unchanged",
+            "unconfirmed"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "observation": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          }
+        },
+        "consequence": {
+          "type": "string"
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparison_id",
+        "from_version_id",
+        "to_version_id",
+        "comparison_type",
+        "score_delta",
+        "claim_relations",
+        "drift_findings",
+        "conclusion"
+      ],
+      "properties": {
+        "comparison_id": {
+          "type": "string",
+          "pattern": "^CMP-[A-Z0-9._-]+$"
+        },
+        "from_version_id": {
+          "type": "string",
+          "pattern": "^VER-[A-Z0-9._-]+$"
+        },
+        "to_version_id": {
+          "type": "string",
+          "pattern": "^VER-[A-Z0-9._-]+$"
+        },
+        "comparison_type": {
+          "enum": [
+            "baseline_to_result",
+            "build_package_to_agent",
+            "agent_to_result",
+            "result_to_result",
+            "build_package_to_result"
+          ]
+        },
+        "score_delta": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -100,
+          "maximum": 100
+        },
+        "claim_relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claim_a",
+              "claim_b",
+              "relation",
+              "rationale"
+            ],
+            "properties": {
+              "claim_a": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "claim_b": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "relation": {
+                "enum": [
+                  "Same Claims",
+                  "Almost Same Claims",
+                  "Opposite Claims",
+                  "Almost Opposite Claims",
+                  "Unique Claim From",
+                  "Unique Claim To",
+                  "Unconfirmed"
+                ]
+              },
+              "rationale": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "drift_findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/driftFinding"
+          }
+        },
+        "conclusion": {
+          "type": "string"
+        }
+      }
+    },
+    "problemMatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "problem_id",
+        "version_ids",
+        "input_types",
+        "confidence",
+        "evidence_refs",
+        "observed_condition",
+        "consequence",
+        "corrective_actions",
+        "status"
+      ],
+      "properties": {
+        "problem_id": {
+          "type": "string",
+          "pattern": "^PROB-[0-9]{3}$"
+        },
+        "version_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^VER-[A-Z0-9._-]+$"
+          }
+        },
+        "input_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "build_package",
+              "agent_work",
+              "build_result"
+            ]
+          }
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          }
+        },
+        "observed_condition": {
+          "type": "string"
+        },
+        "consequence": {
+          "type": "string"
+        },
+        "corrective_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "open",
+            "mitigated",
+            "accepted",
+            "unconfirmed"
+          ]
+        }
+      }
+    }
+  }
+}

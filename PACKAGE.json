@@ -1,0 +1,66 @@
+{
+  "$schema": "schema/package.schema.json",
+  "package_name": "ados-quality-drift-auditor",
+  "slug": "ados-quality-drift-auditor",
+  "version": "0.1.0",
+  "artifact_name": "ados-quality-drift-auditor-v0.1.zip",
+  "status": "prototype",
+  "goal": "Provide a deterministic, evidence-traceable, archetype-aware skill for evaluating build controls, building-agent execution, and produced project versions across time, so quality drift, false-PASS risk, regression, and the best improvement baseline can be identified.",
+  "objectives": [
+    "Accept build-package, building-agent-work, and build-result inputs for one or many versions of the same project.",
+    "Normalize every supplied artifact, extract stable atomic claims, and preserve claim identifiers through scoring and verdict.",
+    "Select one primary project archetype from a governed archetype bank and apply its evidence requirements, metrics, hard gates, and drift risks.",
+    "Score each input stage using stage-specific metrics and a common nine-axis comparison frame.",
+    "Trace changes from baseline result to target build package, agent work, built result, and later versions.",
+    "Separate observed evidence, derived calculations, inference, and evaluator judgment in every report.",
+    "Detect known quality-failure patterns using a machine-readable problem bank with risks, visible effects, corrections, and prevention controls.",
+    "Prevent false release acceptance through evidence coverage thresholds, hard gates, mutation-sensitive validation, replay checks, and verdict derivation rules.",
+    "Emit JSON claim ledgers and evaluation reports conforming to JSON Schema Draft 2020-12 in the out/ folder.",
+    "Remain usable when evidence is incomplete by returning explicit unknowns and INSUFFICIENT_EVIDENCE rather than inventing support."
+  ],
+  "primary_skill": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.md",
+  "machine_skill": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.json",
+  "standards": [
+    {
+      "name": "JSON Schema",
+      "version": "Draft 2020-12",
+      "usage": "Schemas and validation"
+    },
+    {
+      "name": "Semantic Versioning",
+      "version": "2.0.0",
+      "usage": "Package and profile versions"
+    },
+    {
+      "name": "RFC 3339",
+      "usage": "UTC timestamps"
+    },
+    {
+      "name": "SHA-256",
+      "usage": "Artifact and inventory integrity"
+    },
+    {
+      "name": "Markdown",
+      "usage": "Human-readable contracts and ADRs"
+    }
+  ],
+  "based_on": {
+    "project": "ados-glossary",
+    "version": "1.3",
+    "adopted_patterns": [
+      "closed machine contracts",
+      "file-grounded work and stable identifiers",
+      "separation of evidence and QA judgment",
+      "explicit authority load order",
+      "human and machine companion surfaces"
+    ],
+    "not_copied_as_authority": true
+  },
+  "entrypoints": {
+    "human": "README.md",
+    "agent": "MANIFEST.md",
+    "skill": "skills/PROJECT-EVOLUTION-QUALITY-AUDITOR.md",
+    "schemas": "schema/schema-index.json",
+    "outputs": "out/"
+  }
+}

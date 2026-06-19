@@ -1,0 +1,190 @@
+{
+  "$schema": "../schema/archetype-profile.schema.json",
+  "profile_id": "ARCH-SOFTWARE-LIBRARY-CLI-SDK",
+  "version": "0.1.0",
+  "name": "Software library, CLI, or SDK",
+  "description": "Reusable code package, command-line tool, client library, plugin, or developer SDK.",
+  "selection": {
+    "positive_signals": [
+      "library",
+      "SDK",
+      "CLI",
+      "public API",
+      "package manager",
+      "semantic versioning"
+    ],
+    "exclusion_signals": [
+      "primarily an end-user deployed service"
+    ],
+    "minimum_confidence_for_primary": 0.6,
+    "fallback_profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT"
+  },
+  "stage_metric_weights": {
+    "build_package": [
+      {
+        "metric_id": "BP-001",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-002",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-003",
+        "weight": 8
+      },
+      {
+        "metric_id": "BP-004",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-005",
+        "weight": 18
+      },
+      {
+        "metric_id": "BP-006",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-007",
+        "weight": 8
+      },
+      {
+        "metric_id": "BP-008",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-009",
+        "weight": 8
+      }
+    ],
+    "agent_work": [
+      {
+        "metric_id": "AW-001",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-002",
+        "weight": 10
+      },
+      {
+        "metric_id": "AW-003",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-004",
+        "weight": 14
+      },
+      {
+        "metric_id": "AW-005",
+        "weight": 12
+      },
+      {
+        "metric_id": "AW-006",
+        "weight": 20
+      },
+      {
+        "metric_id": "AW-007",
+        "weight": 12
+      },
+      {
+        "metric_id": "AW-008",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-009",
+        "weight": 8
+      }
+    ],
+    "build_result": [
+      {
+        "metric_id": "BR-001",
+        "weight": 10
+      },
+      {
+        "metric_id": "BR-002",
+        "weight": 18
+      },
+      {
+        "metric_id": "BR-003",
+        "weight": 16
+      },
+      {
+        "metric_id": "BR-004",
+        "weight": 4
+      },
+      {
+        "metric_id": "BR-005",
+        "weight": 8
+      },
+      {
+        "metric_id": "BR-006",
+        "weight": 8
+      },
+      {
+        "metric_id": "BR-007",
+        "weight": 12
+      },
+      {
+        "metric_id": "BR-008",
+        "weight": 14
+      },
+      {
+        "metric_id": "BR-009",
+        "weight": 6
+      },
+      {
+        "metric_id": "BR-010",
+        "weight": 4
+      }
+    ]
+  },
+  "common_axis_profile": "metrics/metric-bank.json#common_axes",
+  "primary_risks": [
+    "API contract break",
+    "packaging contamination",
+    "compatibility drift",
+    "insufficient negative tests"
+  ],
+  "mandatory_evidence": {
+    "build_package": [
+      "public contract baseline",
+      "compatibility policy",
+      "packaging rules"
+    ],
+    "agent_work": [
+      "API diff",
+      "test matrix",
+      "build/install trace"
+    ],
+    "build_result": [
+      "consumer-level tests",
+      "package installation test",
+      "backward compatibility check"
+    ]
+  },
+  "applicable_problem_ids": [
+    "PROB-002",
+    "PROB-014",
+    "PROB-018",
+    "PROB-019",
+    "PROB-022"
+  ],
+  "drift_dimensions": [
+    "DRIFT-GOAL",
+    "DRIFT-SCOPE",
+    "DRIFT-SEMANTIC",
+    "DRIFT-CONTRACT",
+    "DRIFT-STRUCTURE",
+    "DRIFT-EVIDENCE",
+    "DRIFT-VALIDATOR",
+    "DRIFT-REPRO",
+    "DRIFT-DEPENDENCY",
+    "DRIFT-DISCIPLINE"
+  ],
+  "proof_policy": {
+    "bounded_claim_rule": "A proof demonstrates only the claims exercised by its oracle.",
+    "fixture_pass_is_release_pass": false,
+    "require_final_artifact_origin": true
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/schema-index.schema.json",
+  "title": "Schema Index Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "package_name",
+    "schemas",
+    "bindings",
+    "exemptions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "package_name": {
+      "const": "ados-quality-drift-auditor"
+    },
+    "schemas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema_id",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "schema_id": {
+            "type": "string",
+            "pattern": "^SCHEMA-[A-Z0-9-]+$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^schema/.+\\.schema\\.json$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "instance",
+          "schema"
+        ],
+        "properties": {
+          "instance": {
+            "type": "string",
+            "pattern": "^[^/].+\\.json$"
+          },
+          "schema": {
+            "type": "string",
+            "pattern": "^schema/.+\\.schema\\.json$"
+          }
+        }
+      }
+    },
+    "exemptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "reason"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "skill_id": "SKILL-PROJECT-EVOLUTION-QUALITY-AUDITOR",
+  "version": "0.1.0",
+  "name": "Project Evolution Quality and Drift Auditor",
+  "goal": "Provide a deterministic, evidence-traceable, archetype-aware skill for evaluating build controls, building-agent execution, and produced project versions across time, so quality drift, false-PASS risk, regression, and the best improvement baseline can be identified.",
+  "supported_input_types": [
+    "build_package",
+    "agent_work",
+    "build_result"
+  ],
+  "authority_load_order": [
+    "PACKAGE.json",
+    "MANIFEST.md",
+    "GLOSSARY.md",
+    "PDD.md",
+    "adr/index.json",
+    "profiles/archetype-bank.json",
+    "metrics/metric-bank.json",
+    "metrics/report-policy.json",
+    "problems/problem-bank.json",
+    "schema/schema-index.json"
+  ],
+  "procedure": [
+    {
+      "step_id": "STEP-00",
+      "name": "Normalize source set",
+      "purpose": "Assign stable IDs to projects, versions, and artifacts without inferring missing stages.",
+      "required_outputs": [
+        "source normalization table",
+        "version lineage",
+        "availability gaps"
+      ]
+    },
+    {
+      "step_id": "STEP-01",
+      "name": "Determine domain and archetype",
+      "purpose": "Select one primary profile from the governed archetype bank using purpose, artifact type, risks, and evidence needs.",
+      "required_outputs": [
+        "primary archetype",
+        "confidence",
+        "selection rationale",
+        "alternatives"
+      ]
+    },
+    {
+      "step_id": "STEP-02",
+      "name": "Inventory evidence",
+      "purpose": "Classify evidence as observed, derived, inference, judgment, or unconfirmed and assess independence and coverage.",
+      "required_outputs": [
+        "evidence ledger",
+        "coverage ratio",
+        "decisive gaps"
+      ]
+    },
+    {
+      "step_id": "STEP-03",
+      "name": "Extract atomic claims",
+      "purpose": "Decompose every controlling or evaluative source into independently testable propositions with stable IDs.",
+      "required_outputs": [
+        "atomic claim ledger",
+        "claim dependencies",
+        "source summaries"
+      ]
+    },
+    {
+      "step_id": "STEP-04",
+      "name": "Weight and score claims",
+      "purpose": "Prioritize claims by goal impact, decision leverage, dependency centrality, scope breadth, and verification burden, then score operational quality.",
+      "required_outputs": [
+        "normalized claim weights",
+        "claim scores",
+        "semantic statuses"
+      ]
+    },
+    {
+      "step_id": "STEP-05",
+      "name": "Evaluate build package",
+      "purpose": "Assess the quality of prompts, controls, baseline selection, verification design, evidence contract, and acceptance logic.",
+      "required_outputs": [
+        "build-package metric score",
+        "hard-gate results",
+        "control defects"
+      ]
+    },
+    {
+      "step_id": "STEP-06",
+      "name": "Evaluate agent work",
+      "purpose": "Assess authority loading, planning, scope fidelity, traceability, evidence, testing, replay, corrections, and verdict discipline.",
+      "required_outputs": [
+        "agent-work metric score",
+        "execution-to-control deviations",
+        "evidence defects"
+      ]
+    },
+    {
+      "step_id": "STEP-07",
+      "name": "Evaluate build result",
+      "purpose": "Assess delivered goal coverage, function, contracts, semantics, integrity, evidence, replayability, resilience, regression, and packaging.",
+      "required_outputs": [
+        "build-result metric score",
+        "artifact defects",
+        "mutation or resilience results"
+      ]
+    },
+    {
+      "step_id": "STEP-08",
+      "name": "Score common axes",
+      "purpose": "Place all supplied sources in the same nine-axis comparison frame so stage-specific scores do not hide overall weaknesses.",
+      "required_outputs": [
+        "nine-axis scores",
+        "whole-document scores"
+      ]
+    },
+    {
+      "step_id": "STEP-09",
+      "name": "Trace evolution and drift",
+      "purpose": "Compare baseline, build controls, agent behavior, result, and later versions by claims, metrics, hard gates, and drift dimensions.",
+      "required_outputs": [
+        "stage comparisons",
+        "version comparisons",
+        "drift consequences",
+        "drift risks"
+      ]
+    },
+    {
+      "step_id": "STEP-10",
+      "name": "Match problem patterns",
+      "purpose": "Use observed signals and evidence to match reusable failure patterns and retrieve corrections and preventive controls.",
+      "required_outputs": [
+        "problem matches",
+        "risk levels",
+        "corrective actions"
+      ]
+    },
+    {
+      "step_id": "STEP-11",
+      "name": "Select baseline",
+      "purpose": "Choose the strongest verified version for the intended next change and identify only individually verified donors from other versions.",
+      "required_outputs": [
+        "baseline recommendation",
+        "donor map",
+        "rejected alternatives"
+      ]
+    },
+    {
+      "step_id": "STEP-12",
+      "name": "Derive verdict and emit reports",
+      "purpose": "Apply evidence thresholds and hard gates, derive verdicts, and write schema-conformant JSON outputs.",
+      "required_outputs": [
+        "claim ledger JSON",
+        "evidence ledger JSON",
+        "evaluation report JSON"
+      ]
+    }
+  ],
+  "constraints": [
+    "Use only provided material; do not use external research as hidden authority.",
+    "Preserve stable source, claim, evidence, version, and comparison identifiers through the final report.",
+    "Do not score a source before its claims are extracted and weighted.",
+    "Do not interpret absence as failure when the item is not applicable or was not supplied.",
+    "Use the exact phrase 'I cannot confirm this.' for unsupported decisive propositions.",
+    "Separate observation, calculation, inference, judgment, and unconfirmed statements.",
+    "Do not derive package-level PASS from a bounded proof fixture.",
+    "Do not accept a builder-owned validator as the sole oracle for a high-risk release claim.",
+    "Do not select the latest version as baseline without cross-version quality evidence.",
+    "Do not let structure or polish outweigh core idea, contract strength, or evidence."
+  ],
+  "references": {
+    "archetype_bank": "profiles/archetype-bank.json",
+    "metric_bank": "metrics/metric-bank.json",
+    "problem_bank": "problems/problem-bank.json",
+    "report_policy": "metrics/report-policy.json",
+    "source_schema": "schema/source-set.schema.json",
+    "claim_schema": "schema/claim-ledger.schema.json",
+    "report_schema": "schema/evaluation-report.schema.json"
+  },
+  "output_files": {
+    "claim_ledger": "out/<report-id>-claim-ledger.json",
+    "evidence_ledger": "out/<report-id>-evidence-ledger.json",
+    "evaluation_report": "out/<report-id>-evaluation-report.json"
+  }
+}

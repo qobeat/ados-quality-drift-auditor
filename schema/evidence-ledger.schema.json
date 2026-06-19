@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/evidence-ledger.schema.json",
+  "title": "Evaluation Evidence Ledger Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ledger_id",
+    "source_set_id",
+    "entries"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "ledger_id": {
+      "type": "string",
+      "pattern": "^EVIDENCELEDGER-[A-Z0-9._-]+$"
+    },
+    "source_set_id": {
+      "type": "string",
+      "pattern": "^SOURCESET-[A-Z0-9._-]+$"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "source_id",
+          "evidence_class",
+          "locator",
+          "observation",
+          "captured_at_utc",
+          "verifier",
+          "independence",
+          "supports_claim_ids",
+          "status"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^EVD-[A-Z0-9._-]+$"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9._-]+$"
+          },
+          "evidence_class": {
+            "enum": [
+              "observed",
+              "derived",
+              "inference",
+              "judgment",
+              "unconfirmed"
+            ]
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "procedure": {
+            "type": "string"
+          },
+          "expected": {
+            "type": "string"
+          },
+          "captured_at_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "verifier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "independence": {
+            "enum": [
+              "builder_owned",
+              "same_logic_cross_check",
+              "independent_logic",
+              "external_attestation",
+              "unknown"
+            ]
+          },
+          "artifact_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "supports_claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^CLM-[A-Z0-9._-]+$"
+            }
+          },
+          "status": {
+            "enum": [
+              "captured",
+              "verified",
+              "rejected",
+              "superseded",
+              "unconfirmed"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

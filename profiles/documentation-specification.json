@@ -1,0 +1,190 @@
+{
+  "$schema": "../schema/archetype-profile.schema.json",
+  "profile_id": "ARCH-DOCUMENTATION-SPECIFICATION",
+  "version": "0.1.0",
+  "name": "Documentation or specification",
+  "description": "Human-readable technical documentation, specification set, reference manual, or process guide.",
+  "selection": {
+    "positive_signals": [
+      "specification",
+      "documentation",
+      "reference manual",
+      "guide",
+      "normative language"
+    ],
+    "exclusion_signals": [
+      "machine execution is the primary output"
+    ],
+    "minimum_confidence_for_primary": 0.6,
+    "fallback_profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT"
+  },
+  "stage_metric_weights": {
+    "build_package": [
+      {
+        "metric_id": "BP-001",
+        "weight": 18
+      },
+      {
+        "metric_id": "BP-002",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-003",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-004",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-005",
+        "weight": 10
+      },
+      {
+        "metric_id": "BP-006",
+        "weight": 14
+      },
+      {
+        "metric_id": "BP-007",
+        "weight": 12
+      },
+      {
+        "metric_id": "BP-008",
+        "weight": 8
+      },
+      {
+        "metric_id": "BP-009",
+        "weight": 6
+      }
+    ],
+    "agent_work": [
+      {
+        "metric_id": "AW-001",
+        "weight": 10
+      },
+      {
+        "metric_id": "AW-002",
+        "weight": 12
+      },
+      {
+        "metric_id": "AW-003",
+        "weight": 10
+      },
+      {
+        "metric_id": "AW-004",
+        "weight": 16
+      },
+      {
+        "metric_id": "AW-005",
+        "weight": 18
+      },
+      {
+        "metric_id": "AW-006",
+        "weight": 8
+      },
+      {
+        "metric_id": "AW-007",
+        "weight": 4
+      },
+      {
+        "metric_id": "AW-008",
+        "weight": 10
+      },
+      {
+        "metric_id": "AW-009",
+        "weight": 12
+      }
+    ],
+    "build_result": [
+      {
+        "metric_id": "BR-001",
+        "weight": 16
+      },
+      {
+        "metric_id": "BR-002",
+        "weight": 2
+      },
+      {
+        "metric_id": "BR-003",
+        "weight": 12
+      },
+      {
+        "metric_id": "BR-004",
+        "weight": 24
+      },
+      {
+        "metric_id": "BR-005",
+        "weight": 10
+      },
+      {
+        "metric_id": "BR-006",
+        "weight": 16
+      },
+      {
+        "metric_id": "BR-007",
+        "weight": 4
+      },
+      {
+        "metric_id": "BR-008",
+        "weight": 6
+      },
+      {
+        "metric_id": "BR-009",
+        "weight": 6
+      },
+      {
+        "metric_id": "BR-010",
+        "weight": 4
+      }
+    ]
+  },
+  "common_axis_profile": "metrics/metric-bank.json#common_axes",
+  "primary_risks": [
+    "terminology drift",
+    "contradictory requirements",
+    "stale examples",
+    "machine/human mismatch"
+  ],
+  "mandatory_evidence": {
+    "build_package": [
+      "audience and normative scope",
+      "source authority",
+      "terminology baseline"
+    ],
+    "agent_work": [
+      "change trace",
+      "cross-reference check",
+      "terminology review"
+    ],
+    "build_result": [
+      "consistency review",
+      "link/reference validation",
+      "example-to-rule alignment"
+    ]
+  },
+  "applicable_problem_ids": [
+    "PROB-008",
+    "PROB-009",
+    "PROB-011",
+    "PROB-015",
+    "PROB-020",
+    "PROB-023"
+  ],
+  "drift_dimensions": [
+    "DRIFT-GOAL",
+    "DRIFT-SCOPE",
+    "DRIFT-SEMANTIC",
+    "DRIFT-CONTRACT",
+    "DRIFT-STRUCTURE",
+    "DRIFT-EVIDENCE",
+    "DRIFT-VALIDATOR",
+    "DRIFT-REPRO",
+    "DRIFT-DEPENDENCY",
+    "DRIFT-DISCIPLINE"
+  ],
+  "proof_policy": {
+    "bounded_claim_rule": "A proof demonstrates only the claims exercised by its oracle.",
+    "fixture_pass_is_release_pass": false,
+    "require_final_artifact_origin": false
+  }
+}

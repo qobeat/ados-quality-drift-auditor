@@ -1,0 +1,577 @@
+{
+  "$schema": "../schema/metric-bank.schema.json",
+  "bank_id": "METRIC-BANK-QDA-0.1",
+  "version": "0.1.0",
+  "common_axes": [
+    {
+      "axis_id": "AX-01",
+      "name": "Goal coverage & decision usefulness",
+      "weight": 20,
+      "definition": "How well the source helps choose, compare, or judge a solution against the stated goal.",
+      "score_anchors": {
+        "10": "Complete, decision-ready coverage",
+        "8": "Useful with minor gaps",
+        "6": "Partial or weakly operational",
+        "4": "Underspecified",
+        "2": "Materially misleading",
+        "0": "Absent or unusable"
+      }
+    },
+    {
+      "axis_id": "AX-02",
+      "name": "Core idea strength",
+      "weight": 18,
+      "definition": "Quality and value of the central evaluation or build idea independent of writing polish.",
+      "score_anchors": {
+        "10": "Strong, coherent central idea",
+        "8": "Sound with minor limitations",
+        "6": "Mixed or incompletely developed",
+        "4": "Weak",
+        "2": "Self-undermining",
+        "0": "No viable idea"
+      }
+    },
+    {
+      "axis_id": "AX-03",
+      "name": "Technical soundness",
+      "weight": 14,
+      "definition": "Whether the reasoning, contracts, and technical mechanics are internally credible.",
+      "score_anchors": {
+        "10": "Technically rigorous",
+        "8": "Mostly sound",
+        "6": "Some material gaps",
+        "4": "Multiple weak mechanics",
+        "2": "Contradicted or broken",
+        "0": "Unusable"
+      }
+    },
+    {
+      "axis_id": "AX-04",
+      "name": "Structural completeness",
+      "weight": 12,
+      "definition": "Whether essential workflow and artifact components are present.",
+      "score_anchors": {
+        "10": "Complete",
+        "8": "Minor missing surfaces",
+        "6": "Important gaps",
+        "4": "Large omissions",
+        "2": "Fragmentary",
+        "0": "Absent"
+      }
+    },
+    {
+      "axis_id": "AX-05",
+      "name": "Operationalization detail",
+      "weight": 10,
+      "definition": "How executable the method is without hidden steps.",
+      "score_anchors": {
+        "10": "Directly executable",
+        "8": "Minor interpretation needed",
+        "6": "Several hidden steps",
+        "4": "Mostly conceptual",
+        "2": "Not operational",
+        "0": "No method"
+      }
+    },
+    {
+      "axis_id": "AX-06",
+      "name": "Evidence traceability",
+      "weight": 10,
+      "definition": "How clearly conclusions and PASS claims resolve to observation-bearing evidence.",
+      "score_anchors": {
+        "10": "Complete bidirectional traceability",
+        "8": "Minor gaps",
+        "6": "Partial resolution",
+        "4": "Mostly assertions",
+        "2": "Broken traceability",
+        "0": "No evidence"
+      }
+    },
+    {
+      "axis_id": "AX-07",
+      "name": "Risk & control adequacy",
+      "weight": 7,
+      "definition": "How well the source prevents drift, ambiguity, false positives, and unfair scoring.",
+      "score_anchors": {
+        "10": "Strong preventive and detective controls",
+        "8": "Good controls",
+        "6": "Uneven controls",
+        "4": "Weak safeguards",
+        "2": "False-PASS prone",
+        "0": "No controls"
+      }
+    },
+    {
+      "axis_id": "AX-08",
+      "name": "Internal consistency",
+      "weight": 5,
+      "definition": "Whether the source avoids contradictions, overlaps, and self-undermining rules.",
+      "score_anchors": {
+        "10": "Consistent",
+        "8": "Minor tension",
+        "6": "Some conflicts",
+        "4": "Material contradictions",
+        "2": "Severely inconsistent",
+        "0": "Incoherent"
+      }
+    },
+    {
+      "axis_id": "AX-09",
+      "name": "Document discipline & terminology",
+      "weight": 4,
+      "definition": "Clarity, naming discipline, identity hygiene, and terminology consistency.",
+      "score_anchors": {
+        "10": "Precise and disciplined",
+        "8": "Minor inconsistencies",
+        "6": "Noticeable drift",
+        "4": "Frequent ambiguity",
+        "2": "Confusing",
+        "0": "Unusable"
+      }
+    }
+  ],
+  "stage_metrics": {
+    "build_package": [
+      {
+        "metric_id": "BP-001",
+        "name": "Goal and objective precision",
+        "default_weight": 14,
+        "definition": "Goal, objectives, success boundary, and non-goals are explicit and testable.",
+        "required_evidence": [
+          "controlling prompt or PDD",
+          "goal/objective mapping"
+        ]
+      },
+      {
+        "metric_id": "BP-002",
+        "name": "Baseline and change-set control",
+        "default_weight": 12,
+        "definition": "The authorized baseline, inherited contracts, intended changes, and preservation obligations are explicit.",
+        "required_evidence": [
+          "baseline identity",
+          "change classification",
+          "regression floor"
+        ]
+      },
+      {
+        "metric_id": "BP-003",
+        "name": "Scope and file obligations",
+        "default_weight": 10,
+        "definition": "Every required create/modify/delete action is grounded to governed artifacts and unauthorized scope is constrained.",
+        "required_evidence": [
+          "file or component obligations",
+          "scope amendment rule"
+        ]
+      },
+      {
+        "metric_id": "BP-004",
+        "name": "Architecture and archetype fit",
+        "default_weight": 10,
+        "definition": "Controls match the project archetype, dependencies, risk profile, and expected outputs.",
+        "required_evidence": [
+          "archetype rationale",
+          "architecture decisions"
+        ]
+      },
+      {
+        "metric_id": "BP-005",
+        "name": "Verification design",
+        "default_weight": 14,
+        "definition": "Positive, negative, semantic, integration, replay, and regression checks are defined with explicit oracles.",
+        "required_evidence": [
+          "verification procedures",
+          "expected findings or outcomes"
+        ]
+      },
+      {
+        "metric_id": "BP-006",
+        "name": "Evidence contract",
+        "default_weight": 12,
+        "definition": "Required evidence fields, provenance, observations, timestamps, commands, and hashes are specified.",
+        "required_evidence": [
+          "evidence schema or template",
+          "traceability rule"
+        ]
+      },
+      {
+        "metric_id": "BP-007",
+        "name": "Drift safeguards",
+        "default_weight": 10,
+        "definition": "Semantic, contract, scope, identity, evidence, and validator drift are actively prevented or detected.",
+        "required_evidence": [
+          "baseline comparison rules",
+          "drift gates"
+        ]
+      },
+      {
+        "metric_id": "BP-008",
+        "name": "Oracle independence and defect sensitivity",
+        "default_weight": 10,
+        "definition": "Release acceptance is not circular and includes mutation-sensitive or independently implemented checks.",
+        "required_evidence": [
+          "independent audit or cross-check",
+          "known-defect tests"
+        ]
+      },
+      {
+        "metric_id": "BP-009",
+        "name": "Deliverable and acceptance clarity",
+        "default_weight": 8,
+        "definition": "Deliverables, artifact boundaries, acceptance gates, and non-pass behavior are unambiguous.",
+        "required_evidence": [
+          "deliverable list",
+          "verdict rules"
+        ]
+      }
+    ],
+    "agent_work": [
+      {
+        "metric_id": "AW-001",
+        "name": "Authority acquisition",
+        "default_weight": 10,
+        "definition": "The agent demonstrably loaded and reconciled all controlling sources before planning.",
+        "required_evidence": [
+          "source inventory",
+          "authority resolution"
+        ]
+      },
+      {
+        "metric_id": "AW-002",
+        "name": "Plan and work grounding",
+        "default_weight": 12,
+        "definition": "Work is decomposed into traceable units grounded to requirements and concrete targets.",
+        "required_evidence": [
+          "work plan",
+          "requirement-to-work mapping"
+        ]
+      },
+      {
+        "metric_id": "AW-003",
+        "name": "Scope fidelity",
+        "default_weight": 10,
+        "definition": "Executed changes remain within authorized scope or use an explicit amendment path.",
+        "required_evidence": [
+          "change inventory",
+          "scope deviation record"
+        ]
+      },
+      {
+        "metric_id": "AW-004",
+        "name": "Execution traceability",
+        "default_weight": 14,
+        "definition": "Commands, edits, intermediate states, failures, and corrections can be reconstructed.",
+        "required_evidence": [
+          "activity log",
+          "diffs or commands",
+          "state transitions"
+        ]
+      },
+      {
+        "metric_id": "AW-005",
+        "name": "Evidence quality",
+        "default_weight": 16,
+        "definition": "Evidence contains observations rather than status assertions and resolves to the claims it supports.",
+        "required_evidence": [
+          "observed outputs",
+          "provenance",
+          "timestamps",
+          "hashes"
+        ]
+      },
+      {
+        "metric_id": "AW-006",
+        "name": "Test and validator quality",
+        "default_weight": 14,
+        "definition": "Checks use correct oracles, isolate defects, reject known-bad cases, and do not merely count coverage.",
+        "required_evidence": [
+          "test results",
+          "negative cases",
+          "finding codes"
+        ]
+      },
+      {
+        "metric_id": "AW-007",
+        "name": "Replay and final-artifact proof",
+        "default_weight": 10,
+        "definition": "Proof starts from the final candidate or clean extraction and is reproducible without hidden builder state.",
+        "required_evidence": [
+          "replay procedure",
+          "fresh-extraction outputs"
+        ]
+      },
+      {
+        "metric_id": "AW-008",
+        "name": "Correction-loop quality",
+        "default_weight": 8,
+        "definition": "Failures create focused corrective work and are revalidated without erasing evidence.",
+        "required_evidence": [
+          "finding-to-fix trace",
+          "rerun evidence"
+        ]
+      },
+      {
+        "metric_id": "AW-009",
+        "name": "Verdict discipline",
+        "default_weight": 6,
+        "definition": "Scores and verdicts are derived after gates and unresolved conditions are represented honestly.",
+        "required_evidence": [
+          "gate summary",
+          "blocker list",
+          "verdict derivation"
+        ]
+      }
+    ],
+    "build_result": [
+      {
+        "metric_id": "BR-001",
+        "name": "Goal and requirement coverage",
+        "default_weight": 12,
+        "definition": "The delivered result materially satisfies authorized goals and requirements.",
+        "required_evidence": [
+          "requirement coverage",
+          "delivered behavior"
+        ]
+      },
+      {
+        "metric_id": "BR-002",
+        "name": "Functional correctness",
+        "default_weight": 10,
+        "definition": "Observable functions and declared behaviors operate correctly, including defined failure behavior.",
+        "required_evidence": [
+          "functional tests",
+          "negative behavior tests"
+        ]
+      },
+      {
+        "metric_id": "BR-003",
+        "name": "Contract and schema integrity",
+        "default_weight": 14,
+        "definition": "Machine contracts are strict enough for their purpose and all governed instances conform.",
+        "required_evidence": [
+          "schema validation",
+          "constraint comparison",
+          "negative fixtures"
+        ]
+      },
+      {
+        "metric_id": "BR-004",
+        "name": "Semantic and data consistency",
+        "default_weight": 12,
+        "definition": "Human and machine representations, data exports, terminology, and relationships remain synchronized.",
+        "required_evidence": [
+          "cross-surface comparison",
+          "semantic invariants"
+        ]
+      },
+      {
+        "metric_id": "BR-005",
+        "name": "Inventory, reference, and identity integrity",
+        "default_weight": 10,
+        "definition": "Version identity, paths, inventories, hashes, references, and artifact boundaries are exact.",
+        "required_evidence": [
+          "fresh tree inventory",
+          "reference resolution",
+          "hash report"
+        ]
+      },
+      {
+        "metric_id": "BR-006",
+        "name": "Evidence and release traceability",
+        "default_weight": 12,
+        "definition": "Release claims resolve to current, observation-bearing evidence with clear provenance.",
+        "required_evidence": [
+          "evidence ledger",
+          "claim-to-evidence links"
+        ]
+      },
+      {
+        "metric_id": "BR-007",
+        "name": "Reproducibility and replayability",
+        "default_weight": 10,
+        "definition": "The result and required proof artifacts can be recreated from declared inputs in clean environments.",
+        "required_evidence": [
+          "replay runs",
+          "determinism report"
+        ]
+      },
+      {
+        "metric_id": "BR-008",
+        "name": "Validator and resilience quality",
+        "default_weight": 10,
+        "definition": "Validation detects representative high-impact defects and cannot be bypassed by shallow conformance.",
+        "required_evidence": [
+          "mutation suite",
+          "independent checks"
+        ]
+      },
+      {
+        "metric_id": "BR-009",
+        "name": "Baseline regression and drift",
+        "default_weight": 6,
+        "definition": "Quality-relevant inherited contracts are preserved or intentionally superseded with evidence.",
+        "required_evidence": [
+          "baseline comparison",
+          "regression rationale"
+        ]
+      },
+      {
+        "metric_id": "BR-010",
+        "name": "Packaging and document discipline",
+        "default_weight": 4,
+        "definition": "The artifact is clean, navigable, internally consistent, and free from generated contamination or stale paths.",
+        "required_evidence": [
+          "package inspection",
+          "document consistency check"
+        ]
+      }
+    ]
+  },
+  "drift_dimensions": [
+    {
+      "dimension_id": "DRIFT-GOAL",
+      "name": "Goal drift",
+      "definition": "The delivered or executed work no longer serves the controlling goal."
+    },
+    {
+      "dimension_id": "DRIFT-SCOPE",
+      "name": "Scope drift",
+      "definition": "Changes exceed or omit the authorized change set."
+    },
+    {
+      "dimension_id": "DRIFT-SEMANTIC",
+      "name": "Semantic drift",
+      "definition": "Meaning, terminology, relationships, or exported representations diverge."
+    },
+    {
+      "dimension_id": "DRIFT-CONTRACT",
+      "name": "Contract drift",
+      "definition": "Schemas, APIs, invariants, or required constraints weaken or change unintentionally."
+    },
+    {
+      "dimension_id": "DRIFT-STRUCTURE",
+      "name": "Structural drift",
+      "definition": "Folders, artifact boundaries, inventories, or component topology diverge."
+    },
+    {
+      "dimension_id": "DRIFT-EVIDENCE",
+      "name": "Evidence drift",
+      "definition": "Evidence becomes stale, assertion-only, non-resolving, or detached from claims."
+    },
+    {
+      "dimension_id": "DRIFT-VALIDATOR",
+      "name": "Validator drift",
+      "definition": "Validation coverage or defect sensitivity no longer matches release claims."
+    },
+    {
+      "dimension_id": "DRIFT-REPRO",
+      "name": "Reproducibility drift",
+      "definition": "Replay increasingly depends on hidden state, order, or external builder logic."
+    },
+    {
+      "dimension_id": "DRIFT-DEPENDENCY",
+      "name": "Dependency drift",
+      "definition": "Dependencies, versions, or integration assumptions change without governed analysis."
+    },
+    {
+      "dimension_id": "DRIFT-DISCIPLINE",
+      "name": "Discipline drift",
+      "definition": "Identity, paths, hashes, naming, or document hygiene degrade."
+    }
+  ],
+  "hard_gates": [
+    {
+      "gate_id": "HG-001",
+      "name": "Source readability",
+      "applies_to": [
+        "all"
+      ],
+      "fail_condition": "A decisive required source cannot be read or identified.",
+      "effect": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "gate_id": "HG-002",
+      "name": "False-PASS sensitivity",
+      "applies_to": [
+        "agent_work",
+        "build_result"
+      ],
+      "fail_condition": "The release validator accepts representative critical mutations or no defect-sensitivity evidence exists for a high-risk release claim.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-003",
+      "name": "Observation-bearing evidence",
+      "applies_to": [
+        "agent_work",
+        "build_result"
+      ],
+      "fail_condition": "Mandatory PASS claims are supported only by self-authored status assertions.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-004",
+      "name": "Final-artifact replay",
+      "applies_to": [
+        "agent_work",
+        "build_result"
+      ],
+      "fail_condition": "A required runtime or bootstrap proof was not produced from the final candidate or a clean extraction.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-005",
+      "name": "Inventory and identity integrity",
+      "applies_to": [
+        "build_result"
+      ],
+      "fail_condition": "Authoritative inventory, identity, or release hashes materially disagree with the delivered artifact.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-006",
+      "name": "Critical contract regression",
+      "applies_to": [
+        "build_result"
+      ],
+      "fail_condition": "A critical inherited schema, API, invariant, or safety contract is weakened without explicit authorization and regression evidence.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-007",
+      "name": "Semantic synchronization",
+      "applies_to": [
+        "build_result"
+      ],
+      "fail_condition": "Authoritative semantic surfaces materially disagree and the conflict affects delivered meaning.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-008",
+      "name": "Controlled scope",
+      "applies_to": [
+        "build_package",
+        "agent_work"
+      ],
+      "fail_condition": "Material unplanned work is introduced without an authorized amendment.",
+      "effect": "FAIL"
+    },
+    {
+      "gate_id": "HG-009",
+      "name": "Verdict derivation",
+      "applies_to": [
+        "all"
+      ],
+      "fail_condition": "PASS or a perfect score is written before or independently of the required gate outcomes.",
+      "effect": "FAIL"
+    }
+  ],
+  "scoring": {
+    "metric_score_range": {
+      "minimum": 0,
+      "maximum": 10
+    },
+    "weighted_score_formula": "sum(metric_weight * metric_score / 10)",
+    "rounding": "Round final stage and document scores to two decimal places; retain unrounded values during calculation.",
+    "unknown_rule": "Do not replace missing evidence with a midpoint. Record null and reduce evidence coverage."
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/metric-bank.schema.json",
+  "title": "Quality Metric Bank Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "bank_id",
+    "version",
+    "common_axes",
+    "stage_metrics",
+    "drift_dimensions",
+    "hard_gates",
+    "scoring"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "bank_id": {
+      "type": "string",
+      "pattern": "^METRIC-BANK-[A-Z0-9._-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "common_axes": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "$ref": "#/$defs/axis"
+      }
+    },
+    "stage_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "build_package",
+        "agent_work",
+        "build_result"
+      ],
+      "properties": {
+        "build_package": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/stageMetric"
+          }
+        },
+        "agent_work": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/stageMetric"
+          }
+        },
+        "build_result": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/stageMetric"
+          }
+        }
+      }
+    },
+    "drift_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dimension_id",
+          "name",
+          "definition"
+        ],
+        "properties": {
+          "dimension_id": {
+            "type": "string",
+            "pattern": "^DRIFT-[A-Z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "hard_gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gate_id",
+          "name",
+          "applies_to",
+          "fail_condition",
+          "effect"
+        ],
+        "properties": {
+          "gate_id": {
+            "type": "string",
+            "pattern": "^HG-[0-9]{3}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "all",
+                "build_package",
+                "agent_work",
+                "build_result"
+              ]
+            }
+          },
+          "fail_condition": {
+            "type": "string",
+            "minLength": 10
+          },
+          "effect": {
+            "enum": [
+              "FAIL",
+              "INSUFFICIENT_EVIDENCE"
+            ]
+          }
+        }
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_score_range",
+        "weighted_score_formula",
+        "rounding",
+        "unknown_rule"
+      ],
+      "properties": {
+        "metric_score_range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "minimum",
+            "maximum"
+          ],
+          "properties": {
+            "minimum": {
+              "const": 0
+            },
+            "maximum": {
+              "const": 10
+            }
+          }
+        },
+        "weighted_score_formula": {
+          "type": "string"
+        },
+        "rounding": {
+          "type": "string"
+        },
+        "unknown_rule": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axis_id",
+        "name",
+        "weight",
+        "definition",
+        "score_anchors"
+      ],
+      "properties": {
+        "axis_id": {
+          "type": "string",
+          "pattern": "^AX-[0-9]{2}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 10
+        },
+        "score_anchors": {
+          "type": "object",
+          "minProperties": 4,
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stageMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "name",
+        "default_weight",
+        "definition",
+        "required_evidence"
+      ],
+      "properties": {
+        "metric_id": {
+          "type": "string",
+          "pattern": "^(BP|AW|BR)-[0-9]{3}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 10
+        },
+        "required_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

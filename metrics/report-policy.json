@@ -1,0 +1,68 @@
+{
+  "$schema": "../schema/report-policy.schema.json",
+  "policy_id": "REPORT-POLICY-QDA-0.1",
+  "version": "0.1.0",
+  "evidence_classes": [
+    "observed",
+    "derived",
+    "inference",
+    "judgment",
+    "unconfirmed"
+  ],
+  "required_unconfirmed_phrase": "I cannot confirm this.",
+  "evidence_coverage": {
+    "formula": "verified required evidence items / applicable required evidence items",
+    "pass_minimum": 0.8,
+    "conditional_minimum": 0.5,
+    "below_conditional_verdict": "INSUFFICIENT_EVIDENCE"
+  },
+  "verdict_rules": [
+    {
+      "verdict": "PASS",
+      "conditions": [
+        "stage_score >= 85",
+        "evidence_coverage >= 0.80",
+        "no failed hard gate",
+        "no unresolved critical problem"
+      ]
+    },
+    {
+      "verdict": "CONDITIONAL_PASS",
+      "conditions": [
+        "70 <= stage_score < 85",
+        "evidence_coverage >= 0.50",
+        "no failed hard gate with effect FAIL",
+        "conditions and corrective actions are explicit"
+      ]
+    },
+    {
+      "verdict": "FAIL",
+      "conditions": [
+        "stage_score < 70 or any hard gate with effect FAIL fails"
+      ]
+    },
+    {
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "conditions": [
+        "decisive evidence is unavailable or evidence_coverage < 0.50"
+      ]
+    }
+  ],
+  "baseline_selection": {
+    "rule": "Select the version with the strongest verified contract and semantic integrity for the intended next change, not automatically the latest version.",
+    "required_checks": [
+      "whole-document score",
+      "archetype-specific stage score",
+      "hard gates",
+      "regression floor",
+      "problem severity",
+      "evidence coverage"
+    ],
+    "hybrid_baseline_rule": "A losing version may be used only as a named donor for individually verified components."
+  },
+  "proof_fixture_policy": {
+    "rule": "A proof fixture establishes only the claims directly exercised by its documented oracle.",
+    "forbidden_inference": "Fixture PASS implies package-level or project-level PASS.",
+    "simple_calculator_example": "Arithmetic success may show a narrow execution path works; it does not validate glossary semantics, schemas, inventories, evidence, ADR references, or replay of the final package."
+  }
+}

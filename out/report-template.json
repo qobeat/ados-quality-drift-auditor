@@ -1,0 +1,71 @@
+{
+  "$schema": "../schema/evaluation-report.schema.json",
+  "schema_version": "0.1.0",
+  "report_id": "REPORT-UNSET",
+  "generated_at_utc": "2026-06-18T00:00:00Z",
+  "project": {
+    "project_id": "unset-project",
+    "name": "Unset Project",
+    "version_ids": [
+      "VER-UNSET"
+    ]
+  },
+  "source_set_ref": "examples/input-template.json",
+  "claim_ledger_ref": null,
+  "evidence_ledger_ref": null,
+  "evaluation_scope": {
+    "version_ids": [
+      "VER-UNSET"
+    ],
+    "input_types": [
+      "build_package",
+      "agent_work",
+      "build_result"
+    ],
+    "excluded_items": []
+  },
+  "source_normalization": [],
+  "archetype_selection": {
+    "primary_profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT",
+    "confidence": 0.0,
+    "rationale": "Archetype selection has not been performed.",
+    "evidence_refs": [],
+    "alternatives": []
+  },
+  "evidence_assessment": {
+    "coverage": 0.0,
+    "independence": 0.0,
+    "decisive_gaps": [
+      "Source evidence has not been assessed."
+    ],
+    "assessment": "insufficient"
+  },
+  "stage_evaluations": [],
+  "common_axis_evaluations": [],
+  "comparisons": [],
+  "problem_matches": [],
+  "baseline_recommendation": {
+    "selected_version_id": null,
+    "confidence": 0.0,
+    "rationale": "No baseline has been evaluated.",
+    "donor_components": [],
+    "rejected_alternatives": []
+  },
+  "final_verdict": {
+    "overall": "NOT_EVALUATED",
+    "ranking": [
+      {
+        "version_id": "VER-UNSET",
+        "rank": 1,
+        "score": null
+      }
+    ],
+    "decisive_reasons": [],
+    "priority_actions": [
+      "Populate the source set and execute the skill."
+    ],
+    "limitations": [
+      "No evaluation has been performed."
+    ]
+  }
+}

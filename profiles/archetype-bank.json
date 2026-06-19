@@ -1,0 +1,78 @@
+{
+  "$schema": "../schema/archetype-bank.schema.json",
+  "bank_id": "ARCHETYPE-BANK-QDA-0.1",
+  "version": "0.1.0",
+  "selection_policy": {
+    "primary_archetype_count": 1,
+    "method": [
+      "Use explicit project purpose and delivered artifact type before keywords.",
+      "Compare positive and exclusion signals.",
+      "Record evidence references and a confidence from 0 to 1.",
+      "Use the general profile when no specialized profile reaches 0.60.",
+      "Modifiers may be noted in the report but do not create a second primary archetype."
+    ],
+    "tie_breaker": "Select the profile whose failure modes best explain the release decision and whose mandatory evidence most directly applies."
+  },
+  "profiles": [
+    {
+      "profile_id": "ARCH-GENERAL-ENGINEERED-ARTIFACT",
+      "name": "General engineered artifact",
+      "path": "profiles/general-engineered-artifact.json",
+      "summary": "Fallback for governed artifacts that do not meet a specialized profile with sufficient confidence."
+    },
+    {
+      "profile_id": "ARCH-SCHEMA-GOVERNED-KNOWLEDGE",
+      "name": "Schema-governed knowledge package",
+      "path": "profiles/schema-governed-knowledge.json",
+      "summary": "Glossaries, taxonomies, ontologies, registries, metadata packs, or knowledge artifacts governed by schemas and synchronized representations."
+    },
+    {
+      "profile_id": "ARCH-MULTI-ARTIFACT-PROFILE-RUNTIME",
+      "name": "Profile plus runtime bootstrap package",
+      "path": "profiles/multi-artifact-profile-runtime.json",
+      "summary": "A package that defines a profile or contract and also claims to execute, generate, validate, or bootstrap downstream artifacts."
+    },
+    {
+      "profile_id": "ARCH-SOFTWARE-APPLICATION-SERVICE",
+      "name": "Software application or service",
+      "path": "profiles/software-application-service.json",
+      "summary": "Deployable application, API, web service, desktop application, or end-user executable."
+    },
+    {
+      "profile_id": "ARCH-SOFTWARE-LIBRARY-CLI-SDK",
+      "name": "Software library, CLI, or SDK",
+      "path": "profiles/software-library-cli-sdk.json",
+      "summary": "Reusable code package, command-line tool, client library, plugin, or developer SDK."
+    },
+    {
+      "profile_id": "ARCH-DATA-PIPELINE-DATASET",
+      "name": "Data pipeline or dataset",
+      "path": "profiles/data-pipeline-dataset.json",
+      "summary": "Dataset, ETL/ELT pipeline, analytical transformation, data contract, or reproducible data product."
+    },
+    {
+      "profile_id": "ARCH-ML-AGENT-SYSTEM",
+      "name": "ML, LLM, or autonomous-agent system",
+      "path": "profiles/ml-agent-system.json",
+      "summary": "Model, prompt-driven agent, evaluation harness, retrieval system, or autonomous workflow with probabilistic behavior."
+    },
+    {
+      "profile_id": "ARCH-POLICY-CONTROL-PACK",
+      "name": "Policy, governance, or control pack",
+      "path": "profiles/policy-control-pack.json",
+      "summary": "Requirements, standards, ADR packs, prompts, compliance controls, or governance documents intended to control later execution."
+    },
+    {
+      "profile_id": "ARCH-DOCUMENTATION-SPECIFICATION",
+      "name": "Documentation or specification",
+      "path": "profiles/documentation-specification.json",
+      "summary": "Human-readable technical documentation, specification set, reference manual, or process guide."
+    },
+    {
+      "profile_id": "ARCH-INFRASTRUCTURE-PLATFORM",
+      "name": "Infrastructure or platform",
+      "path": "profiles/infrastructure-platform.json",
+      "summary": "Infrastructure-as-code, platform configuration, deployment topology, cluster, cloud, or environment definition."
+    }
+  ]
+}

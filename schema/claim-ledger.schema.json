@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema/claim-ledger.schema.json",
+  "title": "Atomic Claim Ledger Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ledger_id",
+    "source_set_id",
+    "claims",
+    "source_summaries"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "ledger_id": {
+      "type": "string",
+      "pattern": "^CLAIMLEDGER-[A-Z0-9._-]+$"
+    },
+    "source_set_id": {
+      "type": "string",
+      "pattern": "^SOURCESET-[A-Z0-9._-]+$"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id",
+          "source_id",
+          "exact_quote",
+          "normalized_claim",
+          "claim_type",
+          "dependency_on_other_claims",
+          "evidence_refs",
+          "weight_dimensions",
+          "raw_claim_weight",
+          "normalized_claim_weight",
+          "claim_score",
+          "semantic_status",
+          "weighted_claim_score",
+          "evaluator_note"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "pattern": "^CLM-[A-Z0-9._-]+$"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9._-]+$"
+          },
+          "exact_quote": {
+            "type": "string",
+            "minLength": 1
+          },
+          "normalized_claim": {
+            "type": "string",
+            "minLength": 3
+          },
+          "claim_type": {
+            "enum": [
+              "goal",
+              "scope",
+              "rule",
+              "method",
+              "scoring",
+              "output",
+              "constraint",
+              "verdict_logic"
+            ]
+          },
+          "dependency_on_other_claims": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^CLM-[A-Z0-9._-]+$"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[A-Z0-9._-]+$"
+            }
+          },
+          "weight_dimensions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "goal_impact",
+              "decision_leverage",
+              "dependency_centrality",
+              "scope_breadth",
+              "verification_burden"
+            ],
+            "properties": {
+              "goal_impact": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "decision_leverage": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "dependency_centrality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "scope_breadth": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "verification_burden": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5
+              }
+            }
+          },
+          "raw_claim_weight": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "normalized_claim_weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "claim_score": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 10
+          },
+          "semantic_status": {
+            "enum": [
+              "strong",
+              "acceptable",
+              "weak",
+              "broken",
+              "not_scored"
+            ]
+          },
+          "weighted_claim_score": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "evaluator_note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "claim_count",
+          "normalized_weight_total",
+          "weighted_claim_score_total"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^SRC-[A-Z0-9._-]+$"
+          },
+          "claim_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "normalized_weight_total": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "weighted_claim_score_total": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    }
+  }
+}

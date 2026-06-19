@@ -1,0 +1,35 @@
+{
+  "schema_version": "0.1.0",
+  "records": [
+    {
+      "adr_id": "ADR-001",
+      "title": "Preserve strict, file-grounded contracts from the v1.3 baseline",
+      "status": "accepted",
+      "path": "adr/adr-001.md"
+    },
+    {
+      "adr_id": "ADR-002",
+      "title": "Use stable atomic claims and separate evidence from judgment",
+      "status": "accepted",
+      "path": "adr/adr-002.md"
+    },
+    {
+      "adr_id": "ADR-003",
+      "title": "Combine one primary archetype with stage-specific and common metrics",
+      "status": "accepted",
+      "path": "adr/adr-003.md"
+    },
+    {
+      "adr_id": "ADR-004",
+      "title": "Treat fixtures as bounded evidence and require hard-gate defect sensitivity",
+      "status": "accepted",
+      "path": "adr/adr-004.md"
+    },
+    {
+      "adr_id": "ADR-005",
+      "title": "Use the governed full prompt for the production-grade v1.0 build",
+      "status": "accepted",
+      "path": "adr/adr-005.md"
+    }
+  ]
+}
